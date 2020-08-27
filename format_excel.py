@@ -139,43 +139,43 @@ class formatExcel():
                     _cell.fill = PatternFill(patternType="solid", fgColor=BGColor)
         self.__save__(_wb) 
 
-        """
-        Merge required header's cell
-        """
+    """
+    Merge required header's cell
+    """
 
-        def merge_required_header_cell(self,coloumn_size=0):
-            _wb = self.__workbook__()
-            _ws = self.__worksheet__(_wb)
-            _srow = len(self.__existing_dataframe__())
-            #log.debug(f'Merging Required Header Cell')
-            if not self.__existing_dataframe__().empty:
-                _ws.merge.cells(start_row=_srow, Start_column=1, end_row=_srow+1, end_Column=1)
-                _ws.merge.cells(start_row=_srow, Start_column=2, end_row=_srow+1, end_Column=2)
-                # merge sum shift sum header cells
-                _ws.merge.cells(start_row=_srow, Start_column=column_size, end_row=_srow, end_Column=column_size+3)
-            #log.debug(f'Merged Done for Header Cell..')
-            self.__save__(_wb)     
+    def merge_required_header_cell(self,coloumn_size=0):
+        _wb = self.__workbook__()
+        _ws = self.__worksheet__(_wb)
+        _srow = len(self.__existing_dataframe__())
+        #log.debug(f'Merging Required Header Cell')
+        if not self.__existing_dataframe__().empty:
+            _ws.merge.cells(start_row=_srow, Start_column=1, end_row=_srow+1, end_Column=1)
+            _ws.merge.cells(start_row=_srow, Start_column=2, end_row=_srow+1, end_Column=2)
+            # merge sum shift sum header cells
+            _ws.merge.cells(start_row=_srow, Start_column=column_size, end_row=_srow, end_Column=column_size+3)
+        #log.debug(f'Merged Done for Header Cell..')
+        self.__save__(_wb)     
 
 
-            
 
-        """
-        Merge required  row's cell.
-        """
-        def merge_required_row_cells(self,asso_sum=3, col=0, value='', month_days=0):
-            _wb = self.__workbook__()
-            _ws = self.__worksheet__(_wb)  
-            # start row to be merged: (rows occupied in excel - no of associates in team) + 1
-            _srow = len(self.__existing_dataframe__()) + 1 - (asso_sum) + 1
-            _erow = len(self.__existing_dataframe__()) + 1
-            #log.debug(f'Merging required row cells')
-            if not self.__existing_dataframe__().empty:
-                _ws.merge.cells(start_row=_srow, Start_column=col, end_row=_erow, end_Column=col)
-            self.__save__(_wb)
-            #log.debug(f'Merged required row cells')    
-            self.fill_cell_values(col=col, row=_srow, value=value)
-            for _r in range(_srow, _erow+1):
-                self.set_borders_row(srow=_r)
-    
+
+    """
+    Merge required  row's cell.
+    """
+    def merge_required_row_cells(self,asso_sum=3, col=0, value='', month_days=0):
+        _wb = self.__workbook__()
+        _ws = self.__worksheet__(_wb)  
+        # start row to be merged: (rows occupied in excel - no of associates in team) + 1
+        _srow = len(self.__existing_dataframe__()) + 1 - (asso_sum) + 1
+        _erow = len(self.__existing_dataframe__()) + 1
+        #log.debug(f'Merging required row cells')
+        if not self.__existing_dataframe__().empty:
+            _ws.merge.cells(start_row=_srow, Start_column=col, end_row=_erow, end_Column=col)
+        self.__save__(_wb)
+        #log.debug(f'Merged required row cells')    
+        self.fill_cell_values(col=col, row=_srow, value=value)
+        for _r in range(_srow, _erow+1):
+            self.set_borders_row(srow=_r)
+
 
 
