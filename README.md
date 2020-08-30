@@ -67,11 +67,11 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
 
-## Git Installation
+## Git Installation For Your Editors.
 1. Download git plugin from git official website (https://git-scm.com/download/win). (based on Win version 32/64 bit)
 2. Run the git application, Select Next for all the popups and click Finish.
 3. Install the git application.
 4. You either use git bash/git GUI/VScode cmd prompt for git command line processing.
 5. Configure your email and user to your git account (say github) using following command line args,
-   - git config --global user.email "<registered email id>"
-   - git config --global user.name "<registered username>"
+   - git config --global user.email "registered email id"
+   - git config --global user.name "registered username"
