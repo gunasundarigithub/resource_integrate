@@ -1,9 +1,11 @@
 """
+Copy Rights, All Rights Reserved 2020
 File name: format_excel.py
+
 Description: Script formats the excel workbook(fill cell values, cell alignments, borders, highlighting).
 
+Code Changes:
 Modified by : Ganapathy R
-
 """
 
 import os 

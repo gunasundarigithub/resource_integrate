@@ -1,8 +1,10 @@
 """
+Copy Rights, All Rights Reserved 2020
 File name: run.py
 
 Description : Excecutes the shft-load script based on associates shift pla given by user.
 
+Code Changes:
 Modified by: Ganapathy R 
 
 """

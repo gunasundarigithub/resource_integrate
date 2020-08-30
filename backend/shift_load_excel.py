@@ -1,3 +1,16 @@
+"""
+Copy Rights, All Rights Reserved 2020
+File name: shift_load_excel.py
+
+Description: 
+Script collects the parsed user inputs (shift plan data from UI) in the form of python dict object
+and appends the contents to the excel sheet.
+
+Code Changes:
+Initial: Sabarish AC
+Modified by: Sayan H
+"""
+
 import pandas as pd
 from openpyxl import load_workbook, Workbook
 from openpyxl.styles import Alignment, colors
