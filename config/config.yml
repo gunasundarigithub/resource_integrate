@@ -1,0 +1,123 @@
+env: local
+
+local:
+  log_level:DEBUG
+  enableCompareLog: True
+  app_name: 'app-shift-mgmt'
+  shift_category: ['ACC', 'GEN', 'OFF', 'LEAVE', 'HOLIDAY']
+  shift_category_hours: ['ACC-HOURS', 'GEN-HOURS', 'TOTAL-HOURS']
+  proj_dir: "C:\\ctpt\\app-shift-mgmt"
+  app:
+    user_cache_file: 'C:\\ctpt\\app-shift-mgmt\\cache\\user.json'
+    shiftplan_cache_plan: 'C:\\ctpt\\app-shift-mgmt\\shift_plan.json'
+    download_excel: 'C:\\ctpt\\app-shift-mgmt\\frontend\\'
+    secret_key: '357ec644c9ea7ff77ac31cf77421ff06'
+  templates:
+    forbidden: errors\\forbidden-403.html
+    page_not_found: errors/page_not_found-404.html
+    internal_server_error: errors\\server_error-500.html
+    home: home/home.html
+    login: auth/login.html
+    register: auth/register.html
+    roaster_dash: dashborads/roasterDashboard.html
+    shift_roaster: dashboards/shiftRoaster.html
+    submit_roaster: dashboards/submitRoaster.html
+    roaster_modal: modal/roasterModal.html
+   
+  log_path: C:\\ctpt\\app-shift-mgmt\\backend\\logs\\
+  logging:
+    disable_existing_loggers: FALSE
+    version: 1
+    formatters:
+      simple:
+        format: "%(asctime)s~%(pathname)s:%(lineno)d~%(funcName)s~%(levelname)s~%(message)s"
+        
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+        
+      files:
+        filename: C:\\ctpt\\app-shift-mgmt\\backend\\logs\\app-shift-mgmt.log
+        class: logging.handlers.RotatingFileHandler
+        formatter: simple
+        maxBytes: 10485760 #1024*2014*10=10 MB
+        backupCount: 3
+      loggers:
+        shift-mgmt:
+          level: INFO
+          handlers: [console, file]
+        clients:
+          level: INFO
+          handlers: [console, file]
+          propagate: no
+          
+          
+test:
+  log_level: DEBUG
+  enableCompareLog: True
+  #app_name: 'app-shift-mgmt'
+  shift_category: ['ACC', 'GEN', 'OFF', 'LEAVE', 'HOLIDAY'] 
+  log_path: /ctoclogs/app-shift-mgmt.log #Mention your logging path
+  logging:
+    disable_existing_loggers: False
+    version: 1
+    formatters:
+      simple:
+        format: "%(asctime)s~%(pathname)s:%(lineno)d~%(funcName)s~%(levelname)s~%(message)s"
+        
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+        
+      file:
+        filename: /ctoclogs/app-shift-mgmt/app-shift-mgmt.log
+        class: logging.handlers.RotatingFileHandler
+        formatter: simple
+        maxBytes: 10485760 #1024*2014*10=10 MB
+        backupCount: 3
+      loggers:
+        shift-mgmt:
+          level: INFO
+          handlers: [console, file]
+        clients:
+          level: INFO
+          handlers: [console, file]
+          propagate: no
+          
+prod:
+  log_level: DEBUG
+  enableCompareLog: True
+  #app_name: 'app-shift-mgmt'
+  shift_category: ['ACC', 'GEN', 'OFF', 'LEAVE', 'HOLIDAY'] 
+  log_path: /ctoclogs/app-shift-mgmt.log #Mention your logging path
+  logging:
+    disable_existing_loggers: False
+    version: 1
+    formatters:
+      simple:
+        format: "%(asctime)s~%(pathname)s:%(lineno)d~%(funcName)s~%(levelname)s~%(message)s"  #Mention your logging style
+        
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+        
+      file:
+        filename: /ctoclogs/app-shift-mgmt/app-shift-mgmt.log
+        class: logging.handlers.RotatingFileHandler
+        formatter: simple
+        maxBytes: 10485760 #1024*2014*10=10 MB
+        backupCount: 3
+      loggers:
+        shift-mgmt:
+          level: INFO
+          handlers: [console, file]
+        clients:
+          level: INFO
+          handlers: [console, file]
+          propagate: no
