@@ -26,11 +26,10 @@ render(){
 
   <form>
       <h2>Login to your account</h2>
-      <br/>
       <div>
-        <TextField type='email' label="Registered Email" variant="outlined" value={this.state.email}/>
+        <TextField type='email' label="Registered Email" variant="outlined"/>
         <br/> <br/>
-        <TextField type='password'  label="Password" variant="outlined" value={this.state.password}/>
+        <TextField type='password'  label="Password" variant="outlined"/>
         <br/><br/>
         <Button color="primary" variant="contained">Login</Button>
         <br/><br/>
