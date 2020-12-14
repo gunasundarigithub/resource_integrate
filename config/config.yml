@@ -1,17 +1,20 @@
 env: local
 
 local:
-  log_level:DEBUG
+  log_level: DEBUG
   enableCompareLog: True
-  app_name: 'app-shift-mgmt'
-  shift_category: ['ACC', 'GEN', 'OFF', 'LEAVE', 'HOLIDAY']
+  app_name: app-shift-mgmt
+  shift_category: ['ACC', 'GEN', 'OFF', 'LEAVE', 'HOLIDAY', 'NACC', 'EACC']
   shift_category_hours: ['ACC-HOURS', 'GEN-HOURS', 'TOTAL-HOURS']
-  proj_dir: "C:\\ctpt\\app-shift-mgmt"
+  proj_dir: C:\\Sabs Learning\\Python Learning\\resource_integrate
   app:
-    user_cache_file: 'C:\\ctpt\\app-shift-mgmt\\cache\\user.json'
-    shiftplan_cache_plan: 'C:\\ctpt\\app-shift-mgmt\\shift_plan.json'
-    download_excel: 'C:\\ctpt\\app-shift-mgmt\\frontend\\'
-    secret_key: '357ec644c9ea7ff77ac31cf77421ff06'
+    cache_location: C:\\Sabs Learning\\Python Learning\\resource_integrate\\cache\\
+    user_cache_file: user.json
+    shiftplan_cache_file: shift_plan.json
+    team_members_cache_file: Team-Members.json
+    team_years_cache_file: Team-Shift-Plan-Years.json
+    download_excel: C:\\Sabs Learning\\Python Learning\\resource_integrate\\frontend\\
+    secret_key: 357ec644c9ea7ff77ac31cf77421ff06
   templates:
     forbidden: errors\\forbidden-403.html
     page_not_found: errors/page_not_found-404.html
@@ -24,7 +27,7 @@ local:
     submit_roaster: dashboards/submitRoaster.html
     roaster_modal: modal/roasterModal.html
    
-  log_path: C:\\ctpt\\app-shift-mgmt\\backend\\logs\\
+  log_path: C:\\Sabs Learning\\Python Learning\\resource_integrate\\backend\\logs\\
   logging:
     disable_existing_loggers: FALSE
     version: 1
@@ -39,7 +42,7 @@ local:
         stream: ext://sys.stdout
         
       files:
-        filename: C:\\ctpt\\app-shift-mgmt\\backend\\logs\\app-shift-mgmt.log
+        filename: C:\\Sabs Learning\\Python Learning\\resource_integrate\\backend\\logs\\app-shift-mgmt.log
         class: logging.handlers.RotatingFileHandler
         formatter: simple
         maxBytes: 10485760 #1024*2014*10=10 MB

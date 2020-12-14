@@ -16,8 +16,8 @@ from openpyxl import load_workbook, Workbook
 from openpyxl.styles import Alignment, colors
 import os
 import sys
-sys.path.append('C:\\ctpt\\app-shift-mgnt\\backend')
-sys.path.append('C:\\ctpt\\app-shift-mgnt')
+sys.path.append('C:\\Sabs Learning\\Python Learning\\resource_integrate\\backend')
+sys.path.append('C:\\Sabs Learning\\Python Learning\\resource_integrate')
 from format_excel import formatExcel
 from util import util
 
@@ -37,7 +37,7 @@ class ACCShiftPlan():
         self.month = args[1]
         self.year = args[2]
         self.shore = args[3]
-        self.excel_file = 'CTPT ACC SHIFT PLAN.xlsx'
+        self.excel_file = '-'.join([arg[0], 'ACC', 'SHIFT', 'PLAN.xlsx')
         self.sheetName = '-'.join([self.team, self.year])
         self.format_excel_inst = formatExcel(self.excel_file, self.sheetName)
 
@@ -63,21 +63,31 @@ class ACCShiftPlan():
             self.log.info('Excel file not existing!!, Creating....')
             self.create_excel()
             self.log.info('File created....')
-        else:
-            # Just make sure excel has sheets (that you defined..)
-            wb_existing = Workbook()
-            self.log.info(f'Listing out sheets present in the excel: {self.excel_file}')
-            for sheet in wb_existing:
-                self.log.debug(sheet.title)
         return True
-    
+
+    """
+    Create if excel file has the given sheet names.
+    """
+    def check_excel_sheet_exists(self, wb_inst):
+        # Check if given sheet is present else create the sheet.
+        if self.sheetName not in wb_inst.sheetnames:
+            wb_inst.create_sheet(self.sheetName):
+            # Save the excel file.
+            self.__save__(wb_inst)
+        # Just ensure excel has sheets (that you defined..)
+        wb_existing = Workbook()
+        self.log.debug('Listing out sheets present in the excel: ', self.excel_file)
+        self.log.debug('Worksheets: ', wb_existing)
+        for sheet in wb_existing:
+            self.log.debug('Sheets Present in excel file are: ', sheet.title)
+
     """
     Create Excel if not exists.
     """
     def create_excel(self):
         initial_excel = Workbook()        
         if self.sheetName:
-            self.log.debug(f'Adding user defined sheet name: {str(self.sheetName)}')
+            self.log.debug('Adding user defined sheet name: ', str(self.sheetName))
             initial_excel.create_sheet(self.sheetName, 0)    # Insert at first position.
             self.log.debug('Remove default sheet name..')
             initial_excel.remove(initial_excel['Sheet'])
@@ -87,11 +97,10 @@ class ACCShiftPlan():
     Function to add overall shift plan headers for a month.
     """
     def add_headers_to_sheet(self):
-        self.log.debug(f'MONTH: {self.month}')
+        self.log.debug('MONTH : ' self.month)
         print(util.generate_month_days(self.month))
         if util.generate_month_days(self.month):
             days_list = util.generate_month_days(self.month)
-            self.log.debug(f'days in month: {self.month} --> {days_list[0]}')
             first_headers = ['Month', 'Shore', 'Day Number ->']
             first_headers.extend(days_list[0])
             first_headers.append('SHIFT DAYS STATS')
@@ -122,22 +131,32 @@ class ACCShiftPlan():
             header_df2.to_excel(excel_writer, sheet_name=self.sheetName, index=False, header=True, startrow=row_index+1, startcol=2)            
             excel_writer.save()
             # Now perform excel formatting on saved headers.
-            self.do_formatting_to_headers(header_df1)
+            self.do_formatting_to_headers(days_list[0], header_df1)
 
     """
     Formats the Excel Headers with merging, bordering and color highlighting.
     """
-    def do_formatting_to_headers(self, h_df):
+    def do_formatting_to_headers(self, month_days, h_df):
         self.format_excel_inst.merge_required_header_cell(column_size=len(h_df.columns))
         _new_ex_df = self.__existing_dataframe__()
-        # evaluate month days last index.
+        # Evaluate month days last index.
         _month_end_col_index = const.THIRD_COLUMN + len(util.generate_month_days(self.month)[0])
         # Number of  shift category sum.
-        _shift_sum_cols = len(cfg.get('shift_category'))
-        # start index for shift category sum.
+        _shift_sum_cols = len(cfg.get('shift_category')) # Adding 2 columns (Night & Evening Shifts)
+        # Start index for shift category sum.
         _start_index_shift_sum = _month_end_col_index + 1
-        # evaluate shift category sum's last index.
+        # Evaluate shift category sum's last index.
         _shift_sum_end_index = _start_index_shift_sum + _shift_sum_cols
+        # Start index for shift category hours.
+        _start_index_shift_hours = _shift_sum_end_index + 1
+        _indices_switcher = (
+            31: _shift_sum_end_index + 1,
+            30: _shift_sum_end_index,
+            29: _shift_sum_end_index - 1,
+            28: _shift_sum_end_index - 2
+        )
+        # Evaluate Shift Category Hours SUm Last Index.
+        _end_index_shift_hours = _start_index_shift_hours + _shift_sum_cols
         self.format_excel_inst.set_background_color_multicells(srow=len(_new_ex_df), erow=len(_new_ex_df)+1, scol=const.FIRST_COLUMN \
             , ecol=const.SECOND_COLUMN, BGColor=const.HCOL1_TO_HCOL2)
         self.format_excel_inst.set_background_color_multicells(srow=len(_new_ex_df), erow=len(_new_ex_df)+1, scol=const.THIRD_COLUMN \
@@ -148,34 +167,17 @@ class ACCShiftPlan():
             ecol=_shift_sum_end_index, BGColor=const.HSHIFT_SUM)
         self.format_excel_inst.set_background_color_multicells(srow=len(_new_ex_df)+1, erow=len(_new_ex_df)+1, scol=_start_index_shift_sum, \
             ecol=_shift_sum_end_index, BGColor=const.HSHIFT_SUM_PARAMS)
-    
+        self.format_excel_inst.set_background_color_multicells(srow=len(_new_ex_df)+1, erow=len(_new_ex_df)+1, scol=_indices_switcher[len(month_days)], \)
+            ecol=_end_index_shift_hours, BGColor=const.HSHIFT_SUM_PARAMS)
+
     """
-    Create Dataframe for the given column headers.
+    Staticmethod (No Relationship With Class): Create Dataframe for the given column headers.
     """
     def create_dataframe_for_headers(self, headers, excel_writer):
         days_keys_dict = dict.fromkeys(headers, None)
-        # create dataframe object for headers.
+        # Create dataframe object for headers.
         dump_pre_reqs_df = pd.DataFrame(columns=headers)
         return dump_pre_reqs_df
-
-    """
-    Staticmethod (No relationship with class): To fetch the each associates sum of shift based on shift category.
-    """
-    @staticmethod
-    def fetch_shift_counts(dataframe, df_exists):
-        # Get the last row index.
-        _last_rw_idx = len(dataframe)-1
-        print('dataframe: ------ ', dataframe)
-        print('length of data frame: ', len(dataframe))
-        _df_list = list(dataframe.iloc[_last_rw_idx])
-        shift_count = {
-            'ACC': _df_list.count('A') if df_exists else 0,
-            'GEN': _df_list.count('G') if df_exists else 0,
-            'OFF': _df_list.count('O') if df_exists else 0,
-            'LEAVE': _df_list.count('L'),
-            'HOLIDAY': _df_list.count('H')
-        }
-        return shift_count
 
     """
     Function to fill respective associate shift to respective cells (based on day number).

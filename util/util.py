@@ -158,3 +158,40 @@ def fetch_team_members(user_cache_file, team):
   except Exception as e:
     log.error('Exception occured while saving to cache')
     log.error(e, exc_info=True)
+
+"""
+To fetch the each associates sum of shift based on shift category.
+"""
+def fetch_shift_counts(sh_list=[], dataframe=None, df_exists=True):
+    # Get the last row index.
+    if dataframe is not None and not sh_list:
+      _last_rw_idx = len(dataframe)-1
+      _df_list = list(dataframe.iloc[_last_rw_idx])
+    else:
+      _df_list = sh_list
+    shift_count = {
+        'ACC': _df_list.count('A') if df_exists else 0,
+        'GEN': _df_list.count('G') if df_exists else 0,
+        'OFF': _df_list.count('O') if df_exists else 0,
+        'LEAVE': _df_list.count('L'),
+        'HOLIDAY': _df_list.count('H'),
+        'NACC': _df_list.count('N'),
+        'EACC': _df_list.count('E'),
+        'ACC-HOURS': sum([10*int(_df_list.count('A')), 8*int(_df_list.count('N')), 8*int(_df_inst.count('E'))]),
+        'GEN-HOURS': 9*int(_df_list.count('G')),
+        'TOTAL-HOURS': sum([10*int(_df_list.count('A')), 8*int(_df_list.count('N')), 8*int(_df_list.count('E')), 8*int(_df_list.count('G'))])
+    }
+    return shift_count
+
+  """
+  Function to find given filename in the working project directory and store the actual path of the file.
+  """
+  import fnmatch
+  def find_file(filename, dir_path):
+    conf = get_conf()
+    os.chdir(conf['proj_dir'])
+    proj_dir = os.getcwd()
+    for _root, _dir, _files in os.walk(proj_dir):
+      filepath = [os.path.join(_root, _f_n) for _f_n in _files if fnmatch.fnmatch(_f_n, filename)]
+      if filepath:
+        return filepath
