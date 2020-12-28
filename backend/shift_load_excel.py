@@ -185,7 +185,7 @@ class ACCShiftPlan():
     def fill_shift_row_cells(self, shift_df=None, shift_type='LEAVE', asso_name='Sabarish AC', start_row=2):
         __pos_index = cfg['shift_category'].index(shift_type) + 1
         if shift_type!='LEAVE' and shift_type!='HOLIDAY':
-            self.log.debug(f'Positional index for {shift_type} is {__pos_index}')
+            self.log.debug('Positional index for ' + shift_type + " is " + __pos_index)
             self.format_excel_inst.fill_cell_values(col=3, row=start_row, value=asso_name)
             for key, val in shift_df.items():
                 self.format_excel_inst.fill_cell_values(col=(const.column_start + key), row=start_row, \

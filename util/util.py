@@ -2,6 +2,7 @@ from openpyxl.styles import colors
 import pandas as pd
 import sys
 import yaml
+import collections
 import os
 import socket
 import logging
@@ -40,8 +41,11 @@ class excelConstants():
     ('CTOC','CTOC')
   ]
   SHIFT_CATEGORY_HOURS = ['ACC', 'GEN']
-  (ACC_PLAN, OFF_PLAN, LEAVE_PLAN, TCS_HOLIDAY_PLAN) = ('AccPlan', 'OffPlan', 'LeavePlan', 'TCS_Holiday_Plan')
-  (SESSION_COOKIES_EMAIL, SESSION_COOKIES_USERNAME) = ('email', 'username')
+  SHIFT_PLAN = collections.namedtuple('SHIFT_PLAN', 'ACC OFF LEAVE TCS NACC EACC')
+  COOKIES = collections.namedtuple('COOKIES', 'EMAIL USERNAME TEAM MONTH EXCELFILE')
+  SHIFT_CATEGORY = SHIFT_PLAN(ACC='AccPlan', OFF='OffPlan', LEAVE='LeavePlan', TCS='TCS_Holiday_Plan', \
+      NACC='NIGHT_SHIFT', EACC='EVENING_SHIFT')
+  SESSION_COOKIES = COOKIES(EMAIL='email', USERNAME='username', TEAM='team', MONTH='month', EXCELFILE='excel_file')
   HFONT = colours.color(indexed=1)
   VFONT= colours.color(indexed=0)
   HCOL1_TO_HCOL2 = colours.color(indexed=53)
@@ -62,28 +66,47 @@ class excelConstants():
   
 const = excelConstants()
 
+"""
+Get YAML configuration file based on ENV.
+"""
 def get_conf():
   current_dir = os.path.dirname(os.path.realpath(__file__))
-  conf_location = 'C:\\ctpt\\app-shift-mgmt\\config\\config.yml'
+  conf_location = 'C:\\Sabs Learning\\Python Learning\\resource_integrate\\config\\config.yml'
   config ={}
   with open (conf_location) as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
     env= config['env']
   return config.get(env)
 
+
+"""
+Get host based on environment.
+"""
+def fetch_host_on_env():
+  import socket
+  get_host = lambda: ('localhost' if socket.gethostname().startswith('L') else socket.gethostname()) 
+  return get_host()
+
+"""
+Set up logger object for logging.
+"""
 def get_logger_obj():
   cfg= get_conf()
   logging.config.dictConfig(cfg['logging'])
-  log= logging.getLogger('shift-mgmt')
+  log = logging.getLogger('shift-mgmt')
   log.setLevel(cfg['log_level'])
   return log
 
+"""
+Get Env that you are working on....
+"""
 def get_env_file():
   log = get_logger_obj()
   current_dir = os.path.dirname(os.path.realpath(__file__))
   os.chdir(current_dir)
   os.chdir('..')
   base_dir = os.getcwd()
+  # Set config location based on environment running on.
   cfg_path=os.path.join(base_dir, "config")
   server_name = socket.gethostname().lower()[:4]
   if server_name.startswith("l"):
@@ -93,10 +116,12 @@ def get_env_file():
   elif server_name.startswith("prod"):
     server_type="prod"
   else:
-    server_type = server_name
-    
+    server_type = server_name    
   return server_type + '.yaml'
 
+"""
+Automate function to generate number of days for a given month by the user.
+"""
 def generate_month_days(month):
   generate_31_days = lambda: list(1,32)) if month.capitalize()[0:3] in const.MONTH_31_DAYS else None
   generate_30_days = lambda: list(1,31)) if month.capitalize()[0:3] in const.MONTH_30_DAYS else None
@@ -105,12 +130,16 @@ def generate_month_days(month):
   days_list_func = lambda : [ele for ele in [generate_31_days(), generate_30_days(), generate_28_days(), generate_29days()] if ele is not None]
   return days_list_func
 
+"""
+Function to generate weekdays for a given month.
+Second Header --> [ Team Member, list of weekdays like Mon Tue Wed Thu Fri Sat Sun....]
+"""
 def generate_workdays_for_month (year, month, month_period, from_ui=False):
   cfg=get_conf()
   __second_header = ['Team Member']
   week_date = pd.Series(pd.date_range('-'.join([year, month]), periods=month_period, freq='D'))
   df = pd.DataFrame(dict(shift_date=week_date))
-  df['days_in_week']= df['shift_date'].dt.day_name()
+  df['days_in_week'] = df['shift_date'].dt.day_name()
   for day_row in df['days_in_week']:
     __second_header.append(day_row[0:3])
   if from_ui:
@@ -120,6 +149,41 @@ def generate_workdays_for_month (year, month, month_period, from_ui=False):
     __second_header.extend(cfg.get('shift_category_hours'))
     return __second_header
   
+"""
+Function to add General shifts for remaining days dynamically (Apart from ACC, OFF, LEAVE, TCS, HOLIDAY)
+"""
+def add_general_shifts(altered_dict, associate, month):
+  month_days = generate_month_days(month)
+  for _key in altered_dict.keys():
+    _AOLHList = list(altered_dict[_key].keys())
+    _gen_k = list(set(month_days[0]).difference(_AOLHList)))
+    _gen_v = [ 'G' for _k in _gen_k ]
+    shift_dict = dict(zip(_gen_k, _gen_v))
+    # Update the remaining values with General shifts.
+    altered_dict[associate].update(shift_dict)
+    altered_dict[associate] = {
+      _k: _v for _k, _v in sorted(altered_dict[associate].items(), key=lambda d: d[0])
+    }
+
+"""
+Function to alter the roaster dict from cache as centralized dict based on associates.
+"""
+def alter_roaster_cached_dict(_mr):
+  _alter_d = {}
+  _tmp_d = {}
+  for asso in _mr['associates']:
+    for k in _mr['associates_plan'].keys():
+      if asso in k:
+        _int_k = { int(_k): _v for _k, _v in _mr['associates_plan'][k].items() }
+        _alter_d.update({ asso : _int_k })
+        _tmp_d.update(_int_k)
+        _alter_d[asso].update(_tmp_d)
+    _tmp_d = {}
+    add_general_shifts(_alter_d, asso, _mr['month'])
+    _alter_d[asso].update(fetch_shift_counts([ _v for _v in _alter_d[asso].values()]))
+  return _alter_d
+  
+
 import fnmatch
 
 def find_file(filename, dir_path):
