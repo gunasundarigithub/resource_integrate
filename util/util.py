@@ -10,12 +10,12 @@ import logging.config
 
 class excelConstants():
   column_start = 3
-  FIRST_COLUMN=1
-  SECOND_COLUMN=2
-  THIRD_COLUMN=3
-  FOURTH_COLUMN=4
-  MONTH_30_DAYS= ['Apr', 'Jun', 'Sep', 'Nov']
-  MONTH_31_DAYS= ['Jan', 'Mar', 'May', 'July', 'August', 'Oct', 'Dec']
+  FIRST_COLUMN = 1
+  SECOND_COLUMN = 2
+  THIRD_COLUMN = 3
+  FOURTH_COLUMN = 4
+  MONTH_30_DAYS = ['Apr', 'Jun', 'Sep', 'Nov']
+  MONTH_31_DAYS = ['Jan', 'Mar', 'May', 'July', 'August', 'Oct', 'Dec']
   MONTH_28_OR_29_DAYS = ['Feb']
   MONTH_CHOICES = [
     ('JANUARY', 'JANUARY')
@@ -62,7 +62,6 @@ class excelConstants():
   OFF_COLOR = colours.color(indexed=55)
   LEAVE_COLOR = colours.color(indexed=45)
   TCS_HOLIDAY_COLOR = colours.color(indexed=57)
-  
   
 const = excelConstants()
 
@@ -182,12 +181,44 @@ def alter_roaster_cached_dict(_mr):
     add_general_shifts(_alter_d, asso, _mr['month'])
     _alter_d[asso].update(fetch_shift_counts([ _v for _v in _alter_d[asso].values()]))
   return _alter_d
+
+"""
+To fetch the each associates sum of shift based on shift category.
+"""
+def fetch_shift_counts(sh_list=[], dataframe=None, df_exists=True):
+  # Get the last tow index.
+  if dataframe is not None and not sh_list:
+    _last_rw_idx = len(dataframe) - 1
+    _df_list = list(dataframe.iloc[_last_rw_idx])
+  else:
+    _df_list = sh_list
+  shift_count = (
+    'ACC': _df_list.count('A') if df_exists else 0,
+    'GEN': _df_list.count('G') if df_exists else 0,
+    'OFF': _df_list.count('O') if df_exists else 0,
+    'NACC': _df_list.count('N'),
+    'EACC': _df_list.count('E'),
+    'LEAVE': _df_list.count('L'),
+    'HOLIDAY': _df_list.count('H'),
+    'ACC-HOURS': sum(
+      [
+        10*int(_df_list.count('A')), 8*int(_df_list.count('N')), 8*int(_df_list.count('E'))
+      ]
+    ),
+    'GEN-HOURS': 9*int(_df_list.count('G')),
+    'TOTAL-HOURS': sum(
+      [
+        10*int(_df_list.count('A')), 8*int(_df_list.count('N')), 8*int(_df_list.count('E')), 9*int(_df_list.count('G'))
+      ]
+    )
+  )
   
-
+"""
+Function to find the given filename in the working project directory and store the actual path of the file.
+"""
 import fnmatch
-
 def find_file(filename, dir_path):
-  conf=get_conf()
+  conf = get_conf()
   os.chdir(conf['prof_dir'])
   proj_di=os.getcwd()
   for _root, _dir, _files in os.walk(proj_dir):
@@ -195,67 +226,25 @@ def find_file(filename, dir_path):
     if filepath:
       return filepath
 
-def fetch_team_members(user_cache_file, team):
-  try:
-    import json
-    _members ={}
-    log = get_logger_obj()
-    conf = get_conf()
-    if os.path.isfile(user_cache_file):
-      with open(user_cache_file, "r") as f:
-        if fc:
-          fc = f.read()
-          usr_cache = json.loads(fc)
-          team_filtered = list (filter(lambda doc: docs['team']==team, usr_cache))
-          _members.update(team: [(user_info['username']) for usr_info in team_filtered ])
-          if not os.path.isfile(conf['app']['team_members_cache_file']):
-            with open(conf['app']['team_members_cache_file'], mode='w') as f_wr:
-              f_wr.write(json.dumps(_members, indent=True))
-          else:
-            with open (conf['app']['team_members_cache_file'], mode='r') as f_rd:
-              team_members=json.load(f_rd)
-            team_members.update(team: [(user_info['username']) for usr_info in team_filtered ])
-            with open (conf['app']['team_members_cache_file'], mode='w')as s_wr:
-              s_wr.write(json.dumps(user_auth_list, indent=True))
-        else:
-          log.error(f"No user registered! No content present in user cache : {user_cache_file}")
-  except Exception as e:
-    log.error('Exception occured while saving to cache')
-    log.error(e, exc_info=True)
+"""
+Function to check if a specific month exists in the shift plan exists, if exists return True else False.
+"""
+def check_month_exists_excel(month, filename, dir_path):
+  _monthExists = False
+  _filePath = find_file(filename, dir_path)
+  import pandas as pd
+  if os.path.isfile(filename):
+    # Concat the difference to one object, hence we can collect all excel sheets at one place. (use pandas concat())
+    df = pd.concat(pd.read_excel(_filePath[0], sheet_name=None), ignore_index=True)
+    df_m = df[df["Month"]==month]
+    if not df_m.empty:
+      _monthExists = True
+      return _monthExists
+  return _monthExists
 
 """
-To fetch the each associates sum of shift based on shift category.
+Function to fetch list of months been cached for a team.
 """
-def fetch_shift_counts(sh_list=[], dataframe=None, df_exists=True):
-    # Get the last row index.
-    if dataframe is not None and not sh_list:
-      _last_rw_idx = len(dataframe)-1
-      _df_list = list(dataframe.iloc[_last_rw_idx])
-    else:
-      _df_list = sh_list
-    shift_count = {
-        'ACC': _df_list.count('A') if df_exists else 0,
-        'GEN': _df_list.count('G') if df_exists else 0,
-        'OFF': _df_list.count('O') if df_exists else 0,
-        'LEAVE': _df_list.count('L'),
-        'HOLIDAY': _df_list.count('H'),
-        'NACC': _df_list.count('N'),
-        'EACC': _df_list.count('E'),
-        'ACC-HOURS': sum([10*int(_df_list.count('A')), 8*int(_df_list.count('N')), 8*int(_df_inst.count('E'))]),
-        'GEN-HOURS': 9*int(_df_list.count('G')),
-        'TOTAL-HOURS': sum([10*int(_df_list.count('A')), 8*int(_df_list.count('N')), 8*int(_df_list.count('E')), 8*int(_df_list.count('G'))])
-    }
-    return shift_count
-
-  """
-  Function to find given filename in the working project directory and store the actual path of the file.
-  """
-  import fnmatch
-  def find_file(filename, dir_path):
-    conf = get_conf()
-    os.chdir(conf['proj_dir'])
-    proj_dir = os.getcwd()
-    for _root, _dir, _files in os.walk(proj_dir):
-      filepath = [os.path.join(_root, _f_n) for _f_n in _files if fnmatch.fnmatch(_f_n, filename)]
-      if filepath:
-        return filepath
+def get_cached_month_roaster(teamRoasterPlan):
+  month_list = [ _t["month"] for _t in teamRoasterPlan ]
+  return month_list

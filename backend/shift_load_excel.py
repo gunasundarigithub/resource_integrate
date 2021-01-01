@@ -167,7 +167,7 @@ class ACCShiftPlan():
             ecol=_shift_sum_end_index, BGColor=const.HSHIFT_SUM)
         self.format_excel_inst.set_background_color_multicells(srow=len(_new_ex_df)+1, erow=len(_new_ex_df)+1, scol=_start_index_shift_sum, \
             ecol=_shift_sum_end_index, BGColor=const.HSHIFT_SUM_PARAMS)
-        self.format_excel_inst.set_background_color_multicells(srow=len(_new_ex_df)+1, erow=len(_new_ex_df)+1, scol=_indices_switcher[len(month_days)], \)
+        self.format_excel_inst.set_background_color_multicells(srow=len(_new_ex_df)+1, erow=len(_new_ex_df)+1, scol=_indices_switcher[len(month_days)], \
             ecol=_end_index_shift_hours, BGColor=const.HSHIFT_SUM_PARAMS)
 
     """
