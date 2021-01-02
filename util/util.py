@@ -219,9 +219,9 @@ Function to find the given filename in the working project directory and store t
 import fnmatch
 def find_file(filename, dir_path):
   conf = get_conf()
-  os.chdir(conf['prof_dir'])
+  os.chdir(conf['prod_dir'])
   proj_di=os.getcwd()
-  for _root, _dir, _files in os.walk(proj_dir):
+  for _root, _dir, _files in os.walk(dir_path):
     filepath = [os.path.join(_root, _f_n) for _f_n in _files if fnmatch.fnmatch(_f_n, filename)]
     if filepath:
       return filepath
@@ -236,7 +236,9 @@ def check_month_exists_excel(month, filename, dir_path):
   if os.path.isfile(filename):
     # Concat the difference to one object, hence we can collect all excel sheets at one place. (use pandas concat())
     df = pd.concat(pd.read_excel(_filePath[0], sheet_name=None), ignore_index=True)
-    df_m = df[df["Month"]==month]
+    df_m = df[df["Month"]==month] # OR use loc/iloc to fetch the month values.
+    # df_m = df.loc[(df.Month == month)]
+    # df_m = df.iloc[(df.Month == month).values]
     if not df_m.empty:
       _monthExists = True
       return _monthExists

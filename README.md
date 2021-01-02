@@ -75,3 +75,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 5. Configure your email and user to your git account (say github) using following command line args,
    - git config --global user.email "registered email id"
    - git config --global user.name "registered username"
+
+## Python code process flow.
+1. Install python (3.7) (Whole Package is recommended: Anaconda 5.3.0 and above)
+2. Set OS path for python, pip and conda with their respective paths in package.
+3. Create a separate virtual environment using the below command.
+    python -m venv (virtual-env-name)

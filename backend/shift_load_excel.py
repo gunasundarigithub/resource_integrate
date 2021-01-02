@@ -16,8 +16,8 @@ from openpyxl import load_workbook, Workbook
 from openpyxl.styles import Alignment, colors
 import os
 import sys
-sys.path.append('C:\\Sabs Learning\\Python Learning\\resource_integrate\\backend')
-sys.path.append('C:\\Sabs Learning\\Python Learning\\resource_integrate')
+sys.path.append('E:\\Sabs Learning\\resource_integrate\\backend')
+sys.path.append('E:\\Sabs Learning\\resource_integrate')
 from format_excel import formatExcel
 from util import util
 
@@ -37,7 +37,7 @@ class ACCShiftPlan():
         self.month = args[1]
         self.year = args[2]
         self.shore = args[3]
-        self.excel_file = '-'.join([arg[0], 'ACC', 'SHIFT', 'PLAN.xlsx')
+        self.excel_file = '-'.join([args[0], 'ACC', 'SHIFT', 'PLAN.xlsx'])
         self.sheetName = '-'.join([self.team, self.year])
         self.format_excel_inst = formatExcel(self.excel_file, self.sheetName)
 
@@ -71,7 +71,7 @@ class ACCShiftPlan():
     def check_excel_sheet_exists(self, wb_inst):
         # Check if given sheet is present else create the sheet.
         if self.sheetName not in wb_inst.sheetnames:
-            wb_inst.create_sheet(self.sheetName):
+            wb_inst.create_sheet(self.sheetName)
             # Save the excel file.
             self.__save__(wb_inst)
         # Just ensure excel has sheets (that you defined..)
@@ -97,10 +97,10 @@ class ACCShiftPlan():
     Function to add overall shift plan headers for a month.
     """
     def add_headers_to_sheet(self):
-        self.log.debug('MONTH : ' self.month)
-        print(util.generate_month_days(self.month))
+        self.log.debug('MONTH : ' + self.month)
         if util.generate_month_days(self.month):
             days_list = util.generate_month_days(self.month)
+            self.log.debug('days in month: ' + self.month + '--> ' + days_list[0])
             first_headers = ['Month', 'Shore', 'Day Number ->']
             first_headers.extend(days_list[0])
             first_headers.append('SHIFT DAYS STATS')
@@ -141,7 +141,7 @@ class ACCShiftPlan():
         _new_ex_df = self.__existing_dataframe__()
         # Evaluate month days last index.
         _month_end_col_index = const.THIRD_COLUMN + len(util.generate_month_days(self.month)[0])
-        # Number of  shift category sum.
+        # Number of shift category sum.
         _shift_sum_cols = len(cfg.get('shift_category')) # Adding 2 columns (Night & Evening Shifts)
         # Start index for shift category sum.
         _start_index_shift_sum = _month_end_col_index + 1
@@ -149,12 +149,12 @@ class ACCShiftPlan():
         _shift_sum_end_index = _start_index_shift_sum + _shift_sum_cols
         # Start index for shift category hours.
         _start_index_shift_hours = _shift_sum_end_index + 1
-        _indices_switcher = (
+        _indices_switcher = {
             31: _shift_sum_end_index + 1,
             30: _shift_sum_end_index,
             29: _shift_sum_end_index - 1,
             28: _shift_sum_end_index - 2
-        )
+        }
         # Evaluate Shift Category Hours SUm Last Index.
         _end_index_shift_hours = _start_index_shift_hours + _shift_sum_cols
         self.format_excel_inst.set_background_color_multicells(srow=len(_new_ex_df), erow=len(_new_ex_df)+1, scol=const.FIRST_COLUMN \
@@ -173,6 +173,7 @@ class ACCShiftPlan():
     """
     Staticmethod (No Relationship With Class): Create Dataframe for the given column headers.
     """
+    @staticmethod
     def create_dataframe_for_headers(self, headers, excel_writer):
         days_keys_dict = dict.fromkeys(headers, None)
         # Create dataframe object for headers.
@@ -184,12 +185,11 @@ class ACCShiftPlan():
     """
     def fill_shift_row_cells(self, shift_df=None, shift_type='LEAVE', asso_name='Sabarish AC', start_row=2):
         __pos_index = cfg['shift_category'].index(shift_type) + 1
-        if shift_type!='LEAVE' and shift_type!='HOLIDAY':
-            self.log.debug('Positional index for ' + shift_type + " is " + __pos_index)
-            self.format_excel_inst.fill_cell_values(col=3, row=start_row, value=asso_name)
-            for key, val in shift_df.items():
-                self.format_excel_inst.fill_cell_values(col=(const.column_start + key), row=start_row, \
-                    value=val, shift=shift_type)
+        self.log.debug('Positional index for ' + shift_type + " is " + __pos_index)
+        self.format_excel_inst.fill_cell_values(col=3, row=start_row, value=asso_name)
+        for key, val in shift_df.items():
+            self.format_excel_inst.fill_cell_values(col=(const.column_start + int(key)), row=start_row, \
+                value=val, shift=shift_type)
         self.fill_shift_sum_row_cells(shift_df, shift_type, asso_name, start_row=start_row, ps_index=__pos_index)
 
     """
@@ -197,29 +197,42 @@ class ACCShiftPlan():
     """
     def fill_shift_sum_row_cells(self, sh_df, sh_type, name, start_row=2, ps_index=0, shift_val=0):
         _ex_df = self.__existing_dataframe__()
-        # Initialize _is_df flag variable to True, If no specific shift exists for an associate -> set it to False.
+        # Flag to evaluate shift category hours.
+        _shift_hours = ''
+        if sh_type in const.SHIFT_CATEGORY_HOURS:
+            _shift_hour = '-'.join([sh_type, 'HOURS'])
+        # Initialize _is_df flag to True, If no specific shift exists for an associate -> set it to False.
         _is_df = True
         days_in_month = util.generate_month_days(self.month)
-        if not sh_df and sh_type!='LEAVE' and sh_type!='HOLIDAY':
+        if not sh_df: # and sh_type!='LEAVE' and sh_type!='HOLIDAY':
             _is_df = False  # Setting flag to False as there are no shift plan existing.
             self.log.critical(f'No {sh_type} plan given for associate id: {str(name)}')
-        # Fetch the counts of each shifts (ACC, GEN, OFF, LEAVE)
-        _shift_count = self.fetch_shift_counts(_ex_df, _is_df)
-        col_index = const.column_start + len(days_in_month[0]) + ps_index
-        self.format_excel_inst.fill_cell_values(col=col_index, row=start_row, value=_shift_count[sh_type], shift=sh_type)
+        # Fetch the counts of each shifts (ACC, NACC, EACC, GEN, OFF, LEAVE)
+        _shift_count = self.fetch_shift_counts(dataframe=_ex_df, df_exists=_is_df)
+        col_sum_index = const.column_start + len(days_in_month[0]) + ps_index
+        col_hours_index = col_sum_index + len(cfg['shift_category'])
+        # Evaluate column index for associate total hours for the month (ACC, NACC, EACC & GEN)
+        col_total_hours_index = const.column_start + len(days_in_month[0]) + len(cfg['shift_category']) + 3
+        self.format_excel_inst.fill_cell_values(col=col_sum_index, row=start_row, value=_shift_count[sh_type], shift=sh_type)
+        # Fill Shift Category (ACC, NACC, EACC & GEN) hours
+        if _shift_hour:
+            self.format_excel_inst.fill_cell_values(col=col_hours_index, row=start_row, value=_shift_count[_shift_hour], 
+                shift=sh_type)
+            self.format_excel_inst.fill_cell_values(col=col_total_hours_index, row=start_row, value=_shift_count['TOTAL-HOURS'], 
+                shift=sh_type, bgcolor=const.HSHIFT_TOTAL_HOURS)
         self.log.debug(f'Filled Cells with {sh_type} to excel!!')
-
 
     """
     Convert user shift plan to object dictionary.
     """
     def convert_to_shift_dict(self, shift_plan='', gen_shift_keys=[], gen_shift_values=[]):
         _ex_df = self.__existing_dataframe__()
-        
+        # shift_plan --> format: ['1A', '2A', .... '7G']
         if not gen_shift_keys and not gen_shift_values:
             shift_k = [int(shft.split(':')[0]) for idx, shft in enumerate(shift_plan.split(' ')) if shft.split(':')[0].isdigit()]
             shift_v = [shft for shft in shift_plan if shft!=' ' and shft!=':' and not shft.isdigit()]            
             shift_dict = dict(zip(shift_k, shift_v))
+        # For generating general key-value pair dict.            
         elif gen_shift_keys and gen_shift_values:
             shift_dict = dict(zip(gen_shift_keys, gen_shift_values))
         else:
@@ -229,7 +242,7 @@ class ACCShiftPlan():
     """
     Append the associate shift plan to excel workbook (Avoid overwritting)
     """
-    def append_contents_to_excel(self, asso_id, acc_plan, off_plan, leave_plan, tcs_holiday_plan):
+    def append_contents_to_excel(self, asso_id, acc_plan, nacc_plan, eacc_plan, off_plan, leave_plan, tcs_holiday_plan):
         __asso_name = self.assoicates[asso_id]
         self.log.info(f'Appending contents for associate Name: {str(__asso_name)}, ID: {str(asso_id)}')
         _ex_df = self.__existing_dataframe__()
@@ -238,6 +251,12 @@ class ACCShiftPlan():
         # Fill the cells with corresponding associates shifts.
         self.fill_shift_row_cells(shift_df=acc_plan, shift_type=cfg.get('shift_category')[0], asso_name=self.assoicates[asso_id], start_row=len(_ex_df)+2)
         #_off = self.convert_to_shift_dict(self.offPlan[asso_id])
+        # Fill Night Shift Plans.
+        self.fill_shift_row_cells(shift_df=nacc_plan, shift_type=cfg.get('shift_category')[5], asso_name=self.assoicates[asso_id], start_row=len(_ex_df)+2)
+        self.log.debug(f'Filling NACC Plan for associate Name: {str(__asso_name)}, id: {str(asso_id)}, NACC Plan: {nacc_plan}')
+        # Fill Evening Shift Plans.
+        self.fill_shift_row_cells(shift_df=eacc_plan, shift_type=cfg.get('shift_category')[6], asso_name=self.associates[asso_id], start_row=len(_ex_df)+2)
+        self.log.debug(f'Filling EACC Plan for associate Name: {str(__asso_name)}, id: {str(asso_id)}, EACC Plan: {eacc_plan}')
         # Fill OFF Plans
         self.log.debug(f'Filling OFF Plan for associate Name: {str(__asso_name)}, id: {str(asso_id)}, OFF Plan: {off_plan}')
         self.fill_shift_row_cells(shift_df=off_plan, shift_type=cfg.get('shift_category')[2], asso_name=self.assoicates[asso_id], start_row=len(_ex_df)+2)
@@ -246,7 +265,7 @@ class ACCShiftPlan():
         self.fill_shift_row_cells(shift_df=leave_plan, shift_type=cfg.get('shift_category')[3], asso_name=self.assoicates[asso_id], start_row=len(_ex_df)+2)
         # Fill HOLIDAY Plans
         self.log.debug(f'Filling HOLIDAY Plan for associate Name: {str(__asso_name)}, id: {str(asso_id)}, HOLIDAY Plan: {tcs_holiday_plan}')
-        self.fill_shift_row_cells(shift_df=tcs_holiday_plan, shift_type=cfg.get('shift_category')[3], asso_name=self.assoicates[asso_id], start_row=len(_ex_df)+2)
+        self.fill_shift_row_cells(shift_df=tcs_holiday_plan, shift_type=cfg.get('shift_category')[4], asso_name=self.assoicates[asso_id], start_row=len(_ex_df)+2)
         # Collect the days that has ACC, OFF, LEAVE & TCS_HOLIDAY shifts.
         _AOLHList = list(acc_plan.keys()) + list(off_plan.keys() + list(leave_plan.keys()) + list(holiday_plan.keys()))
         # Collect the days in a month.
