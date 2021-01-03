@@ -69,7 +69,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ## Git Installation For Your Editors.
 1. Download git plugin from git official website (https://git-scm.com/download/win). (based on Win version 32/64 bit)
-2. Run the git application, Select Next for all the popups and click Finish.
+2. Run the git application, Select Next for all the pop-ups and click Finish.
 3. Install the git application.
 4. You either use git bash/git GUI/VScode cmd prompt for git command line processing.
 5. Configure your email and user to your git account (say github) using following command line args,
@@ -80,4 +80,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 1. Install python (3.7) (Whole Package is recommended: Anaconda 5.3.0 and above)
 2. Set OS path for python, pip and conda with their respective paths in package.
 3. Create a separate virtual environment using the below command.
-    python -m venv (virtual-env-name)
+   - python -m venv (virtual-env-name)

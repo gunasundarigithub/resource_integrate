@@ -260,6 +260,69 @@ class CacheFile:
                         log.error('Empty Team-Members cache file')
             else:
                 log.error('Error 404, User Auth Cache file ' + team_cache_file + ' not found')
-        except Exception as e:
+        except Exception as ex:
             log.error('Exception occurred while reading from Team-Members cache.')
-            log.error(e, exc_info=True)
+            log.error(ex, exc_info=True)
+        return docs
+
+    """
+    Function to cache the Team Shift Plan Years.
+    """
+    def cache_shift_plan_year(self, year, teamName):
+        try:
+            import json
+            team_shift_plan_years = {}
+            # Perform concatenation on parent directory with cache file.
+            team_year_cache_file = ''.join([conf['app']['cache_location'], self.location])
+            # Now add the contents to the Team-Shift-Plan JSON File.
+            if not os.path.isfile(team_year_cache_file):
+                self.team_year_list.append(year)
+                team_shift_plan_years.update({
+                    teamName: self.team_year_list
+                })
+                with open(team_year_cache_file, mode='w') as f_wr:
+                    f_wr.write(json.dumps(team_shift_plan_years, indent=True))
+            else:
+                with open(team_year_cache_file, mode='r') as f_rd:
+                    team_shift_plan_years = json.load(f_rd)
+                    team_year_list = team_shift_plan_years[teamName]
+                if year not in team_year_list:
+                    team_year_list.append(year)
+                team_shift_plan_years.update({
+                    teamName: team_year_list
+                })
+                with open(team_year_cache_file, mode='w') as s_wr:
+                    s_wr.write(json.dumps(team_shift_plan_years, indent=True))
+        except Exception as ex:
+            log.error('Exception occurred while saving to Team-Members cache.')
+            log.error(ex, exc_info=True)
+
+    """
+    Function to get the Team-Shift-Plan-Years cache contents.
+    """
+    def get_team_shift_plan_years_cache(self, teamName):
+        try:
+            docs = []
+            # Perform concatenation on parent directory with team shift plan years cache file.
+            team_years_cache_file = ''.join([conf['app']['cache_location'], conf['app']['team_years_cache_file']])
+            if os.path.isfile(team_years_cache_file, mode='r'):
+                with open(team_years_cache_file, mode='r') as f_rd:
+                    fc = f_rd.read()
+                    if fc:
+                    docs = json.loads(fc)
+                    log.debug('Docs of team shift plan years: ' + docs)
+                    fetch_team_shift_years = [docs[team] for team in docs if teamName in team ]
+                    log.debug('team shift plan years list --> ' + fetch_team_shift_years)
+                    if fetch_team_shift_years:
+                        fetch_team_shift_years[0]    # list of list.
+                        else:
+                            log.debug('Team ' + teamName + ' is not found in Team-Shift-Plan-Years Cache..')
+                            return None
+                    else:
+                        log.error('No Contents! Empty Team-Shift-Plan-Years cache file')
+            else:
+                log.error('Error 404, Team-Shift-Plan-Years Cache file: ' + team_cache_file + ' not found')
+        except Exception as ex:
+            log.error('Exception occurred while reading from Team-Shift-Plan-Years cache.')
+            log.error(ex, exc_info=True)
+        return docs
