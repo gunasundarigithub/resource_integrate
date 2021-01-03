@@ -40,28 +40,30 @@ class excelConstants():
     ('CTPT','CTPT')
     ('CTOC','CTOC')
   ]
-  SHIFT_CATEGORY_HOURS = ['ACC', 'GEN']
+  SHIFT_CATEGORY_HOURS = ['ACC', 'NACC', 'EACC', 'GEN']
   SHIFT_PLAN = collections.namedtuple('SHIFT_PLAN', 'ACC OFF LEAVE TCS NACC EACC')
   COOKIES = collections.namedtuple('COOKIES', 'EMAIL USERNAME TEAM MONTH EXCELFILE')
   SHIFT_CATEGORY = SHIFT_PLAN(ACC='AccPlan', OFF='OffPlan', LEAVE='LeavePlan', TCS='TCS_Holiday_Plan', \
-      NACC='NIGHT_SHIFT', EACC='EVENING_SHIFT')
+      NACC='NAccPlan', EACC='EAccPlan')
   SESSION_COOKIES = COOKIES(EMAIL='email', USERNAME='username', TEAM='team', MONTH='month', EXCELFILE='excel_file')
-  HFONT = colours.color(indexed=1)
-  VFONT= colours.color(indexed=0)
-  HCOL1_TO_HCOL2 = colours.color(indexed=53)
-  HCOL3 = colours.color(indexed=58)
-  HMONTH_DAYS = colours.color(indexed=30)
-  HSHIFT_SUM = colours.color(indexed=17)
-  HSHIFT_SUM_PARAMS = colours.color(indexed=4)
-  HSHIFT_SUM_HOURS = colours.color(indexed=24)
-  HSHIFT_TOTAL_HOURS = colours.color(indexed=7)
-  MONTH_SHORE = colours.color(indexed=50)
-  ASSO_COLOR = colours.color(indexed=46)
-  ACC_COLOR = colours.color(indexed=52)
-  GEN_COLOR = colours.color(indexed=51)
-  OFF_COLOR = colours.color(indexed=55)
-  LEAVE_COLOR = colours.color(indexed=45)
-  TCS_HOLIDAY_COLOR = colours.color(indexed=57)
+  HFONT = colours.color(indexed=1)  # Set HEADER FONT TO WHITE.
+  VFONT= colours.color(indexed=0)   # SEt VALUE FONT TO BLACK.
+  HCOL1_TO_HCOL2 = colours.color(indexed=53)  # Set First 2 headers to ORANGE.
+  HCOL3 = colours.color(indexed=58)   # Set 3rd header to DARK GREEN.
+  HMONTH_DAYS = colours.color(indexed=30)   # Set month days to NAVY BLUE.
+  HSHIFT_SUM = colours.color(indexed=17)    # Set last header to Natural GREEN.
+  HSHIFT_SUM_PARAMS = colours.color(indexed=4)  # Set Shift param headers to DARK BLUE.
+  HSHIFT_SUM_HOURS = colours.color(indexed=24)  # Set Shift param hours to DARK PURPLE.
+  HSHIFT_TOTAL_HOURS = colours.color(indexed=7) # Set Shift TOTAL HOURS to LIGHT BLUE.
+  MONTH_SHORE = colours.color(indexed=50)   # Set MONTH & SHORE VALUES to PALE GREEN.
+  ASSO_COLOR = colours.color(indexed=46)    # Set Associate Name to PURPLE.
+  ACC_COLOR = colours.color(indexed=52)     # Set ACC Value to ORANGE.
+  NACC_COLOR = colours.color(indexed=49)    # Set NIGHT SHIFT ACC to SKY BLUE.
+  EACC_COLOR = colours.color(indexed=29)    # Set EVENING SHIFT ACC to PALE ORANGE.
+  GEN_COLOR = colours.color(indexed=51)     # Set GENERAL SHIFT to PALE YELLOW.
+  OFF_COLOR = colours.color(indexed=55)     # Set OFF to GREY.
+  LEAVE_COLOR = colours.color(indexed=45)   # Set LEAVE to PALE PINK.
+  TCS_HOLIDAY_COLOR = colours.color(indexed=57)   # Set TCS HOLIDAY to PALE GREEN
   
 const = excelConstants()
 

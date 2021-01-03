@@ -7,10 +7,11 @@ Script collects the parsed user inputs (shift plan data from UI) in the form of 
 and appends the contents to the excel sheet.
 
 Code Changes:
-Initial: Sabarish AC
-Modified by: Sayan H
+Release Date    Revision Date   Changes By      Description
+------------    -------------   -----------     ------------
+                August 2020     Sabarish AC         Initial
+                August 2020     Sayan H          Code Updation
 """
-
 import pandas as pd
 from openpyxl import load_workbook, Workbook
 from openpyxl.styles import Alignment, colors

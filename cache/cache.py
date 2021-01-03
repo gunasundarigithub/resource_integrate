@@ -91,7 +91,7 @@ class CacheFile:
             log.error(e, exc_info=True)
         return docs
 
-    def put_shift_plan_cache(self, roaster_dict, planId=''):
+    def put_shift_plan_cache(self, roaster_dict, planID=''):
         """
         Appends a Team shift roaster plan to the cache file
         :param key:
@@ -102,7 +102,7 @@ class CacheFile:
             # Perform Concatenation on cache file with correct team name.
             team_cache_file = '-'.join([roaster_dict['team'], self.location])
             self.cache['date'] = self.now.strftime('%y-%m-%d') 
-            self.cache['planId'] = planId
+            self.cache['planID'] = planID
             self.cache['month'] = roaster_dict['month']
             self.cache['shore'] = roaster_dict['shore']
             self.cache['year'] = roaster_dict['year']
