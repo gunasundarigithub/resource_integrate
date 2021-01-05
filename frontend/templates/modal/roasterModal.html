@@ -1,0 +1,369 @@
+{% import "bootstrap/utils.html" as utils %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %} {{ title }} Plan Roaster {% endblock %}
+{% block body %}
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="{{ url_for('static', filename='css/datepicker.css') }}" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<br><br><br>
+	<div class="accordion" id="accordionRoasterDash">
+		<div class="card">
+		<div class="card-header" id="headingOne">
+			<h5 class="mb-0">
+			<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseRoasterDash" aria-expanded="true" aria-controls="collapseRoasterDash">
+				Choose Roaster Year To View Team Roaster Based on Year
+			</button>
+			</h5>
+      	</div>
+
+      <div id="collapseRoasterDash" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionRoasterDash">
+        <div class="card-body">
+          <div class="panel panel-default">
+            <form action="{{url_for('shiftDashboard.yearTeamDashboard')}}" class="form-inline" id="formValidate" method="POST">
+              <!--<label for="year" class="text-success">Shift Plan Roaster Year: &nbsp;</label><br>-->
+              &nbsp;
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">{{ wtf.form_field(form.year) }}</label>
+                </div>
+                <button type="button" class="btn btn-success btn-md">
+                  <span class="fa fa-filter" style="color: blue;"></span>
+                  <b style="color: white;" id="yearPlan">{{ wtf.form_field(form.submit) }}</b>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  {% if yearPlanDash %}
+  <div class="card">
+    <div class="card-header">
+      <h4 style="text-align: center;"><mark style="background-color: deepskyblue;">Roaster Options</mark></h4>
+    </div>
+    <div class="card-body">
+      <div id="collapseRoasterOptions" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionRoasterOptions">
+        <div class="card-body">
+          <!-- Modal -->
+          <!-- Trigger the modal with a button -->
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-success btn-md" id="checkRoasterStatus">
+              <span class="fa fa-vcard"></span> Roaster Status</button>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseRoasterTable" aria-expanded="false" aria-controls="collapseRoasterTable">
+              <span class="fa fa-dashboard"></span> View {{logged_in['team']}} Roaster
+            </button>
+            <button type="button" class="btn btn-info btn-md">
+              <a class="text-white" href="{{ url_for('shiftDashboard.dashboard') }}">
+                <span class="fa fa-table"></span> Roaster Creation Page</a>
+            </button>
+            <button type="button" class="btn btn-warning btn-md" id="downloadRoasterStatus">
+              <a type="button" id="teamPlan" href="http://{{hostname}}:1793/download/{{logged_in['team']}}" class="btn btn-warning btn-md">
+                <span class="fa fa-download"></span>
+                Download {{logged_in['team']}} Roaster To Excel
+              </a>
+            </button>
+            <button class="btn btn-danger dropdown-toggle" id="profile" type="button" data-toggle="dropdown">
+              <span class="fa fa-user-circle-o"></span> Look On To Profile <span class="caret"></span></button>
+              
+            <ul class="dropdown-menu" role="menu" aria-labelledby="profile">
+              <li role="menu" class="bg-success"><span class="fa fa-user-o" id="users"></span><i style="font-weight: bold;"> {{ logged_in['username'].upper() }} </i></li>
+              <li role="menu" class="bg-info"><span class="fa fa-envelope" id="users"></span><i style="font-weight: bold;"> {{logged_in['email']}}</i></li>
+              <li role="menu" class="bg-warning"><span class="fa fa-id-badge" id="users"></span><i style="font-weight: bold;"> {{logged_in['team']}}</i></li>
+              <hr>
+              <li role="menu" class="bg-danger">
+                <a class="{{ 'btn btn-danger' }}" style="color: white; width: 100pt;" href="{{url_for('auth.user_logout')}}">
+                  <span class="fa fa-sign-out"></span> LogOut
+                </a>
+              </li>
+            </ul>
+
+            <script>
+              $(document).ready(function () {
+                $(".dropdown-toggle").dropdown();
+              });
+            </script>
+          </div>
+
+          <!-- Download Modal -->
+          <div class="modal" id="downloadRoasterModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <!-- Modal content-->
+                <div class="modal-header">
+                  <h4 class="modal-title text-primary">Download Shift Roaster Status</h4>
+                  <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body text-success">
+                  Downloading the roaster plan might take few minutes, Please wait!!
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+            $(document).ready(function () {
+              $("#downloadRoasterStatus").click(function () {
+                $("#downloadRoasterModal").modal({ backdrop: true });
+              });
+              $("#teamPlan").on('click', function () {
+                  var e = this;
+                  setTimeout(function () {
+                    e.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Shift Roaster is Downloading....';
+                    e.disabled = true;
+                    e.button('reset');
+                  }, 0);
+                  return true;
+                });
+            });
+          </script>
+
+          <!-- Roaster Options Modal -->
+          <div class="modal" id="checkRoasterModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <!-- Modal content-->
+                <div class="modal-header">
+                  <h4 class="modal-title text-primary">Shift Roaster Status</h4>
+                  <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                {% if dash_status %}
+                <div class="modal-body text-success">
+                  Year: <mark class="bg-info" style="font-weight: bold;"> {{ form.year.data }}</mark>
+                  <p>{{logged_in['team']}} Roaster was created for following months,</p>
+                  
+                    {% for plan in roaster %}
+                    
+                    {% endfor %}
+                  <table class="table table-info table-striped">
+                    <thead>
+                      <tr>
+                        <th style="text-align: center;">MONTH</th>
+                        <th style="text-align: center;">STATUS</th>
+                      </tr>
+                    </thead><tbody>
+                      <tr>
+                        <td>{{ plan }}</td>
+                        <td>Created</td>
+                      </tr>
+                    </tbody></table>
+                  <br>
+                  <p>Please check {{logged_in['team']}} Roaster,
+                    <a class="btn btn-primary" data-toggle="collapse" data-target="#collapseRoasterTable" aria-expanded="false" aria-controls="collapseRoasterTable">
+                      View {{logged_in['team']}} Roaster</a></p>
+                </div>
+                {% else %}
+                <div class="modal-body btn btn-warning text-danger">
+                  <p>No Shift Roaster Created For Team: {{logged_in['team']}}!!, Please click on
+                    <a class="{{ 'btn btn-info' }}" href="{{ url_for('shiftDashboard.dashboard') }}">
+                      <span class="fa fa-table"></span> Create Team Roaster
+                    </a> to create Team Month Roaster</p>
+                </div>
+                {% endif %}
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Collapse Roaster Table -->
+          <div class="collapse" id="collapseRoasterTable">
+            <br>
+            <div class="card" style="object-fit: cover; width: 300%;">
+              <h4 class="card-header"><mark style="background-color: palegreen;">{{ logged_in['team'] }} Shift
+                  Roaster</mark></h4>
+              <div class="card-body" style="object-fit: cover;">
+
+                <!-- Customize Search Tab -->
+                <h5>Customize Filter Table</h5>
+                <p>Type something in the input field to search the table for Month Roaster, Shore, Associate etc:</p>
+                <input class="form-control" id="filterInput" type="text" placeholder="Search..">
+                <br>
+                {% if dash_status %}
+                  {% for month_plan in roaster %}
+                    <h5 class="card-title"><mark class="bg-warning"> MONTH: {{month_plan}}</mark></h5>
+                    
+                          {% for day_num in roaster[month_plan]['month_in_num_days'].keys() %}
+                            
+                          {% endfor %}
+                          
+                          {% for day in roaster[month_plan]['month_in_num_days'].values() %}
+                          
+                          {% endfor %}
+                          
+                        {% for asso in roaster[month_plan]['associates'] %}
+                        
+                        {% for _k, _v in roaster[month_plan][asso].items() %}
+                          {% if _v == 'A' %}
+                            
+                          {% elif _v == 'G' %}
+                            
+                          {% elif _v == 'O' %}
+                            
+                          {% elif _v == 'L' %}
+                            
+                          {% elif _v == 'H' %}
+                            
+                          {% elif _v == 'N' %}
+                            
+                          {% elif _v == 'E' %}
+                            
+                          {% elif _k == 'ACC' %}
+                            
+                          {% elif _k == 'GEN' %}
+                            
+                          {% elif _k == 'NACC' %}
+                            
+                          {% elif _k == 'EACC' %}
+                            
+                          {% elif _k == 'OFF' %}
+                            
+                          {% elif _k == 'LEAVE' %}
+                            
+                          {% elif _k == 'HOLIDAY' %}
+                            
+                          {% elif _k == 'ACC-HOURS' %}
+                            
+                          {% elif _k == 'GEN-HOURS' %}
+                            
+                          {% elif _k == 'NACC-HOURS' %}
+                            
+                          {% elif _k == 'EACC-HOURS' %}
+                            
+                          {% elif _k == 'TOTAL-HOURS' %}
+                            
+                          {% endif %}
+                        {% endfor %}
+                        {% if loop.index == 1 %}
+                          
+                        {% endif %}
+                      
+                      {% endfor %}
+                    <table class="table table-dark table-fit" id="roasterTable" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <td rowspan="2" style="background-color: orangered; text-align: center; height: 1px;" id="th">
+                            Month</td>
+                          <td rowspan="2" style="background-color: orangered; text-align: center; height: 1px;" id="th">
+                            Shore</td>
+                          <td class="bg-success" id="th">Day Num -&gt;</td><td class="bg-primary" id="th">{{day_num}}</td><td class="bg-info" colspan="11" id="th">SHIFT DAYS STATS</td>
+                        </tr>
+                        <tr>
+                          <td class="bg-success" id="th">Associates</td><td class="bg-primary" id="th">{{day}}</td><td id="shiftSum1">ACC</td>
+                          <td id="shiftSum1">GEN</td>
+                          <td id="shiftSum1">OFF</td>
+                          <td id="shiftSum1">LEAVE</td>
+                          <td id="shiftSum1">HOLIDAY</td>
+                          <td id="shiftSum2">ACC-HOURS</td>
+                          <td id="shiftSum2">GEN-HOURS</td>
+                          <td id="shiftSum2">NACC-HOURS</td>
+                          <td id="shiftSum2">EACC-HOURS</td>
+                          <td id="shiftSum2">TOTAL</td>
+                          <td id="shiftSum1">USER ACTION</td>
+                        </tr>
+                      </thead>
+                      <tbody id="monthRoaster">
+                      <tr>
+                        <td rowspan="4" style="vertical-align: middle; background-color: green;">{{ month_plan }}</td>
+                        <td rowspan="4" style="vertical-align: middle; background-color: green;">
+                          {{ roaster[month_plan]['shore'] }}</td><td style="background-color: palevioletred; width: auto;">{{ asso }}</td><td style="background-color: orange;">{{ _v }}</td><td style="background-color: yellow;">{{ _v }}</td><td style="background-color: grey;">{{ _v }}</td><td style="background-color: red;">{{ _v }}</td><td style="background-color: green;">{{ _v }}</td><td style="background-color: green;">{{ _v }}</td><td style="background-color: green;">{{ _v }}</td><td style="background-color: orange;">{{ _v }}</td><td style="background-color: yellow;">{{ _v }}</td><td style="background-color: yellow;">{{ _v }}</td><td style="background-color: yellow;">{{ _v }}</td><td style="background-color: grey;">{{ _v }}</td><td style="background-color: red;">{{ _v }}</td><td style="background-color: green;">{{ _v }}</td><td style="background-color: orange;">{{ _v }}</td><td style="background-color: yellow;">{{ _v }}</td><td style="background-color: yellow;">{{ _v }}</td><td style="background-color: yellow;">{{ _v }}</td><td style="background-color: skyblue;">{{ _v }}</td><td rowspan="4" id="deletePlan" style="vertical-align: middle; background-color: green;">
+                            <span class="btn btn-danger fa fa-trash"></span>
+                          </td></tr></tbody>
+                  </table>
+                  <!-- Modal HTML -->
+                  <div id="deletePlanModal" class="modal fade">
+                    <div class="modal-dialog modal-confirm">
+                      <div class="modal-content">
+                        <div class="modal-header flex-column">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>		
+                          <h4 class="modal-title w-100">
+                            <mark style="background-color: yellow;">
+                              <span class="fa fa-warning"></span>  Warning Alert
+                            </mark>
+                          </h4>	
+                        </div>
+                        <div class="modal-body">
+                          <p class="text-danger">Do you really want to delete this {{ month_plan }} month plan? This process cannot be undone.</p>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                          <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">
+                            <span class="fa fa-remove"></span>  Cancel</button>
+                          <button type="button" class="btn btn-danger btn-md">
+                            <a id="deleteMonthPlan" href="http://{{hostname}}:1793/deleteMonthPlan/{{month_plan}}" style="color: white;">
+                              <span class="fa fa-trash"></span> Delete</a>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                  <script>
+                    $(document).ready(function () {
+                      $("#filterInput").on("keyup", function () {
+                        var value = $(this).val().toLowerCase();
+                        $("#monthRoaster tr").filter(function () {
+                          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                        });
+                      });
+                    });
+                    $(document).ready(function () {
+                      $("#deletePlan").click(function () {
+                        $("#deletePlanModal").modal({ backdrop: true });
+                      });
+                    });
+                    $("#deleteMonthPlan").on('click', function () {
+                    var e = this;
+                    setTimeout(function () {
+                      e.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting Roaster Plan....';
+                      e.disabled = true;
+                      e.button('reset');
+                    }, 0);
+                    return true;
+                  });
+                  </script>
+              </div>
+              <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-left">
+                  <li><a href="#" data-abc="true">Â«</a></li>
+                  <li><a href="#" data-abc="true">1</a></li>
+                  <li><a href="#" data-abc="true">2</a></li>
+                  <li><a href="#" data-abc="true">3</a></li>
+                  <li><a href="#" data-abc="true">Â»</a></li>
+                </ul>
+              </div>
+              {% else %}
+              <p>No Shift Roaster Created For Team: {{logged_in['team']}}!!, Please click on
+                <a class="{{ 'btn btn-info' }}" href="{{ url_for('shiftDashboard.dashboard') }}">
+                  <span class="fa fa-table"></span> Create Team Roaster
+                </a> to create Team Month Roaster</p>
+              {% endif %}
+            </div>
+          </div>
+
+      <script>
+        $(document).ready(function () {
+          $("#checkRoasterStatus").click(function () {
+            $("#checkRoasterModal").modal({ backdrop: true });
+          });
+        });
+      </script>
+      {% endif %}
+    </div>
+    </div>
+  </div>      
+  </div>
+</body>  
+{% endblock %}
+</html>

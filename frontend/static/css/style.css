@@ -1,0 +1,323 @@
+body, html {
+    width: 100%;
+    height: 100%;    
+}
+
+.box-footer {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top: 1px solid #f4f4f4;
+    padding: 10px;
+    background-color: #fff
+}
+
+.pagination>li {
+    display: inline
+}
+
+.pagination-sm>li:first-child>a,
+.pagination-sm>li:first-child>span {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px
+}
+
+.pagination>li:first-child>a,
+.pagination>li:first-child>span {
+    margin-left: 0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px
+}
+
+.pagination>li>a {
+    background: #fafafa;
+    color: #666
+}
+
+.pagination-sm>li>a,
+.pagination-sm>li>span {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5
+}
+
+.pagination>li>a,
+.pagination>li>span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd
+}
+
+#home-page {
+    background: url("../img/shift-roaster-background.png") no-repeat center center;
+    /* Full height */
+    height: 70em;
+    /* Center and scale the image nicely */
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: auto 100%;
+    color:#fff;
+    background-color:#333;
+    font-family: 'Calibri', Arial, Helvetica, Sans-Serif;
+    position: fixed;
+}
+
+#vertical_line {
+    border-left: 3px solid #bfa161;
+    width: 60px;
+}
+
+body, h1, h2, h3 {
+    font-family: 'Calibri', "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: medium;
+    font-weight: 700;
+}
+
+th {
+    width: 60em;
+}
+
+#right-nav {
+    padding: 0;
+    list-style: none;
+    font-size: 0;
+}
+
+#right-nav #right-nav-li {
+    font-size: 12px;
+    display: inline-block;
+    padding: 3px 3px;
+    color: black;
+}
+
+#right-nav-li>a{
+    font-weight: 600;
+    width: 100%;
+}
+
+#nav-dropdown {
+    color: white; 
+    width: 8em;   
+    background-color: green; 
+    text-align: center; 
+    font-size: 13px;
+    height: 30pt;
+    font-family: 'Calibri', "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+form {
+    font-family: 'Calibri', "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+#navbarNotHome {
+    width: 100%; 
+    height: 8%;
+    position: fixed;
+}
+
+#navbarHome {
+    width: 100%;
+    height: 8%;
+}
+
+.navbar-brand {
+    width: fit-content;
+    vertical-align: auto;
+    color: greenyellow;
+}
+
+.navbar-default .navbar-brand, .navbar-default .navbar-nav .nav-item>li>a {
+    color: greenyellow;    
+    height: 4em;
+    font-family: 'Calibri', "Helvetica Neue",Helvetica,Arial,sans-serif;
+    text-align: center;
+    display: inline;
+}
+
+a:hover, .navbar-default .navbar-brand:hover, .navbar-default .navbar-nav>li>a:hover {
+    color: white;
+}
+
+a, #user {
+    color: white;
+    widows: 100pt;
+    text-align: center;
+}
+
+.table-fit {
+    width: 1px;
+}
+
+#th {
+    border: 1px solid black;
+    text-align: center;
+    color: white;
+    vertical-align: middle;
+}
+
+td {
+    font-weight: bold;
+    color: black;
+    border: 1px solid black;
+    text-align: center;
+    height: 2px;
+}
+
+#shiftSum1 {
+    background-color: navy; 
+    text-align: center;
+    height: 1px;
+    color: white;
+}
+
+#shiftSum2 {
+    background-color: navy; 
+    text-align: center;
+    color: white;
+    height: 1px;
+    width: 4%;
+}
+
+p.copyright {
+    margin: 15px 0 0;
+}
+
+.outer {
+    display: table;
+    position: absolute;
+    height: 70%;
+    width: 100%;
+}
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.alert-info {
+    width: 50%;
+    margin: auto;
+    color: #00cc99;
+    background-color: #e6ecca;
+    border-color: #aec251;
+}
+
+.btn-default {
+    border-color: #0099cc;
+    color:#0099cc;
+}
+
+.btn-default:hover {
+    background-color: #0099cc;
+}
+
+.center {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+
+.content-section {
+    padding: 50px 0;
+    border-top: 1px solid #e7e7e7;
+}
+
+#footerNotHome {
+    padding: 20px 0;
+    background-color: greenyellow;
+    color: navy;
+    text-align: center;
+    width: 100%; 
+    height: 8%;
+    bottom: 0;
+    font-size: smaller;
+    position: fixed;
+}
+
+#footerHome {
+    padding: 20px 0;
+    background-color: greenyellow;
+    color: navy;
+    text-align: center;
+    width: 100%; 
+    height: 8%;
+    flex: 0 0 auto;
+    bottom: 0;
+    position: fixed;
+}
+
+.intro-divider {
+    width: 400px;
+    border-top: 1px solid #f8f8f8;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    text-align: left;
+}
+
+.intro-header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+    color: lemonchiffon;
+}
+
+.intro-message {
+    position: relative;
+    padding-top: 8%;
+    padding-bottom: 8%;
+    text-align: center;
+}
+
+.intro-message > h1 {
+    margin: 0;
+    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+    font-size: 3em;
+}
+
+.intro-message > h3 {
+    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+    color: greenyellow;
+}
+
+.lead {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.topnav {
+    font-size: 14px;
+}
+
+.wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -4em;
+}
+
+.glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}

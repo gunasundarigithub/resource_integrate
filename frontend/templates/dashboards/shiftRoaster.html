@@ -1,0 +1,268 @@
+{% import "bootstrap/utils.html" as utils %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %} Shifr Roaster {% endblock %}
+{% block body %}
+<title>Shift Roaster</title>
+<head>
+	<link href="{{ url_for('static', filename='css/sidebar.css') }}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container-fluid magic-container">
+		<div class="col-md-2 sidebar-left-nav">
+			<br><br><br>
+			<div class="sidebar-shrink">
+				<div id="shiftSidebar" class="sidenav">
+					<div class="sidebar">
+						<br>
+						<div class="sidebar-header" style="background-color: slateblue; text-align: center; height: 100pt;">
+							<br>
+							<img src="../img/shift-roaster-logo-header.png" class="navbar-brand"><span class="navbar-logo"></span>
+								<b class="navbar-brand" style="color: greenyellow;"> CSE SHIFT PLAN ROASTER</b>
+						</div>
+						<ul class="list-group">
+							<li class="list-group-item list-group-item-danger">
+								<a href="{{ url_for('home.homePage') }}" style="color: white; text-align: center; height: 50%;"><i class="fa fa-fw fa-home"></i> Home</a>
+							</li>
+							<li class="list-group-item list-group-item-success">
+								<a class="dropdown-btn" style="color: white; text-align: center; height: 50%;" href="#"><i class="fa fa-fw fa-user-circle"></i> Profile
+									<i class="fa fa-caret-down"></i></a>
+								<div class="dropdown-container">
+									<ul class="list-group">
+										<li class="list-group-item list-group-item-success">
+											<span class="fa fa-user-o"></span>
+											{{logged_in['username']}}</li>
+										<li class="list-group-item list-group-item-info">
+											<span class="fa fa-envelope"></span>
+											{{logged_in['email']}}
+										</li>
+										<li class="list-group-item list-group-item-warning">
+											<span class="fa fa-id-badge"></span>
+											{{logged_in['team']}}
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li class="list-group-item list-group-item-primary">
+								<a href="" style="color: white;text-align: center; height: 50%;"><i class="fa fa-fw fa-table"></i>
+									Roaster</a>
+							</li>
+							<li class="list-group-item list-group-item-info">
+								<a href="{{ url_for('shiftDashboard.generateDashboard') }}" style="color: white;text-align: center; height: 50%;"><i class="fa fa-fw fa-table"></i>
+									Roaster Dashboard</a>
+							</li>
+							<li class="list-group-item list-group-item-warning">
+								<a href="" style="color: white; text-align: center; height: 50%;"><i class="fa fa-fw fa-history"></i>
+									History</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Side Bar Toggle Menu -->
+	<div id="main">
+		<br>
+		<span id="one" class="{{ 'btn btn-info' }}" style="font-size:25px;cursor:pointer;position:fixed;" onclick="openNav()">☰
+			Toggle Roaster Dashboard</span>
+		<span id="two" class="{{ 'btn btn-info' }}" style="font-size: 25px; cursor: pointer; position: fixed; display: none;" onclick="closeNav() ">☰
+			Toggle Roaster
+			Dashboard</span>
+	</div>
+	<!-- Side Bar Toggling - Javascript -->
+	<script>
+		var o = document.getElementById("one");
+		var to = document.getElementById("two");
+		to.style.display = 'none';
+	
+		function openNav() {
+			document.getElementById("shiftSidebar").style.width = "250px";
+			document.getElementById("main").style.marginLeft = "250px";
+			o.style.display = 'none';
+			to.style.display = '';
+		}
+	
+		function closeNav() {
+			document.getElementById("shiftSidebar").style.width = "125px";
+			document.getElementById("main").style.marginLeft = "125px";
+			o.style.display = '';
+			to.style.display = 'none';
+	
+		}
+		/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - 
+		This allows the user to have multiple dropdowns without any conflict */
+		var dropdown = document.getElementsByClassName("dropdown-btn");
+		var i;
+	
+		for (i = 0; i < dropdown.length; i++) {
+			dropdown[i].addEventListener("click", function () {
+				this.classList.toggle("active");
+				var dropdownContent = this.nextElementSibling;
+				if (dropdownContent.style.display === "block") {
+					dropdownContent.style.display = "none";
+				} else {
+					dropdownContent.style.display = "block";
+				}
+			});
+		}
+	</script>
+	<br><br>
+	<!-- Bootstrap row -->
+	<div class="row" id="body-row">
+		<!-- MAIN -->
+		<div class="col py-3">
+			<div class="form-wrapper">
+				<div class="content-section">
+					{{ utils.flashed_messages() }}
+					<div class="center">
+						<form action="" class="form form-horizontal" method="post" role="form">
+							{{form.csrf_token}}
+								{% if  ('year' in form.errors or _validationFailed) %}
+									<div class="alert alert-danger" role="alert">
+										Validation Failed!! Year: Year must be 4 digits (YYYY)!
+									</div>
+								{% endif %}
+							{% if _shift_id %}
+							<ul class="list-group">
+								<li class="list-group-item list-group-item-danger">
+									<p class="text-primary">Unable to Create Shift Roaster
+										<a type="button" class="btn btn-danger btn-md" id="generateMonthPlan">
+											<span class="fa fa-warning" style="color: yellow;"></span>
+											Reason?
+										</a>
+									</p>
+								</li>
+							</ul>                          
+							
+							<!-- The Modal -->
+							<div class="modal" id="generateMonthPlanModal">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<!-- Modal Header -->
+										<div class="modal-header">
+											<h4 class="modal-title bg-warning"><span class="fa fa-warning"></span>
+												Warning Alert</h4>
+											<button type="button" class="close" data-dismiss="modal">×</button>
+										</div>
+										<!-- Modal body -->
+										<div class="modal-body text-danger">
+											Your Team: <mark class="bg-info" style="font-weight: bold;"> {{ session['team'] }}</mark>
+											<br>
+											You have selected Team: <mark class="bg-info" style="font-weight: bold;"> {{form.teamName.data}}</mark>
+											<br>
+											{{form.teamName.data}} Roaster plan for month: {{session['month']}} already
+											exists!! Please create roaster plan for other month
+										</div>
+										<!-- Modal footer -->
+										<div class="modal-footer">
+											<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<script>
+								$(document).ready(function () {
+									$("#generateMonthPlan").click(function () {
+										$("#generateMonthPlanModal").modal({ backdrop: true });
+									});
+								});
+							</script>
+							{% endif %}
+							<div class="card">
+								<h3 class="card-header" style="background-color: greenyellow; color:  blue; text-align: center;">
+									Create Shift Plan For Your Team: <mark style="background-color: goldenrod;">{{ logged_in['team'] }}</mark>
+								</h3>
+								<div class="card-body">
+									{{ wtf.form_field(form.month) }}
+									{{ wtf.form_field(form.shore) }}
+									{{ wtf.form_field(form.year) }}
+									{{ wtf.form_field(form.teamName) }}
+									<br>
+									<button type="button" class="btn btn-success btn-md">
+										<span class="fa fa-calendar" style="color: blue;"></span>
+										<b style="color: white;">{{ wtf.form_field(form.submit) }}</b>
+									</button>
+								</div>
+							</div>
+							<br>
+							<div class="card">
+								{% if _is_download %}
+									<div class="card-body">
+										{% if _team_plan_exists==True -%}
+											<p class="text-info">{{logged_in['team']}} Shift Roaster Already Created?
+												<a type="button" href="http://{{hostname}}:1793/download/{{logged_in['team']}}" id="teamPlan" class="btn btn-primary btn-md">
+													<span class="fa fa-download"></span>
+													Download {{logged_in['team']}} Roaster To Excel
+											</a>
+											</p>
+										{% else %}
+											<p class="text-info">{{logged_in['team']}} Shift Roaster Already Created?
+												<a type="button" id="teamPlanExists" class="btn btn-primary btn-md">
+													<span class="fa fa-download"></span> Download {{logged_in['team']}} Roaster To Excel
+												</a>
+											</p>
+										{% endif %}
+									</div>
+								{% endif %}
+							</div>
+							<br>
+	
+							<!-- The Modal -->
+							<div class="modal" id="teamPlanModal">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<!-- Modal Header -->
+										<div class="modal-header">
+											<h4 class="modal-title bg-warning"><span class="fa fa-warning"></span>
+												Warning Alert</h4>
+											<button type="button" class="close" data-dismiss="modal">×</button>
+										</div>
+										<!-- Modal body -->
+										<div class="modal-body text-danger">
+											{{logged_in['team']}} Roaster plan doesn't exists!! Please create roaster
+											plan for your
+											{{logged_in['team']}} team
+										</div>
+										<!-- Modal footer -->
+										<div class="modal-footer">
+											<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- Shift Plan Creation Download & Spinner -->
+							<script>
+								$(document).ready(function () {
+									$("#teamPlan").on('click', function () {
+										var e = this;
+										setTimeout(function () {
+											e.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Shift Roaster is Downloading....';
+											e.disabled = true;
+											e.button('reset');
+										}, 0);
+										location.reload(true); 
+										return true;
+									});                                    
+									$("#teamPlanExists").click(function () {
+										$("#teamPlanModal").modal({ backdrop: true });
+									});
+								});
+							</script>
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- Main Col END -->
+		</div>
+		<!-- body-row END -->
+	</div>	
+</body>
+
+{% endblock %}
+</html>

@@ -1,0 +1,36 @@
+{% import "bootstrap/utils.html" as utils %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends 'base.html' %}
+{% block content %}
+<title>Login</title>
+	
+{% block body %}
+	<div class="form-wrapper">
+		<div class="content-section">
+			<br>{{ utils.flashed_messages() }}<br>
+			<div class="center">
+				<form action="" method="post" style="font-weight: bold;" novalidate="">
+					<br>
+					{{ wtf.form_errors(form, hiddens="only") }}
+					{{form.csrf_token}}
+					<div class="text-center" style="margin-top: -30px">
+						<img src="static/img/shift-logo-body.png" alt="CTPT" style="width:80px;">
+					</div>
+					<h2 class="title" style="color: blue; text-align: center;">Login To Your Account Shift Plan App!!</h2>
+					<hr class="intro-divider" width="300%">
+					<br>
+					{{ wtf.form_field(form.email) }}
+					{{ wtf.form_field(form.password) }}
+					<a class="{{ 'btn btn-info'}}" style="height: fit-content; width: fit-content;">{{wtf.form_field(form.submit) }}</a>
+				</form>
+			</div>
+			<div class="login-signup center">
+				<span>Don't have an account? <a class="{{ 'btn btn-success' }}" href="{{ url_for('auth.user_register') }}" style="height: 27pt; width: 80pt;">
+						<span class="fa fa-sign-in"> Register</span></a></span>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% endblock %}
+</body>
+</html>

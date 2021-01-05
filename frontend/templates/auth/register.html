@@ -1,0 +1,54 @@
+{% import "bootstrap/utils.html" as utils %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block content %}
+{% block title %} Register {% endblock %}
+{% block body %}
+	<div class="form-wrapper">
+		<div class="content-section" id="register">
+			{{ utils.flashed_messages() }}
+			{% if form.errors %}
+				{% if 'email' in form.errors %}
+					<div class="alert alert-danger" role="alert">
+						Validation Failed!! Invalid Email ID
+					</div>
+				{% endif %}
+				{% if 'username' in form.errors %}
+					<div class="alert alert-danger" role="alert">
+						Validation Failed!! Invalid Username
+					</div>
+				{% endif %}
+				{% if 'password' in form.errors %}
+				<div class="alert alert-danger" role="alert">
+					Validation Failed!! Password must be equal to confirmPassword
+				</div>
+				{% endif %}
+			{% endif %}
+			<br><br><br>
+			<div class="center">
+				<div class="text-center" style="margin-top: -30px">
+					<img src="static/img/shift-logo-body.png" alt="CTPT" style="width:80px;">
+				</div>
+				<h3 class="title" style="color: blue; text-align: center;">Please Register An Account for Shift Roaster!!</h3>
+				<hr class="intro-divider" width="200%">
+				<form class="form form-horizontal" method="post" role="form" style="font-weight: bold;">
+					{{ form.hidden_tag() }}
+					{{ wtf.form_errors(form, hiddens="only") }}
+					{{ wtf.form_field(form.email) }}
+					{{ wtf.form_field(form.username) }}
+					{{ wtf.form_field(form.password) }}
+					{{ wtf.form_field(form.confirmPassword) }}
+					{{ wtf.form_field(form.team) }}
+					<a class="{{ 'btn btn-info'}}" style="height: fit-content; width: fit-content;">{{wtf.form_field(form.submit) }}</a>
+				</form>
+			</div>
+			<div class="login-signup center">
+				<span>Already have an account? <a class="{{ 'btn btn-success' }}" href="{{ url_for('auth.user_login') }}" style="height: 27pt; width: 80pt;">
+					<span class="fa fa-user">    LogIn</span></a></span>
+			</div>
+		</div>
+	</div>
+	{% endblock %}
+	{% endblock %}
+</body>
+</html>
