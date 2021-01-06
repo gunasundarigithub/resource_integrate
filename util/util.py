@@ -18,26 +18,26 @@ class excelConstants():
   MONTH_31_DAYS = ['Jan', 'Mar', 'May', 'July', 'August', 'Oct', 'Dec']
   MONTH_28_OR_29_DAYS = ['Feb']
   MONTH_CHOICES = [
-    ('JANUARY', 'JANUARY')
-    ('FEBRUARY','FEBRUARY')
-    ('MARCH', 'MARCH')
-    ('APRIL', 'APRIL')
-    ('MAY', 'MAY')
-    ('JUNE', 'JUNE')
-    ('JULY', 'JULY')
-    ('AUGUST', 'AUGUST')
-    ('SEPTEMBER', 'SEPTEMBER')
-    ('OCTOBER', 'OCTOBER')
-    ('NOVEMBER', 'NOVEMBER')
+    ('JANUARY', 'JANUARY'),
+    ('FEBRUARY','FEBRUARY'),
+    ('MARCH', 'MARCH'),
+    ('APRIL', 'APRIL'),
+    ('MAY', 'MAY'),
+    ('JUNE', 'JUNE'),
+    ('JULY', 'JULY'),
+    ('AUGUST', 'AUGUST'),
+    ('SEPTEMBER', 'SEPTEMBER'),
+    ('OCTOBER', 'OCTOBER'),
+    ('NOVEMBER', 'NOVEMBER'),
     ('DECEMBER', 'DECEMBER')
   ]
   SHORE_CHOICES = [
-    ('OACC', 'OACC')
-    ('NACC', 'NACC')
+    ('OACC', 'OACC'),
+    ('NACC', 'NACC'),
     ('ACC', 'ACC')
   ]
   TEAM_CHOICES = [
-    ('CTPT','CTPT')
+    ('CTPT','CTPT'),
     ('CTOC','CTOC')
   ]
   SHIFT_CATEGORY_HOURS = ['ACC', 'NACC', 'EACC', 'GEN']
@@ -46,24 +46,24 @@ class excelConstants():
   SHIFT_CATEGORY = SHIFT_PLAN(ACC='AccPlan', OFF='OffPlan', LEAVE='LeavePlan', TCS='TCS_Holiday_Plan', \
       NACC='NAccPlan', EACC='EAccPlan')
   SESSION_COOKIES = COOKIES(EMAIL='email', USERNAME='username', TEAM='team', MONTH='month', EXCELFILE='excel_file')
-  HFONT = colours.color(indexed=1)  # Set HEADER FONT TO WHITE.
-  VFONT= colours.color(indexed=0)   # SEt VALUE FONT TO BLACK.
-  HCOL1_TO_HCOL2 = colours.color(indexed=53)  # Set First 2 headers to ORANGE.
-  HCOL3 = colours.color(indexed=58)   # Set 3rd header to DARK GREEN.
-  HMONTH_DAYS = colours.color(indexed=30)   # Set month days to NAVY BLUE.
-  HSHIFT_SUM = colours.color(indexed=17)    # Set last header to Natural GREEN.
-  HSHIFT_SUM_PARAMS = colours.color(indexed=4)  # Set Shift param headers to DARK BLUE.
-  HSHIFT_SUM_HOURS = colours.color(indexed=24)  # Set Shift param hours to DARK PURPLE.
-  HSHIFT_TOTAL_HOURS = colours.color(indexed=7) # Set Shift TOTAL HOURS to LIGHT BLUE.
-  MONTH_SHORE = colours.color(indexed=50)   # Set MONTH & SHORE VALUES to PALE GREEN.
-  ASSO_COLOR = colours.color(indexed=46)    # Set Associate Name to PURPLE.
-  ACC_COLOR = colours.color(indexed=52)     # Set ACC Value to ORANGE.
-  NACC_COLOR = colours.color(indexed=49)    # Set NIGHT SHIFT ACC to SKY BLUE.
-  EACC_COLOR = colours.color(indexed=29)    # Set EVENING SHIFT ACC to PALE ORANGE.
-  GEN_COLOR = colours.color(indexed=51)     # Set GENERAL SHIFT to PALE YELLOW.
-  OFF_COLOR = colours.color(indexed=55)     # Set OFF to GREY.
-  LEAVE_COLOR = colours.color(indexed=45)   # Set LEAVE to PALE PINK.
-  TCS_HOLIDAY_COLOR = colours.color(indexed=57)   # Set TCS HOLIDAY to PALE GREEN
+  HFONT = colors.Color(indexed=1)  # Set HEADER FONT TO WHITE.
+  VFONT= colors.Color(indexed=0)   # SEt VALUE FONT TO BLACK.
+  HCOL1_TO_HCOL2 = colors.Color(indexed=53)  # Set First 2 headers to ORANGE.
+  HCOL3 = colors.Color(indexed=58)   # Set 3rd header to DARK GREEN.
+  HMONTH_DAYS = colors.Color(indexed=30)   # Set month days to NAVY BLUE.
+  HSHIFT_SUM = colors.Color(indexed=17)    # Set last header to Natural GREEN.
+  HSHIFT_SUM_PARAMS = colors.Color(indexed=4)  # Set Shift param headers to DARK BLUE.
+  HSHIFT_SUM_HOURS = colors.Color(indexed=24)  # Set Shift param hours to DARK PURPLE.
+  HSHIFT_TOTAL_HOURS = colors.Color(indexed=7) # Set Shift TOTAL HOURS to LIGHT BLUE.
+  MONTH_SHORE = colors.Color(indexed=50)   # Set MONTH & SHORE VALUES to PALE GREEN.
+  ASSO_COLOR = colors.Color(indexed=46)    # Set Associate Name to PURPLE.
+  ACC_COLOR = colors.Color(indexed=52)     # Set ACC Value to ORANGE.
+  NACC_COLOR = colors.Color(indexed=49)    # Set NIGHT SHIFT ACC to SKY BLUE.
+  EACC_COLOR = colors.Color(indexed=29)    # Set EVENING SHIFT ACC to PALE ORANGE.
+  GEN_COLOR = colors.Color(indexed=51)     # Set GENERAL SHIFT to PALE YELLOW.
+  OFF_COLOR = colors.Color(indexed=55)     # Set OFF to GREY.
+  LEAVE_COLOR = colors.Color(indexed=45)   # Set LEAVE to PALE PINK.
+  TCS_HOLIDAY_COLOR = colors.Color(indexed=57)   # Set TCS HOLIDAY to PALE GREEN
   
 const = excelConstants()
 
@@ -72,13 +72,12 @@ Get YAML configuration file based on ENV.
 """
 def get_conf():
   current_dir = os.path.dirname(os.path.realpath(__file__))
-  conf_location = 'C:\\Sabs Learning\\Python Learning\\resource_integrate\\config\\config.yml'
+  conf_location = 'E:\\Sabs Learning\\resource_integrate\\config\\config.yml'
   config ={}
   with open (conf_location) as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
     env= config['env']
   return config.get(env)
-
 
 """
 Get host based on environment.
@@ -92,9 +91,9 @@ def fetch_host_on_env():
 Set up logger object for logging.
 """
 def get_logger_obj():
-  cfg= get_conf()
+  cfg = get_conf()
   logging.config.dictConfig(cfg['logging'])
-  log = logging.getLogger('shift-mgmt')
+  log = logging.getLogger('shift-mgnt')
   log.setLevel(cfg['log_level'])
   return log
 
@@ -124,10 +123,10 @@ def get_env_file():
 Automate function to generate number of days for a given month by the user.
 """
 def generate_month_days(month):
-  generate_31_days = lambda: list(1,32)) if month.capitalize()[0:3] in const.MONTH_31_DAYS else None
-  generate_30_days = lambda: list(1,31)) if month.capitalize()[0:3] in const.MONTH_30_DAYS else None
-  generate_28_days = lambda: list(1,29)) if month.capitalize()[0:3] in const.MONTH_28_OR_29_DAYS else None
-  generate_29_days = lambda: list(1,30)) if month.capitalize()[0:3] in const.MONTH_28_OR_29_DAYS else None
+  generate_31_days = lambda: list(1,32) if month.capitalize()[0:3] in const.MONTH_31_DAYS else None
+  generate_30_days = lambda: list(1,31) if month.capitalize()[0:3] in const.MONTH_30_DAYS else None
+  generate_28_days = lambda: list(1,29) if month.capitalize()[0:3] in const.MONTH_28_OR_29_DAYS else None
+  generate_29_days = lambda: list(1,30) if month.capitalize()[0:3] in const.MONTH_28_OR_29_DAYS else None
   days_list_func = lambda : [ele for ele in [generate_31_days(), generate_30_days(), generate_28_days(), generate_29days()] if ele is not None]
   return days_list_func
 
@@ -157,7 +156,7 @@ def add_general_shifts(altered_dict, associate, month):
   month_days = generate_month_days(month)
   for _key in altered_dict.keys():
     _AOLHList = list(altered_dict[_key].keys())
-    _gen_k = list(set(month_days[0]).difference(_AOLHList)))
+    _gen_k = list(set(month_days[0]).difference(_AOLHList))
     _gen_v = [ 'G' for _k in _gen_k ]
     shift_dict = dict(zip(_gen_k, _gen_v))
     # Update the remaining values with General shifts.
@@ -194,7 +193,7 @@ def fetch_shift_counts(sh_list=[], dataframe=None, df_exists=True):
     _df_list = list(dataframe.iloc[_last_rw_idx])
   else:
     _df_list = sh_list
-  shift_count = (
+  shift_count = {
     'ACC': _df_list.count('A') if df_exists else 0,
     'GEN': _df_list.count('G') if df_exists else 0,
     'OFF': _df_list.count('O') if df_exists else 0,
@@ -213,7 +212,7 @@ def fetch_shift_counts(sh_list=[], dataframe=None, df_exists=True):
         10*int(_df_list.count('A')), 8*int(_df_list.count('N')), 8*int(_df_list.count('E')), 9*int(_df_list.count('G'))
       ]
     )
-  )
+  }
   
 """
 Function to find the given filename in the working project directory and store the actual path of the file.

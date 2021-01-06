@@ -19,7 +19,7 @@ import sys
 from util import util
 
 # Setup Logging.
-log = util.getlogger_obj()
+log = util.get_logger_obj()
 conf = util.get_conf()
 const = util.excelConstants()
 class formatExcel():
