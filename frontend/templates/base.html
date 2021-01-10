@@ -128,13 +128,15 @@
     {% endif %}
         <div class="container">
             <div class="list-inline">
-                <a href="{{ url_for('home.homePage') }}"><span class="fa fa-home"></span>
-                    Home</a>
-                <a>|</a>
-                <a href="{{url_for('auth.user_logout')}}"><span class="fa fa-sign-out"></span>
-                    LogOut</a>
-                <br>
-                <a class="copyright text-dark small" style="text-align:center;">Copyright © 2020. All Rights Reserved</a>
+                {% if not is_register and not is_login %}
+                    <a href="{{ url_for('home.homePage') }}"><span class="fa fa-home"></span>
+                        Home</a>
+                    <a>|</a>
+                    <a href="{{url_for('auth.user_logout')}}"><span class="fa fa-sign-out"></span>
+                        LogOut</a>
+                    <br>
+                {% endif %}
+                <a class="copyright text-dark" style="text-align:center;">Copyright © 2021. All Rights Reserved</a>
                 <br>
             </div>
         </div>

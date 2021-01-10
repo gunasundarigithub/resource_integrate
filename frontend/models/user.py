@@ -7,31 +7,34 @@ Release Date    Revision Date   Changes By      Description
 ------------    -------------   ----------      -----------
                 July 2020       Sabarish AC     Initial
 """
+# ------------------------------------------- Built-In Modules --------------------------------------------------------------------
 from flask import session, redirect, url_for
 import uuid
 import sys
 from datetime import datetime
+
+# ------------------------------------------- Customized Modules --------------------------------------------------------------------
 sys.path.append('E:\\Sabs Learning\\resource_integrate\\cache')
 sys.path.append('E:\\Sabs Learning\\resource_integrate\\util')
-from crypto import CacheFile
+from crypto_parser import ShiftPlanCrypto
 from cache import CacheFile
 import util
 
-const = util.util.excelConstats
-config= util.util.get_conf()
+const = util.util.excelConstants
+config = util.util.get_conf()
 log = util.util.get_logger_obj()
 user_cache_inst = CacheFile(config['app']['user_cache_file'])
-crypto= ShiftPlanCrypto()
+crypto = ShiftPlanCrypto()
 now = datetime.now()
 
 class User(object):
   def __init__(self, email, password, username=None, team='CSE', date=now.strftime('%Y-%M-%d'), userID=None):
-    self.email=email
-    self.password= password
+    self.email = email
+    self.password = password
     self.username = username
     self.team = team
-    self.date= date
-    self.userID= uuid.uuid4().hex if userID is None else userID
+    self.date = date
+    self.userID = uuid.uuid4().hex if userID is None else userID
     
   """
   Classmethod: Fetch user auth details by email.
@@ -39,7 +42,7 @@ class User(object):
   @classmethod  
   def get_by_emailID(cls, emailID):
     user_auth = user_cache_inst.get_user_cache(emailID)
-    log.info('user_auth: ' + user_auth)
+    log.info('user_auth: ' + str(user_auth))
     if not isinstance(user_auth, (list)) and user_auth is not None:
       return cls(**user_auth)
     return None
@@ -61,7 +64,7 @@ class User(object):
     user = cls.get_by_emailID(emailID)
     if user is not None:
       # Validate User Password.
-      _dc_pwd = crypto.get_credentials(user.password, appname= config['app-name'])
+      _dc_pwd = crypto.get_credentials(user.password, appname=config['app_name'])
       if _dc_pwd['pass']==pwd:
         # Once Authentication is validated, Add session cookie to the user.
         cls.login(emailID, user.username, user.team)
@@ -83,6 +86,7 @@ class User(object):
       new_reg_user = cls(emailId, pwd, username=username, team=team)
       # Get the encrypted password from Cryto Script (Secret-Key Encryption)
       _enc_pwd = crypto.do_encrypt(str(pwd))
+      print('-------' + str(new_reg_user) + '-----------')
       user_cache_inst.put_user_cache(new_reg_user.date, emailId, username, _enc_pwd, team, new_reg_user.userID)
       session[const.SESSION_COOKIES.EMAIL] = emailId
       return True

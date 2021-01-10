@@ -12,8 +12,11 @@ Release Date    Revision Date   Changes By      Description
                 Sept 2020     Sabarish AC         Initial
                 Sept 2020     Sayan H          Code Updation
 """
+# ------------------------------------------- Built-In Modules --------------------------------------------------------------------
 import uuid
 import datetime
+
+# ------------------------------------------- Customized Modules --------------------------------------------------------------------
 from backend import shift_load_excel
 from util import util
 from cache import CacheFile
@@ -86,7 +89,7 @@ class accessShiftPlan(object):
         self.associates_plan[_plan_key]= dict(zip(_key, ['L']*len(_key)))
         self.associates_plan[_plan_key]= {int(_k): _v for _k, _v in self.associates_plan[_plan_key].items()}
       # TCS HOLIDAY Plan
-      elif const.SHIFT_CATEGORY.TCS in _plan_key::
+      elif const.SHIFT_CATEGORY.TCS in _plan_key:
         _key = [int(shft_date.split('-')[0]) for shft_date in self.associates_plan[_plan_key].split(',') if shft.date.split('-')[0].isdigit()]
         self.associates_plan[_plan_key]= dict(zip(_key, ['H']*len(_key)))
         self.associates_plan[_plan_key]= {int(_k): _v for _k, _v in self.associates_plan[_plan_key].items() }
@@ -137,7 +140,7 @@ class accessShiftPlan(object):
                 )
         for _key in _shiftKeys:
           self.associates_plan[_key]= {int(_k): _v for _k, _v in self.associates_plan[_key].items() }
-        print('Associate plan : -------- ' + {self.associate_plan}')
+        print('Associate plan : -------- ' + self.associate_plan)
         _shiftPlan_inst.append_contents_to_excel(asso_id, 
                         self.associates_plan[asso_acc_key],
                         self.associates_plan[asso_nacc_key],

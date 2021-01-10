@@ -14,7 +14,7 @@ Release Date    Revision Date   Changes By      Description
 # ------------------------------------------- Built-in Modules ------------------------------------------------------------------------
 from flask import flash, redirect, url_for, render_template, session, request, send_file
 from flask_wtf import FlaskForm
-from wtforms import widgets, PasswordField, StringField, SubmitField, SelectField, RadioField, ValidationError, IntegerField, DateField
+from wtforms import widgets, PasswordField, StringField, SubmitField, SelectField, SelectMultipleField, RadioField, ValidationError, IntegerField, DateField
 from wtforms.validators import DataRequired, Email, EqualTo, AnyOf, Regexp
 from openpyxl import load_workbook
 import traceback
@@ -37,7 +37,7 @@ host = util.fetch_host_on_env()   # Get Host based on env your working!
 user_cache = cache.CacheFile(conf['app']['user_cache_file'])
 shift_plan_cache = cache.CacheFile(conf['app']['shiftplan_cache_file'])
 team_members_cache = cache.CacheFile(conf['app']['team_members_cache_file'])
-team_years_cache = cache.CacheFile(conf['app']['tema_years_cache_file'])
+team_years_cache = cache.CacheFile(conf['app']['team_years_cache_file'])
 team_const = teamMembers.TEAM
 roaster_dict = {}
 
@@ -77,7 +77,7 @@ def __yearFormInstance__():
 """
 Render to Shift Plan Page on /shiftdashboard route
 """
-@shift_dashboard.route('/shiftdashboard', methods=[GET, POST])
+@shift_dashboard.route('/shiftdashboard', methods=['GET', 'POST'])
 def dashboard(shift_plan_id=''):
   _roasterExists= False
   if const.SESSION_COOKIES.EMAIL in session and const.SESSION_COOKIES.USERNAME in session:
@@ -105,20 +105,20 @@ def dashboard(shift_plan_id=''):
           roaster_dict.update({
             'month': __formInstance__().month.data,
             'shore' : __formInstance__().shore.data,
-            'year': __formInstance__().year.data
-            'team': __formInstance__().teamName.data
+            'year': __formInstance__().year.data,
+            'team': __formInstance__().teamName.data,
             'associates': team_members
           })
           return render_template(conf['templates']['submit_roaster'], form=__formInstance__(), logged_in=session, \
                                   _is_roaster=_is_roaster, month=roaster_dict['month'], team_members=team_members,\
                                  _validation=True, _team_plan_exists=_roasterExists, hostname=host, _is_download=True)
-    else:
-      return render_template(conf['templates']['shift_roaster'], form=__formInstance__(), logged_in=session, _is_roaster=_is_roaster \
+      else:
+        return render_template(conf['templates']['shift_roaster'], form=__formInstance__(), logged_in=session, _is_roaster=_is_roaster, \
                               _validationFailed=True, _team_plan_exists=_roasterExists, hostname=host, _is_download=True)
     elif team_members is None:
       flash("No team: " + __formInstance__().teamName.data + " in cache file: " + conf['app']['team_members_cache_file'] + "!", category="error")
     else:
-      flash(f"No team members available for the team : " + __formInstance__().teamName.data + " in cache file: " + conf['app']['team_members_cache_file'] + "!", category="error" )
+      flash("No team members available for the team : " + __formInstance__().teamName.data + " in cache file: " + conf['app']['team_members_cache_file'] + "!", category="error" )
     return render_template(conf['templates']['shift_roaster'], form=__formInstance__(), logged_in=session(), _is_roaster=True, 
                                 _team_plan_exists=_roasterExists, hostname=host, _is_download=True )  
   else:
@@ -148,6 +148,7 @@ def generateDashboard():
 """
 Router to render team shift plan dashboard based on year.
 """
+@shift_dashboard.route('/yeardashboard', methods=['GET', 'POST'])
 def yearTeamDashboard():
   dash_status = True    # Set Dashboard existing flag to True (Assumption).
   _alter_dict = {}
@@ -173,7 +174,7 @@ def yearTeamDashboard():
         dash_status = False   # Set Dashboard existing to False. (No Team Dashboard, Creating first time)
   else:
     dash_status = False
-  return render_template(conf['templates']['roaster_modal'], logged_in=session, _is_dash=True, dash_status=dash_status \
+  return render_template(conf['templates']['roaster_modal'], logged_in=session, _is_dash=True, dash_status=dash_status, \
                           roaster=_alter_dict, hostname=host, form=__yearFormInstance__(), yearPlanDash=True)
 
 """
@@ -212,11 +213,11 @@ def load_to_excel(teamName):
           log.debug(each_team_plan['month'] + ' already exists, processing for other months!')
     if filepath is not None:
       log.error(f"404 error, returning from request")
-      return render_template(conf['templates'][''page_not_found], title='page_not_found'), 404
+      return render_template(conf['templates']['page_not_found'], title='page_not_found'), 404
     else:
       _roasterExists=True
       log.error("No roaster plan created for team: " + session[const.SESSION_COOKIES.TEAM])
-      return render_template(conf['templates'][''page_not_found], title='page_not_found'), 404
+      return render_template(conf['templates']['page_not_found'], title='page_not_found'), 404
     return send_file(filepath[0], as_attachment=filename)
     
   except Exception as exp:

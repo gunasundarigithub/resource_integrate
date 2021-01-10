@@ -1,3 +1,16 @@
+"""
+Copyright July 2020, TCS
+
+File Name: util.py
+Description: Utility Functions are defined here, user can ail common functionalities 
+             for this application backend/frontend coding.
+
+Change Log:
+Release Date    Revision Date     Changes By      Description
+------------    -------------     -----------     ------------
+                31 July 2020      Sabarish AC       Initial
+"""
+# ------------------------------------------- Built-In Modules --------------------------------------------------------------------
 from openpyxl.styles import colors
 import pandas as pd
 import sys

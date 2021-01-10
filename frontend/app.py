@@ -18,7 +18,7 @@ sys.path.append('E:\\Sabs Learning\\resource_integrate')
 from util import util
 from backend import shift_load_excel
 
-ap_config = util.get_conf()
+app_config = util.get_conf()
 
 #Initiate flask framework Internal DB
 # db = SQLALchemy()
@@ -66,11 +66,11 @@ def create_app(env):
     app.register_blueprint(shiftDashboard_blueprint)
 
     # Intialize authentication setup for this app.
-    login_manager.init_app(app)
+    #login_manager.init_app(app)
     #Login_manager.Login_message = "Sorry!!" You must be. Logged into access this page!!"
     #Login_manager.Login_view = "auth."
 
-    @app.route('shift_plan/<month>', methods=['GET', 'POST'])
+    @app.route('/shift_plan/<month>', methods=['GET', 'POST'])
     def process_excel_contents(month):
         pass
 

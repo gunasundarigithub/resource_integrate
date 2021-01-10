@@ -9,9 +9,9 @@ Release Date    Revision Date   Changes By      Description
                 August 2020     Ganapathy R     Code Updation & Refraction
 """
 # Built in Modules
-from flask import render_template, abort, sesssion, flash, redirect, url_for
+from flask import render_template, abort, session, flash, redirect, url_for
 
-# User defined Modules
+# Customized Modules
 from . import home
 import sys
 sys.path.append('E:\\Sabs Learning\\resource_integrate')

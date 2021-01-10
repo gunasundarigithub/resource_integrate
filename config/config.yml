@@ -3,7 +3,7 @@ env: local
 local:
   log_level: DEBUG
   enableCompareLog: True
-  app_name: app-shift-mgmt
+  app_name: app-shift-mgnt
   shift_category: ['ACC', 'GEN', 'OFF', 'LEAVE', 'HOLIDAY', 'NACC', 'EACC']
   shift_category_hours: ['ACC-HOURS', 'NACC-HOURS', 'EACC-HOURS', 'GEN-HOURS', 'TOTAL-HOURS']
   proj_dir: E:\\Sabs Learning\\resource_integrate
@@ -16,9 +16,9 @@ local:
     download_excel: E:\\Sabs Learning\\resource_integrate\\frontend\\
     secret_key: 357ec644c9ea7ff77ac31cf77421ff06
   templates:
-    forbidden: errors\\forbidden-403.html
+    forbidden: errors/forbidden-403.html
     page_not_found: errors/page_not_found-404.html
-    internal_server_error: errors\\server_error-500.html
+    internal_server_error: errors/server_error-500.html
     home: home/home.html
     login: auth/login.html
     register: auth/register.html
@@ -27,42 +27,7 @@ local:
     submit_roaster: dashboards/submitRoaster.html
     roaster_modal: modal/roasterModal.html
    
-  log_path: E:\\Sabs Learning\\resource_integrate\\backend\\logs\\
-  logging:
-    disable_existing_loggers: FALSE
-    version: 1
-    formatters:
-      simple:
-        format: "%(asctime)s~%(pathname)s:%(lineno)d~%(funcName)s~%(levelname)s~%(message)s"
-        
-    handlers:
-      console:
-        class: logging.StreamHandler
-        formatter: simple
-        stream: ext://sys.stdout
-        
-      files:
-        filename: E:\\Sabs Learning\\resource_integrate\\backend\\logs\\app-shift-mgmt.log
-        class: logging.handlers.RotatingFileHandler
-        formatter: simple
-        maxBytes: 10485760 #1024*2014*10=10 MB
-        backupCount: 3
-      loggers:
-        shift-mgmt:
-          level: INFO
-          handlers: [console, file]
-        clients:
-          level: INFO
-          handlers: [console, file]
-          propagate: no
-          
-          
-test:
-  log_level: DEBUG
-  enableCompareLog: True
-  #app_name: 'app-shift-mgmt'
-  shift_category: ['ACC', 'GEN', 'OFF', 'LEAVE', 'HOLIDAY'] 
-  log_path: /ctoclogs/app-shift-mgmt.log #Mention your logging path
+  log_path: E:\\Sabs Learning\\resource_integrate\\backend\\logs\\app-shift-mgnt.log
   logging:
     disable_existing_loggers: False
     version: 1
@@ -77,7 +42,41 @@ test:
         stream: ext://sys.stdout
         
       file:
-        filename: /ctoclogs/app-shift-mgmt/app-shift-mgmt.log
+        filename: E:\\Sabs Learning\\resource_integrate\\backend\\logs\\app-shift-mgnt.log
+        class: logging.handlers.RotatingFileHandler
+        formatter: simple
+        maxBytes: 10485760 #1024*2014*10=10 MB
+        backupCount: 3
+    loggers:
+      shift-mgnt:
+        level: INFO
+        handlers: [console, file]
+      clients:
+        level: INFO
+        handlers: [console, file]
+        propagate: no
+          
+test:
+  log_level: DEBUG
+  enableCompareLog: True
+  #app_name: 'app-shift-mgnt'
+  shift_category: ['ACC', 'GEN', 'OFF', 'LEAVE', 'HOLIDAY'] 
+  log_path: /ctoclogs/app-shift-mgnt.log #Mention your logging path
+  logging:
+    disable_existing_loggers: False
+    version: 1
+    formatters:
+      simple:
+        format: "%(asctime)s~%(pathname)s:%(lineno)d~%(funcName)s~%(levelname)s~%(message)s"
+        
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+        
+      file:
+        filename: /ctoclogs/app-shift-mgnt/app-shift-mgnt.log
         class: logging.handlers.RotatingFileHandler
         formatter: simple
         maxBytes: 10485760 #1024*2014*10=10 MB
@@ -94,15 +93,15 @@ test:
 prod:
   log_level: DEBUG
   enableCompareLog: True
-  #app_name: 'app-shift-mgmt'
+  #app_name: 'app-shift-mgnt'
   shift_category: ['ACC', 'GEN', 'OFF', 'LEAVE', 'HOLIDAY'] 
-  log_path: /ctoclogs/app-shift-mgmt.log #Mention your logging path
+  log_path: /ctoclogs/app-shift-mgnt.log #Mention your logging path
   logging:
     disable_existing_loggers: False
     version: 1
     formatters:
       simple:
-        format: "%(asctime)s~%(pathname)s:%(lineno)d~%(funcName)s~%(levelname)s~%(message)s"  #Mention your logging style
+        format: "%(asctime)s~%(pathname)s:%(lineno)d~%(funcName)s~%(levelname)s~%(message)s"  # Mention your logging style
         
     handlers:
       console:
@@ -111,7 +110,7 @@ prod:
         stream: ext://sys.stdout
         
       file:
-        filename: /ctoclogs/app-shift-mgmt/app-shift-mgmt.log
+        filename: /ctoclogs/app-shift-mgnt/app-shift-mgnt.log
         class: logging.handlers.RotatingFileHandler
         formatter: simple
         maxBytes: 10485760 #1024*2014*10=10 MB
