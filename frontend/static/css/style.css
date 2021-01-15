@@ -56,10 +56,16 @@ body, html {
 }
 
 #home-page {
-    background: url("../img/shift-roaster-background.png") no-repeat center center;
+    background: url("../img/shift-roaster-background.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    background-color: darkcyan;
+    -o-background-size: cover;
     /* Full height */
-    height: 70em;
+    height: 100%;
     /* Center and scale the image nicely */
+    /*
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -67,7 +73,15 @@ body, html {
     color:#fff;
     background-color:#333;
     font-family: 'Calibri', Arial, Helvetica, Sans-Serif;
-    position: fixed;
+    position: fixed;*/
+}
+
+#submitRoasterBG {
+    background-image: url('../img/shift-scheduling.png') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    height: 100%;
 }
 
 #vertical_line {
@@ -85,22 +99,18 @@ th {
     width: 60em;
 }
 
-#right-nav {
-    padding: 0;
-    list-style: none;
-    font-size: 0;
-}
-
 #right-nav #right-nav-li {
     font-size: 12px;
     display: inline-block;
     padding: 3px 3px;
     color: black;
+    float: right;
 }
 
 #right-nav-li>a{
     font-weight: 600;
     width: 100%;
+    font-family: 'Calibri', "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 #nav-dropdown {
@@ -108,8 +118,8 @@ th {
     width: 8em;   
     background-color: green; 
     text-align: center; 
-    font-size: 13px;
-    height: 30pt;
+    font-weight: 600;
+    width: 100%;
     font-family: 'Calibri', "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
@@ -119,13 +129,13 @@ form {
 
 #navbarNotHome {
     width: 100%; 
-    height: 8%;
+    height: 12%;
     position: fixed;
 }
 
 #navbarHome {
     width: 100%;
-    height: 8%;
+    height: 12%;
 }
 
 .navbar-brand {
@@ -240,8 +250,8 @@ p.copyright {
     background-color: greenyellow;
     color: navy;
     text-align: center;
-    width: 100%; 
-    height: 10%;
+    width: 100%;
+    height: auto;
     bottom: 0;
     font-size: smaller;
     position: fixed;
@@ -253,7 +263,7 @@ p.copyright {
     color: navy;
     text-align: center;
     width: 100%; 
-    height: 8%;
+    height: auto;
     flex: 0 0 auto;
     bottom: 0;
     position: fixed;

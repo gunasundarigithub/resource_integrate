@@ -166,7 +166,7 @@ class CacheFile:
             # Perform concatenation on cache file with correct team name.
             team_cache_file = '_'.join([teamName, self.location])
             # Find the cache file by concatenating the parent directory with cache file.
-            if os.path.isfile(''.join([conf['app']['cache_location'], team_cache_file]), "r"):
+            if os.path.isfile(''.join([conf['app']['cache_location'], team_cache_file])):
                 with open(''.join([conf['app']['cache_location'], team_cache_file]), "r") as f_rd:
                     fc = f_rd.read()
                     if fc:
@@ -243,13 +243,12 @@ class CacheFile:
             docs = []
             # Perform concatenation on parent directory with cache file.
             team_cache_file = ''.join([conf['app']['cache_location'], conf['app']['team_members_cache_file']])
-            if os.path.isfile(team_cache_file, "r"):
+            if os.path.isfile(team_cache_file):
                 with open(team_cache_file, 'r') as f_rd:
                     fc = f_rd.read()
                     if fc:
                         docs = json.loads(fc)
-                        log.debug('docs of team members ' + docs)
-                        log.debug('Fetching details from Team-Members Cache.... ' + docs)
+                        log.debug('Fetching details from Team-Members Cache.... ' + str(docs))
                         fetch_team_members = [
                             docs[team] for team in docs if teamName in team
                         ]

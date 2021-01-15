@@ -34,6 +34,7 @@ const = util.excelConstants()
 conf = util.get_conf()
 log = util.get_logger_obj()
 host = util.fetch_host_on_env()   # Get Host based on env your working!
+print(f'host: ----- ---- ---- ---- ---- {host}')
 user_cache = cache.CacheFile(conf['app']['user_cache_file'])
 shift_plan_cache = cache.CacheFile(conf['app']['shiftplan_cache_file'])
 team_members_cache = cache.CacheFile(conf['app']['team_members_cache_file'])
@@ -55,7 +56,10 @@ class AssociateShiftForm(FlaskForm):
                      render_kw={"placeholder" : "Year (YYYY)"} )
   teamName = SelectField('Team', choices=const.TEAM_CHOICES, validators=[DataRequired()])
   submit = SubmitField('Generate Month plan')
-  
+
+"""
+Class to choose shift year plan and fetch it in UI.
+"""
 class TeamYearForm(FlaskForm):
   year = SelectField('Choose Shift Plan Year', choices=['2020', '2021'])
   submit = SubmitField('Fetch Year Plan')
@@ -90,7 +94,7 @@ def dashboard(shift_plan_id=''):
         team_years_cache.cache_shift_plan_year(__formInstance__().year.data, __formInstance__().teamName.data)
         _team_month_plan = shift_plan_cache.get_shift_plan_cache(__formInstance__().teamName.data, 
                 shift_year=__formInstance__().year.data, shift_month=__formInstance__().month.data)
-        if _team_month_plan is not None and isinstance(_team_month_plan. dict):
+        if _team_month_plan is not None and isinstance(_team_month_plan, dict):
           log.debug("Shift plan for Month : " + __formInstance__().month.data + " is already cached!" )
           log.debug(__formInstance__().month.data + " Plan for month: " + __formInstance__().month.data + " - " + _team_month_plan)
           session[const.SESSION_COOKIES.MONTH] = __formInstance__().month.data
@@ -118,8 +122,8 @@ def dashboard(shift_plan_id=''):
     elif team_members is None:
       flash("No team: " + __formInstance__().teamName.data + " in cache file: " + conf['app']['team_members_cache_file'] + "!", category="error")
     else:
-      flash("No team members available for the team : " + __formInstance__().teamName.data + " in cache file: " + conf['app']['team_members_cache_file'] + "!", category="error" )
-    return render_template(conf['templates']['shift_roaster'], form=__formInstance__(), logged_in=session(), _is_roaster=True, 
+      flash("No team members available for the team : " + str(__formInstance__().teamName.data) + " in cache file: " + conf['app']['team_members_cache_file'] + "!", category="error" )
+    return render_template(conf['templates']['shift_roaster'], form=__formInstance__(), logged_in=session, _is_roaster=True, 
                                 _team_plan_exists=_roasterExists, hostname=host, _is_download=True )  
   else:
     flash('You must log in to use the app, please login!!', category='warning')
@@ -136,14 +140,13 @@ def generateDashboard():
     roaster_dict.update({
       'associates_plan': request.form.to_dict()
     })
-    log.debug('Final Roaster Dict: ' + roaster_dict)
+    log.debug('Final Roaster Dict: ' + str(roaster_dict))
     # DB Cache Shift Plan Roaster For Your Team.
     roaster_model = access_shift_plan.accessShiftPlan(roaster_dict)
     roaster_model.cache_roaster_plan()
-    flash('Shift plan updated successfully for team : ' + session[const.SESSION_COOKIES.TEAM] + '!', category='success')
+    flash('Shift plan updated successfully for team : ' + str(session[const.SESSION_COOKIES.TEAM])+ '!', category='success')
     return redirect(url_for('shiftDashboard.generateDashboard'))
-  return render_template(conf['templates']['roaster_modal'], logged_in=session, _is_dash=True, hostname=host, form=__formInstance__())
-
+  return render_template(conf['templates']['roaster_modal'], logged_in=session, _is_dash=True, hostname=host, form=__yearFormInstance__())
 
 """
 Router to render team shift plan dashboard based on year.
@@ -197,7 +200,7 @@ def load_to_excel(teamName):
     _roasterExists = False    # Set this flag initially to False (no roaster exists)
     filename = '-'.join([session[const.SESSION_COOKIES.TEAM], 'ACC', 'SHIFT', 'PLAN.xlsx'])
     filepath = util.find_file(filename, os.getcwd())
-    log.debug('filepath: ------ ' + filepath)
+    log.debug('filepath: ------ ' + str(filepath))
     _team_plan = shift_plan_cache.get_shift_plan_cache(teamName)
     if _team_plan:
       log.debug(teamName + ' Team plan : ' + _team_plan)
@@ -221,6 +224,6 @@ def load_to_excel(teamName):
     return send_file(filepath[0], as_attachment=filename)
     
   except Exception as exp:
-    log.error(f"Exception occured while downloading the shift roaster to excel")
+    log.error("Exception occured while downloading the shift roaster to excel")
     log.error(exp)
-    log.error(tracebask.format_exc())
+    log.error(traceback.format_exc())

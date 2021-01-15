@@ -104,18 +104,18 @@ class User(object):
   @staticmethod
   def login(emailID, username, team):
     # Session can be noted or set only if user auth validation is success. (validate_user_login)
-    session[const.SESSION_COOKIES_EMAIL]= emailID
+    session[const.SESSION_COOKIES.EMAIL]= emailID
     session[const.SESSION_COOKIES.USERNAME]= username
-    session[const. SESSION_COOKIES_TEAM]= team
+    session[const. SESSION_COOKIES.TEAM]= team
     
   """
   Staticmethod: Logs out the user from the app.
   """
   @staticmethod
   def logout():
-    session.pop(const.SESSION_COOKIES_EMAIL, None)
+    session.pop(const.SESSION_COOKIES.EMAIL, None)
     session.pop(const.SESSION_COOKIES.USERNAME, None)
-    session.pop(const. SESSION_COOKIES_TEAM, None)
-    session.pop(const. SESSION_COOKIES_MONTH, None)
-    session.pop(const. SESSION_COOKIES_EXCELLIFE, None)
+    session.pop(const. SESSION_COOKIES.TEAM, None)
+    session.pop(const. SESSION_COOKIES.MONTH, None)
+    session.pop(const. SESSION_COOKIES.EXCELFILE, None)
     return redirect(url_for('auth.user_login'))

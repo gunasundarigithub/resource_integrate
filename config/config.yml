@@ -14,7 +14,7 @@ local:
     team_members_cache_file: Team-Members.json
     team_years_cache_file: Team-Shift-Plan-Years.json
     download_excel: E:\\Sabs Learning\\resource_integrate\\frontend\\
-    secret_key: 357ec644c9ea7ff77ac31cf77421ff06
+    secret_key: bbe51d1c35fc70d801d63143b7363d7f
   templates:
     forbidden: errors/forbidden-403.html
     page_not_found: errors/page_not_found-404.html

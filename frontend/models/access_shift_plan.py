@@ -80,17 +80,17 @@ class accessShiftPlan(object):
         self.associates_plan[_plan_key] = { int(_k): _v for _k, _v in self.associates_plan[_plan_key].items() }
       # Off Plan
       elif const.SHIFT_CATEGORY.OFF in _plan_key:
-        _key = [int(shft_date.split('-')[0]) for shft_date in self.associates_plan[_plan_key].split(',') if shft.date.split('-')[0].isdigit()]
+        _key = [int(shft_date.split('-')[0]) for shft_date in self.associates_plan[_plan_key].split(',') if shft_date.split('-')[0].isdigit()]
         self.associates_plan[_plan_key]= dict(zip(_key, ['O']*len(_key)))
         self.associates_plan[_plan_key]= {int(_k): _v for _k, _v in self.associates_plan[_plan_key].items() }        
       # LEAVE Plan
       elif const.SHIFT_CATEGORY.LEAVE in _plan_key:
-        _key = [int(shft_date.split('-')[0]) for shft_date in self.associates_plan[_plan_key].split(',') if shft.date.split('-')[0].isdigit()]
+        _key = [int(shft_date.split('-')[0]) for shft_date in self.associates_plan[_plan_key].split(',') if shft_date.split('-')[0].isdigit()]
         self.associates_plan[_plan_key]= dict(zip(_key, ['L']*len(_key)))
         self.associates_plan[_plan_key]= {int(_k): _v for _k, _v in self.associates_plan[_plan_key].items()}
       # TCS HOLIDAY Plan
       elif const.SHIFT_CATEGORY.TCS in _plan_key:
-        _key = [int(shft_date.split('-')[0]) for shft_date in self.associates_plan[_plan_key].split(',') if shft.date.split('-')[0].isdigit()]
+        _key = [int(shft_date.split('-')[0]) for shft_date in self.associates_plan[_plan_key].split(',') if shft_date.split('-')[0].isdigit()]
         self.associates_plan[_plan_key]= dict(zip(_key, ['H']*len(_key)))
         self.associates_plan[_plan_key]= {int(_k): _v for _k, _v in self.associates_plan[_plan_key].items() }
         
@@ -110,7 +110,7 @@ class accessShiftPlan(object):
     self.alter_roaster_plan_dict()
     # Restore the altered associates plan dict to main dict object.
     self.roaster_dict['associates_plan'] = self.associates_plan
-    log.debug("Altered Roaster dict: " + self.roaster_dict)
+    log.debug("Altered Roaster dict: " + str(self.roaster_dict))
     # After altering, cache the contents to cache file.
     shift_plan_cache.put_shift_plan_cache(self.roaster_dict, planID=self.id)                                      
     log.debug("Shift roaster plan for Team: " + self.roaster_dict['team'] + " has cached successfully")

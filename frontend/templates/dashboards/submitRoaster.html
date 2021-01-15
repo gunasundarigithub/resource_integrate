@@ -19,9 +19,11 @@
                 <div id="shiftSidebar" class="sidenav">
                     <div class="sidebar">
                         <br>
-                        <div class="sidebar-header" style="background-color: slateblue; text-align: center; height: 100pt;">
-                            <br><img src="static/img/shift-roaster-logo-header.png" class="navbar-brand"><span class="navbar-logo"></span>
+                        <div class="sidebar-header" style="background-color: slateblue; text-align: center; height: auto;">
+                            <img src="static/img/shift-roaster-logo-header.png" class="ui large bordered rounded image navbar-brand" 
+								style="height: 80pt; width: 80pt"><span class="navbar-logo"></span>
                             <b class="navbar-brand" style="color: greenyellow;"> CSE SHIFT PLAN ROASTER</b>
+                            <br><br>
                         </div>
                         <ul class="list-group">
                             <li class="list-group-item list-group-item-danger">
@@ -66,7 +68,7 @@
 	</div>
 	<!-- Side Bar Toggle Menu -->
     <div id="main">
-        <br><br>
+        <br>
         <span id="one" class="{{ 'btn btn-success' }}" style="font-size:25px;cursor:pointer" onclick="openNav()">☰ Toggle Roaster Dashboard</span>
         <span id="two" class="{{ 'btn btn-success' }}" style="font-size: 25px; cursor: pointer; display: none;" onclick="closeNav() ">☰ Toggle Roaster Dashboard</span>
 	</div>
@@ -77,15 +79,15 @@
         to.style.display = 'none';
 
         function openNav() {
-            document.getElementById("shiftSidebar").style.width = "250px";
-            document.getElementById("main").style.marginLeft = "250px";
+            document.getElementById("shiftSidebar").style.width = "350px";
+            document.getElementById("main").style.marginLeft = "350px";
             o.style.display = 'none';
             to.style.display = '';
         }
 
         function closeNav() {
-            document.getElementById("shiftSidebar").style.width = "125px";
-            document.getElementById("main").style.marginLeft = "125px";
+            document.getElementById("shiftSidebar").style.width = "0px";
+            document.getElementById("main").style.marginLeft = "0px";
             o.style.display = '';
             to.style.display = 'none';
 
@@ -108,296 +110,296 @@
 	</script>
 	<!-- Set Of Card Decks To Enter Shift Plan By User -->
     <div class="card bg-dark text-dark">
-        <div class="card" style="height:80%;background-image: url('static/img/shift-scheduling.png'); background-position: center;background-repeat: no-repeat;background-size: cover;">
-            <div class="form-wrapper">
-                <div class="content-section">
-                    {{ utils.flashed_messages() }}
-                    <div class="center">
-                        <form action="{{ url_for('shiftDashboard.generateDashboard') }}" class="form-inline" method="POST" role="form" id="formValidate">
-                                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                                    <div class="btn-group mr-2" role="group" aria-label="First group">
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> OTHER SHIFT PLANS
-                                                <i class="fa fa-calendar"></i>
-                                            </button>
-                                            <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
-                                                <li>
-                                                    <label>
-                                                        <input type="checkbox" data-toggle="collapse" data-target="#NAccPlan" id="naccPlanChecked" onclick="checked_func()"> NIGHT SHIFT PLAN
-                                                    </label>
-                                                </li>
-                                                <li>
-                                                    <label>
-                                                        <input type="checkbox" data-toggle="collapse" data-target="#EAccPlan" id="eaccPlanChecked" onclick="checked_func()"> EVENING SHIFT PLAN
-                                                    </label>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="btn-group mr-2" role="group" aria-label="Second group">
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> OTHER OFF PLANS
-                                                <i class="fa fa-calendar"></i>
-                                            </button>
-                                            <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
-                                                <li>
-                                                    <label>
-                                                        <input type="checkbox" data-toggle="collapse" data-target="#leavePlan" id="leavePlanChecked" onclick="checked_func()"> LEAVE PLAN
-                                                    </label>
-                                                </li>
-                                                <li>
-                                                    <label>
-                                                        <input type="checkbox" data-toggle="collapse" data-target="#tcsHPlan" id="tcsHPlanChecked" onclick="checked_func()"> TCS HOLIDAY
-                                                        Plan
-                                                    </label>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </form></div>
-                            <br>
-                            {% for asso in team_members %}
-                            {% set asso_label = "asso.split(' ')[0]" -%}
-                            <hr>
-                                <div class="card bg-warning h-50 center">
-                                    <h5 class="card-header"><b>{{asso}}</b></h5>
-                                    <div class="card-group">
-                                        <div class="card">
-                                            <h5 class="card-header bg-success text-white">ACC Plan</h5>
-                                            <div class="card-body">
-                                                <h5 class="card-title">Month: {{ month }}</h5>
-                                                <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_AccPlan" placeholder="Pick The Multiple Dates" required="" size="20">
+        <div class="card" id="submitRoasterBG">
+            <div class="card-header">
+                <div class="form-wrapper">
+                    <div class="content-section">
+                        {{ utils.flashed_messages() }}
+                        <div class="center">
+                            <form action="{{ url_for('shiftDashboard.generateDashboard') }}" class="form-inline" method="POST" role="form" id="formValidate">
+                                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                        <div class="btn-group mr-2" role="group" aria-label="First group">
+                                            <div class="dropdown">
+                                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> OTHER SHIFT PLANS
+                                                    <i class="fa fa-calendar"></i>
+                                                </button>
+                                                <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
+                                                    <li>
+                                                        <label>
+                                                            <input type="checkbox" data-toggle="collapse" data-target="#NAccPlan" id="naccPlanChecked" onclick="checked_func()"> NIGHT SHIFT PLAN
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <label>
+                                                            <input type="checkbox" data-toggle="collapse" data-target="#EAccPlan" id="eaccPlanChecked" onclick="checked_func()"> EVENING SHIFT PLAN
+                                                        </label>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
-                                        <div class="card" id="EAccPlan" Â style="white-space: pre-line">
-                                            <h5 class="card-header bg-primary text-white">EVENING Shift Plan</h5>
-                                            <div class="card-body">
-                                                <h5 class="card-title">Month: {{ month }}</h5>
-                                                <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_NAccPlan" placeholder="Pick The Multiple Dates" size="20">
+                                        <div class="btn-group mr-2" role="group" aria-label="Second group">
+                                            <div class="dropdown">
+                                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> OTHER OFF PLANS
+                                                    <i class="fa fa-calendar"></i>
+                                                </button>
+                                                <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
+                                                    <li>
+                                                        <label>
+                                                            <input type="checkbox" data-toggle="collapse" data-target="#leavePlan" id="leavePlanChecked" onclick="checked_func()"> LEAVE PLAN
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <label>
+                                                            <input type="checkbox" data-toggle="collapse" data-target="#tcsHPlan" id="tcsHPlanChecked" onclick="checked_func()"> TCS HOLIDAY
+                                                            Plan
+                                                        </label>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
-                                        <div class="card" id="NAccPlan" Â style="white-space: pre-line">
-                                            <h5 class="card-header bg-info text-white">NIGHT Shift Plan</h5>
-                                            <div class="card-body">
-                                                <h5 class="card-title">Month: {{ month }}</h5>
-                                                <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_EAccPlan" placeholder="Pick The Multiple Dates" size="20">
-                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="card-group">
-                                        <div class="card">
-                                            <h5 class="card-header bg-secondary text-white">OFF Plan</h5>
-                                            <div class="card-body" Â style="white-space: pre-line">
-                                                <h5 class="card-title">Month: {{ month }}</h5>
-                                                <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_OffPlan" placeholder="Pick The Multiple Dates" required="" size="20">
-                                            </div>
-                                        </div>
-                                        <div class="card" id="leavePlan" Â style="white-space: pre-line">
-                                            <h5 class="card-header bg-danger text-white">LEAVE Plan</h5>
-                                            <div class="card-body">
-                                                <h5 class="card-title">Month: {{ month }}</h5>
-                                                <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_LeavePlan" placeholder="Pick The Multiple Dates" size="20">
-                                            </div>
-                                        </div>
-                                        <div class="card" id="tcsHPlan" Â style="white-space: pre-line">
-                                            <h5 class="card-header bg-warning text-white">TCS Holiday</h5>
-                                            <div class="card-body">
-                                                <h5 class="card-title">Month: {{ month }}</h5>
-                                                <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_TCS_Holiday_Plan" placeholder="Pick The Multiple Dates" size="20">
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
-                                <hr class="bg bg-success">
-                            {% endfor %}
-                            <div class="container">
-                                <ul class="list-inline center">
-                                    <li>
-                                        <button class="btn btn-primary btn-lg" onclick="checkStatus()" id="generateRoaster">
-                                            <span class="fa fa-building-o"> Generate Shift Roaster</span>
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                            <br><br>
-                            <script>
-                                $('.date').datepicker({
-                                    multidate: true,
-                                    format: 'dd-M-yyyy'
-                                });
-                                function checked_func() {
-                                    var e1 = document.getElementById("leavePlanChecked");
-                                    var e2 = document.getElementById("tcsHPlanChecked");
-                                    var e3 = document.getElementById("leavePlan");
-                                    var e4 = document.getElementById("tcsHPlan");
-                                    var e5 = document.getElementById("naccPlanChecked");
-                                    var e6 = document.getElementById("eaccPlanChecked");
-                                    var e7 = document.getElementById("NAccPlan");
-                                    var e8 = document.getElementById("EAccPlan");
-                                    if (e1.checked == true && e2.checked == false && 
-                                        e5.checked == false && e6.checked == false) {
-                                        e3.style.display = "block";
-                                        e4.style.display = "none";
-                                        e7.style.display = "none";
-                                        e8.style.display = "none";
-                                    }
-                                    if (e1.checked == true && e2.checked == true && 
-                                        e5.checked == false && e6.checked == false) {
-                                        e3.style.display = "block";
-                                        e4.style.display = "block";
-                                        e7.style.display = "none";
-                                        e8.style.display = "none";
-                                    }
-                                    if (e1.checked == false && e2.checked == false && 
-                                        e5.checked == true && e6.checked == true) {
-                                        e3.style.display = "none";
-                                        e4.style.display = "none";
-                                        e7.style.display = "block";
-                                        e8.style.display = "block";
-                                    }
-                                    if (e1.checked == false && e2.checked == true && 
-                                        e5.checked == false && e6.checked == false) {
-                                        e3.style.display = "none";
-                                        e4.style.display = "block";
-                                        e7.style.display = "none";
-                                        e8.style.display = "none";
-                                    }
-                                    if (e1.checked == false && e2.checked == false &&
-                                        e5.checked == true && e6.checked == false) {
-                                        e3.style.display = "none";
-                                        e4.style.display = "none";
-                                        e7.style.display = "block";
-                                        e8.style.display = "none";
-                                    }
-                                    if (e1.checked == false && e2.checked == false &&
-                                        e5.checked == false && e6.checked == true) {
-                                        e3.style.display = "none";
-                                        e4.style.display = "none";
-                                        e7.style.display = "none";
-                                        e8.style.display = "block";
-                                    }
-                                    if (e1.checked == false && e2.checked == false &&
-                                        e5.checked == true && e6.checked == true) {
-                                        e3.style.display = "none";
-                                        e4.style.display = "none";
-                                        e7.style.display = "block";
-                                        e8.style.display = "block";
-                                    }
-                                    if (e1.checked == false && e2.checked == false &&
-                                        e5.checked == true && e6.checked == true) {
-                                        e3.style.display = "none";
-                                        e4.style.display = "none";
-                                        e7.style.display = "block";
-                                        e8.style.display = "block";
-                                    }
-                                    if (e1.checked == false && e2.checked == true &&
-                                        e5.checked == true && e6.checked == false) {
-                                        e3.style.display = "none";
-                                        e4.style.display = "block";
-                                        e7.style.display = "block";
-                                        e8.style.display = "none";
-                                    }
-                                    if (e1.checked == true && e2.checked == false &&
-                                        e5.checked == false && e6.checked == true) {
-                                        e3.style.display = "block";
-                                        e4.style.display = "none";
-                                        e7.style.display = "block";
-                                        e8.style.display = "none";
-                                    }
-                                    if (e1.checked == true && e2.checked == true &&
-                                        e5.checked == true && e6.checked == false) {
-                                        e3.style.display = "block";
-                                        e4.style.display = "block";
-                                        e7.style.display = "block";
-                                        e8.style.display = "none";
-                                    }
-                                    if (e1.checked == false && e2.checked == true &&
-                                        e5.checked == true && e6.checked == true) {
-                                        e3.style.display = "none";
-                                        e4.style.display = "block";
-                                        e7.style.display = "block";
-                                        e8.style.display = "block";
-                                    }
-                                    if (e1.checked == true && e2.checked == false &&
-                                        e5.checked == true && e6.checked == true) {
-                                        e3.style.display = "block";
-                                        e4.style.display = "none";
-                                        e7.style.display = "block";
-                                        e8.style.display = "block";
-                                    }
-                                    if (e1.checked == true && e2.checked == true &&
-                                        e5.checked == false && e6.checked == true) {
-                                        e3.style.display = "block";
-                                        e4.style.display = "block";
-                                        e7.style.display = "none";
-                                        e8.style.display = "block";
-                                    }
-                                    if (e1.checked == false && e2.checked == false && 
-                                        e5.checked == false && e6.checked == false ) {
-                                        e3.style.display = "none";
-                                        e4.style.display = "none";
-                                        e7.style.display = "none";
-                                        e8.style.display = "none";
-                                    }
-                                    if (e1.checked == true && e2.checked == true
-                                        && e5.checked == true && e6.checked == true) {
-                                        e3.style.display = "block";
-                                        e4.style.display = "block";
-                                        e7.style.display = "block";
-                                        e8.style.display = "block";
-                                    }
-                                }
-                            </script>
-                            <br>
-                            <!-- Modal -->
-                            <div class="modal fade" id="OnSubmitRoaster" tabindex="-1" role="dialog" aria-labelledby="OnSubmitRoasterTitle" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="roasterTitle">Submit Roaster Status</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
-                                            </button>
+                                {% for asso in team_members %}
+                                {% set asso_label = "asso.split(' ')[0]" -%}
+                                <hr>
+                                    <div class="card bg-warning h-50 center">
+                                        <h5 class="card-header"><b>{{asso}}</b></h5>
+                                        <div class="card-group">
+                                            <div class="card">
+                                                <h5 class="card-header bg-success text-white">ACC Plan</h5>
+                                                <div class="card-body" style="background-color: chartreuse;">
+                                                    <h5 class="card-title">{{ month }}</h5>
+                                                        <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_AccPlan" placeholder="Pick Multiple Dates" required="" size="20">
+                                                </div>
+                                            </div>
+                                            <div class="card" id="EAccPlan">
+                                                <h5 class="card-header bg-primary text-white">EVENING Plan</h5>
+                                                <div class="card-body" style="background-color: chartreuse;">
+                                                    <h5 class="card-title">{{ month }}</h5>
+                                                    <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_NAccPlan" placeholder="Pick Multiple Dates" size="20">
+                                                </div>
+                                            </div>
+                                            <div class="card" id="NAccPlan">
+                                                <h5 class="card-header bg-info text-white">NIGHT Plan</h5>
+                                                <div class="card-body" style="background-color: chartreuse;">
+                                                    <h5 class="card-title">{{ month }}</h5>
+                                                    <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_EAccPlan" placeholder="Pick Multiple Dates" size="20">
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="modal-body bg-success">
-                                            Shift Plan Roaster was successfully loaded for your team:
-                                            {{logged_in['team']}}!! for Month: , Please check {{logged_in['team']}}
-                                            Roaster on Roaster Dashboard Tab!
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        <div class="card-group">
+                                            <div class="card">
+                                                <h5 class="card-header bg-secondary text-white">OFF Plan</h5>
+                                                <div class="card-body" style="background-color: chartreuse;">
+                                                    <h5 class="card-title">{{ month }}</h5>
+                                                    <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_OffPlan" placeholder="Pick Multiple Dates" required="" size="20">
+                                                </div>
+                                            </div>
+                                            <div class="card" id="leavePlan">
+                                                <h5 class="card-header bg-danger text-white">LEAVE Plan</h5>
+                                                <div class="card-body" style="background-color: chartreuse;">
+                                                    <h5 class="card-title">{{ month }}</h5>
+                                                    <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_LeavePlan" placeholder="Pick Multiple Dates" size="20">
+                                                </div>
+                                            </div>
+                                            <div class="card" id="tcsHPlan">
+                                                <h5 class="card-header bg-warning text-white">TCS Holiday</h5>
+                                                <div class="card-body" style="background-color: chartreuse;">
+                                                    <h5 class="card-title">{{ month }}</h5>
+                                                    <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_TCS_Holiday_Plan" placeholder="Pick Multiple Dates" size="20">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    <hr class="bg bg-success">
+                                {% endfor %}
+                                <div class="container">
+                                    <ul class="list-inline center">
+                                        <li>
+                                            <button class="btn btn-success btn-lg" onclick="checkStatus()" id="generateRoaster">
+                                                <span class="fa fa-building-o"> Generate Shift Roaster</span>
+                                            </button>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </div>
-
-                            <!--<a class="{{ 'btn btn-success' }}" href="{{ url_for('shiftDashboard.generateDashboard') }}"  style="height: 25pt; width: 80pt;">
-                                <span class="fa fa-building-o" style="font-weight: bold;"> Submit</a></span>-->
-                            <script>
-                                $(document).ready(function () {
-                                    $("#generateRoaster").on('click', function () {
-                                        if ($("#formValidate")[0].checkValidity()) {
-                                            var e = this;
-                                            // Get the modal
-                                            var modal = document.getElementById("myModal");
-                                            setTimeout(function () {
-                                                e.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Shift Roaster is Loading....';
-                                                e.disabled = true;
-                                            }, 0);
-                                            return true;
+                                <script>
+                                    $('.date').datepicker({
+                                        multidate: true,
+                                        format: 'dd-M-yyyy'
+                                    });
+                                    function checked_func() {
+                                        var e1 = document.getElementById("leavePlanChecked");
+                                        var e2 = document.getElementById("tcsHPlanChecked");
+                                        var e3 = document.getElementById("leavePlan");
+                                        var e4 = document.getElementById("tcsHPlan");
+                                        var e5 = document.getElementById("naccPlanChecked");
+                                        var e6 = document.getElementById("eaccPlanChecked");
+                                        var e7 = document.getElementById("NAccPlan");
+                                        var e8 = document.getElementById("EAccPlan");
+                                        if (e1.checked == true && e2.checked == false && 
+                                            e5.checked == false && e6.checked == false) {
+                                            e3.style.display = "block";
+                                            e4.style.display = "none";
+                                            e7.style.display = "none";
+                                            e8.style.display = "none";
                                         }
+                                        if (e1.checked == true && e2.checked == true && 
+                                            e5.checked == false && e6.checked == false) {
+                                            e3.style.display = "block";
+                                            e4.style.display = "block";
+                                            e7.style.display = "none";
+                                            e8.style.display = "none";
+                                        }
+                                        if (e1.checked == false && e2.checked == false && 
+                                            e5.checked == true && e6.checked == true) {
+                                            e3.style.display = "none";
+                                            e4.style.display = "none";
+                                            e7.style.display = "block";
+                                            e8.style.display = "block";
+                                        }
+                                        if (e1.checked == false && e2.checked == true && 
+                                            e5.checked == false && e6.checked == false) {
+                                            e3.style.display = "none";
+                                            e4.style.display = "block";
+                                            e7.style.display = "none";
+                                            e8.style.display = "none";
+                                        }
+                                        if (e1.checked == false && e2.checked == false &&
+                                            e5.checked == true && e6.checked == false) {
+                                            e3.style.display = "none";
+                                            e4.style.display = "none";
+                                            e7.style.display = "block";
+                                            e8.style.display = "none";
+                                        }
+                                        if (e1.checked == false && e2.checked == false &&
+                                            e5.checked == false && e6.checked == true) {
+                                            e3.style.display = "none";
+                                            e4.style.display = "none";
+                                            e7.style.display = "none";
+                                            e8.style.display = "block";
+                                        }
+                                        if (e1.checked == false && e2.checked == false &&
+                                            e5.checked == true && e6.checked == true) {
+                                            e3.style.display = "none";
+                                            e4.style.display = "none";
+                                            e7.style.display = "block";
+                                            e8.style.display = "block";
+                                        }
+                                        if (e1.checked == false && e2.checked == false &&
+                                            e5.checked == true && e6.checked == true) {
+                                            e3.style.display = "none";
+                                            e4.style.display = "none";
+                                            e7.style.display = "block";
+                                            e8.style.display = "block";
+                                        }
+                                        if (e1.checked == false && e2.checked == true &&
+                                            e5.checked == true && e6.checked == false) {
+                                            e3.style.display = "none";
+                                            e4.style.display = "block";
+                                            e7.style.display = "block";
+                                            e8.style.display = "none";
+                                        }
+                                        if (e1.checked == true && e2.checked == false &&
+                                            e5.checked == false && e6.checked == true) {
+                                            e3.style.display = "block";
+                                            e4.style.display = "none";
+                                            e7.style.display = "block";
+                                            e8.style.display = "none";
+                                        }
+                                        if (e1.checked == true && e2.checked == true &&
+                                            e5.checked == true && e6.checked == false) {
+                                            e3.style.display = "block";
+                                            e4.style.display = "block";
+                                            e7.style.display = "block";
+                                            e8.style.display = "none";
+                                        }
+                                        if (e1.checked == false && e2.checked == true &&
+                                            e5.checked == true && e6.checked == true) {
+                                            e3.style.display = "none";
+                                            e4.style.display = "block";
+                                            e7.style.display = "block";
+                                            e8.style.display = "block";
+                                        }
+                                        if (e1.checked == true && e2.checked == false &&
+                                            e5.checked == true && e6.checked == true) {
+                                            e3.style.display = "block";
+                                            e4.style.display = "none";
+                                            e7.style.display = "block";
+                                            e8.style.display = "block";
+                                        }
+                                        if (e1.checked == true && e2.checked == true &&
+                                            e5.checked == false && e6.checked == true) {
+                                            e3.style.display = "block";
+                                            e4.style.display = "block";
+                                            e7.style.display = "none";
+                                            e8.style.display = "block";
+                                        }
+                                        if (e1.checked == false && e2.checked == false && 
+                                            e5.checked == false && e6.checked == false ) {
+                                            e3.style.display = "none";
+                                            e4.style.display = "none";
+                                            e7.style.display = "none";
+                                            e8.style.display = "none";
+                                        }
+                                        if (e1.checked == true && e2.checked == true
+                                            && e5.checked == true && e6.checked == true) {
+                                            e3.style.display = "block";
+                                            e4.style.display = "block";
+                                            e7.style.display = "block";
+                                            e8.style.display = "block";
+                                        }
+                                    }
+                                </script>
+                                <br>
+                                <!-- Modal -->
+                                <div class="modal fade" id="OnSubmitRoaster" tabindex="-1" role="dialog" aria-labelledby="OnSubmitRoasterTitle" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="roasterTitle">Submit Roaster Status</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body bg-success">
+                                                Shift Plan Roaster was successfully loaded for your team:
+                                                {{logged_in['team']}}!! for Month: , Please check {{logged_in['team']}}
+                                                Roaster on Roaster Dashboard Tab!
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <!--<a class="{{ 'btn btn-success' }}" href="{{ url_for('shiftDashboard.generateDashboard') }}"  style="height: 25pt; width: 80pt;">
+                                    <span class="fa fa-building-o" style="font-weight: bold;"> Submit</a></span>-->
+                                <script>
+                                    $(document).ready(function () {
+                                        $("#generateRoaster").on('click', function () {
+                                            if ($("#formValidate")[0].checkValidity()) {
+                                                var e = this;
+                                                // Get the modal
+                                                var modal = document.getElementById("myModal");
+                                                setTimeout(function () {
+                                                    e.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Shift Roaster is Loading....';
+                                                    e.disabled = true;
+                                                }, 0);
+                                                return true;
+                                            }
+                                        });
+                                        $("#checkRoaster").on('click', function () {
+                                            $("#OnSubmitRoaster").modal({ backdrop: true });
+                                        });
                                     });
-                                    $("#checkRoaster").on('click', function () {
-                                        $("#OnSubmitRoaster").modal({ backdrop: true });
-                                    });
-                                });
-                            </script>                 
+                                </script>
+                            </form>             
                     </div>
                 </div>
             </div>
-    </div>	
+        </div>
 </body>
 {% endblock %}
 </html>

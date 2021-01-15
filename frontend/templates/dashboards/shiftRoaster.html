@@ -20,11 +20,12 @@
 				<div id="shiftSidebar" class="sidenav">
 					<div class="sidebar">
 						<br>
-						<div class="sidebar-header" style="background-color: slateblue; text-align: center; height: 100pt;">
-							<br>
-							<img src="../img/shift-roaster-logo-header.png" class="navbar-brand"><span class="navbar-logo"></span>
-								<b class="navbar-brand" style="color: greenyellow;"> CSE SHIFT PLAN ROASTER</b>
-						</div>
+						<div class="sidebar-header" style="background-color: slateblue; text-align: center; height: auto;">
+                            <img src="static/img/shift-roaster-logo-header.png" class="ui large bordered rounded image navbar-brand" 
+								style="height: 80pt; width: 80pt"><span class="navbar-logo"></span>
+                            <b class="navbar-brand" style="color: greenyellow;"> CSE SHIFT PLAN ROASTER</b>
+                            <br><br>
+                        </div>
 						<ul class="list-group">
 							<li class="list-group-item list-group-item-danger">
 								<a href="{{ url_for('home.homePage') }}" style="color: white; text-align: center; height: 50%;"><i class="fa fa-fw fa-home"></i> Home</a>
@@ -82,15 +83,15 @@
 		to.style.display = 'none';
 	
 		function openNav() {
-			document.getElementById("shiftSidebar").style.width = "250px";
-			document.getElementById("main").style.marginLeft = "250px";
+			document.getElementById("shiftSidebar").style.width = "350px";
+			document.getElementById("main").style.marginLeft = "350px";
 			o.style.display = 'none';
 			to.style.display = '';
 		}
 	
 		function closeNav() {
-			document.getElementById("shiftSidebar").style.width = "125px";
-			document.getElementById("main").style.marginLeft = "125px";
+			document.getElementById("shiftSidebar").style.width = "0px";
+			document.getElementById("main").style.marginLeft = "0px";
 			o.style.display = '';
 			to.style.display = 'none';
 	
@@ -184,12 +185,23 @@
 									{{ wtf.form_field(form.year) }}
 									{{ wtf.form_field(form.teamName) }}
 									<br>
-									<button type="button" class="btn btn-success btn-md">
+									<button type="button" class="btn btn-success btn-md" id="generateMonthPlan">
 										<span class="fa fa-calendar" style="color: blue;"></span>
 										<b style="color: white;">{{ wtf.form_field(form.submit) }}</b>
 									</button>
 								</div>
 							</div>
+							<script>
+								$("#generateMonthPlan").on('click', function () {
+									var e = this;
+									setTimeout(function () {
+									  e.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating Month Plan....';
+									  e.disabled = true;
+									  e.button('reset');
+									}, 0);
+									return true;
+								  });
+							</script>
 							<br>
 							<div class="card">
 								{% if _is_download %}

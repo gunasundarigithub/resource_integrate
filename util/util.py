@@ -53,6 +53,10 @@ class excelConstants():
     ('CTPT','CTPT'),
     ('CTOC','CTOC')
   ]
+  YEAR_CHOICES = [
+    ('2020', '2020'),
+    ('2021', '2021')
+  ]
   SHIFT_CATEGORY_HOURS = ['ACC', 'NACC', 'EACC', 'GEN']
   SHIFT_PLAN = collections.namedtuple('SHIFT_PLAN', 'ACC OFF LEAVE TCS NACC EACC')
   COOKIES = collections.namedtuple('COOKIES', 'EMAIL USERNAME TEAM MONTH EXCELFILE')
@@ -97,8 +101,11 @@ Get host based on environment.
 """
 def fetch_host_on_env():
   import socket
-  get_host = lambda: ('localhost' if socket.gethostname().startswith('L') else socket.gethostname()) 
-  return get_host()
+  if socket.gethostname().upper().startswith('T') or socket.gethostname().upper().startswith('P'):
+    current_host = socket.gethostname()
+  else:
+    current_host = 'localhost'
+  return current_host
 
 """
 Set up logger object for logging.
@@ -233,7 +240,7 @@ Function to find the given filename in the working project directory and store t
 import fnmatch
 def find_file(filename, dir_path):
   conf = get_conf()
-  os.chdir(conf['prod_dir'])
+  os.chdir(conf['proj_dir'])
   proj_di=os.getcwd()
   for _root, _dir, _files in os.walk(dir_path):
     filepath = [os.path.join(_root, _f_n) for _f_n in _files if fnmatch.fnmatch(_f_n, filename)]
