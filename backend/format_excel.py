@@ -25,7 +25,7 @@ const = util.excelConstants()
 class formatExcel():
     def __init__(self, excel_file, sheetName):
         self.excel = excel_file
-        self.sheet = sheeetName
+        self.sheet = sheetName
         self.colorBG = util.excelConstants
         self.shift_category = ['ACC', 'NACC', 'EACC', 'GEN', 'OFF', 'LEAVE', 'HOLIDAY']
         self.shift_colorBG = [self.colorBG.ACC_COLOR, self.colorBG.NACC_COLOR, self.colorBG.EACC_COLOR, self.colorBG.GEN_COLOR, \
@@ -43,21 +43,21 @@ class formatExcel():
     """
     Create Worksheet Object instance from work book Object with a given sheet name.
     """
-    def __worksheet__ (self):
+    def __worksheet__ (self, wb_inst):
         ws =  wb_inst[self.sheet]
         return ws
 
     """
     Save the excel workbook changes.
     """   
-    def __save__(self,wb_inst):
+    def __save__(self, wb_inst):
         wb_inst.save(self.excel)
 
     """
     Fetch existing data-frame contents from excel workbook.
     """
     def __existing_dataframe__(self):
-        ex_df = pd.read_excel(self.excel, sheet_name=self.sheet)
+        ex_df = pd.read_excel(self.excel, sheet_name=self.sheet, engine="openpyxl")
         return ex_df
 
     """
@@ -69,26 +69,27 @@ class formatExcel():
                         size=11, 
                         bold=True if bold_f else False, 
                         italic=False, 
-                        vertALIGN=None, 
+                        vertAlign=None, 
                         underline='none', 
-                        strike=false, 
-                        color=self.color_BG.HFONT if header else self.colorBG.VFONT) 
+                        strike=False, 
+                        color=self.colorBG.HFONT if header else self.colorBG.VFONT) 
         return GLOBAL_FONT
 
     """
     Function to fill a cell with a given value.
     """
-    def fill_cell_values(self, col=0, row=1, value='', shift='', bgcolor='S'):
+    def fill_cell_values(self, col=0, row=1, value='', shift='', bgcolor=''):
         _wb = self.__workbook__()
         _ws = self.__worksheet__(_wb)
         if not self.__existing_dataframe__().empty:
             # Fetch the current cell that you need to fill.
-            _curr_cell = ws.cell(column=col, row=row, value=value)
+            print(f'value to e filled in the cell --> {value}')
+            _curr_cell = _ws.cell(column=col, row=row, value=value)
             if col==1 or col==2:
                 self.header = False    # Setting header flag to False, for Month, Shore and Associate name values.
                 self.bold_f = True     # Setting bold flag to True, for Month, Shore and Associate name values
-                _curr_cell.font = self.fetch_global_font(self.header,self.bold_f)
-                _curr_cell.allignment = Alignment(horizontal='center', vertical='center')
+                _curr_cell.font = self.fetch_global_font(self.header, self.bold_f)
+                _curr_cell.alignment = Alignment(horizontal='center', vertical='center')
                 _curr_cell.fill = PatternFill(patternType="solid", fgColor=self.colorBG.MONTH_SHORE)
             else:
                 self.header = False
@@ -108,7 +109,7 @@ class formatExcel():
                         _curr_cell.fill = PatternFill(patternType="solid", fgColor=bgcolor)
         
         # After formatting cell styings, Save it.
-        self.__save__(wb)
+        self.__save__(_wb)
         # Now Set the borders to cell.
         self.set_borders_row(srow=row)
 
@@ -145,9 +146,9 @@ class formatExcel():
     """
     Function to fill back-ground color each cell based on associate shift. (A|N|E|G|O|L|H)
     """
-    def set_background_color_multicells(self, srow=1, scol=0, ecol=0, BGColor=''):
+    def set_background_color_multicells(self, srow=1, erow=1, scol=0, ecol=0, BGColor=''):
         _wb = self.__workbook__()
-        _ws = selef.__worksheet__(_wb)
+        _ws = self.__worksheet__(_wb)
         # If we are trying tofill color for 1 row. Make use of below functionality.
         if srow == erow:
             cell_range = _ws[srow:srow][scol-1:ecol]
@@ -166,13 +167,13 @@ class formatExcel():
                     self.header = True
                     self.bold_f = True
                     _c.font = self.fetch_global_font(self.header, self.bold_f) 
-                    _cell.fill = PatternFill(patternType="solid", fgColor=BGColor)
+                    _c.fill = PatternFill(patternType="solid", fgColor=BGColor)
         self.__save__(_wb) 
 
     """
     Merge required header's cell
     """
-    def merge_required_header_cell(self,coloumn_size=0):
+    def merge_required_header_cell(self, column_size=0):
         _wb = self.__workbook__()
         _ws = self.__worksheet__(_wb)
         _srow = len(self.__existing_dataframe__())
@@ -181,7 +182,7 @@ class formatExcel():
             _ws.merge_cells(start_row=_srow, start_column=1, end_row=_srow+1, end_column=1)
             _ws.merge_cells(start_row=_srow, start_column=2, end_row=_srow+1, end_column=2)
             # Merge sum shift sum header cells
-            _ws.merge.cells(start_row=_srow, start_column=column_size, end_row=_srow, end_column=column_size+3)
+            _ws.merge_cells(start_row=_srow, start_column=column_size, end_row=_srow, end_column=column_size+11)
         log.debug('Merged Done for Header Cell..')
         self.__save__(_wb)
 
@@ -197,7 +198,7 @@ class formatExcel():
         _erow = len(self.__existing_dataframe__()) + 1
         log.debug(f'Merging required row cells')
         if not self.__existing_dataframe__().empty:
-            _ws.merge.cells(start_row=_srow, start_column=col, end_row=_erow, end_column=col)
+            _ws.merge_cells(start_row=_srow, start_column=col, end_row=_erow, end_column=col)
         self.__save__(_wb)
         log.debug(f'Merged required row cells')    
         self.fill_cell_values(col=col, row=_srow, value=value)

@@ -126,12 +126,12 @@
                                                 <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
                                                     <li>
                                                         <label>
-                                                            <input type="checkbox" data-toggle="collapse" data-target="#NAccPlan" id="naccPlanChecked" onclick="checked_func()"> NIGHT SHIFT PLAN
+                                                            <input type="checkbox" data-toggle="collapse" data-target="#NAPlan" id="naccPlanChecked" onclick="checked_func()"> NIGHT SHIFT PLAN
                                                         </label>
                                                     </li>
                                                     <li>
                                                         <label>
-                                                            <input type="checkbox" data-toggle="collapse" data-target="#EAccPlan" id="eaccPlanChecked" onclick="checked_func()"> EVENING SHIFT PLAN
+                                                            <input type="checkbox" data-toggle="collapse" data-target="#EAPlan" id="eaccPlanChecked" onclick="checked_func()"> EVENING SHIFT PLAN
                                                         </label>
                                                     </li>
                                                 </ul>
@@ -172,18 +172,18 @@
                                                         <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_AccPlan" placeholder="Pick Multiple Dates" required="" size="20">
                                                 </div>
                                             </div>
-                                            <div class="card" id="EAccPlan">
+                                            <div class="card" id="EAPlan">
                                                 <h5 class="card-header bg-primary text-white">EVENING Plan</h5>
                                                 <div class="card-body" style="background-color: chartreuse;">
                                                     <h5 class="card-title">{{ month }}</h5>
-                                                    <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_NAccPlan" placeholder="Pick Multiple Dates" size="20">
+                                                    <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_EAPlan" placeholder="Pick Multiple Dates" size="20">
                                                 </div>
                                             </div>
-                                            <div class="card" id="NAccPlan">
+                                            <div class="card" id="NAPlan">
                                                 <h5 class="card-header bg-info text-white">NIGHT Plan</h5>
                                                 <div class="card-body" style="background-color: chartreuse;">
                                                     <h5 class="card-title">{{ month }}</h5>
-                                                    <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_EAccPlan" placeholder="Pick Multiple Dates" size="20">
+                                                    <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_NAPlan" placeholder="Pick Multiple Dates" size="20">
                                                 </div>
                                             </div>
                                         </div>
@@ -234,8 +234,8 @@
                                         var e4 = document.getElementById("tcsHPlan");
                                         var e5 = document.getElementById("naccPlanChecked");
                                         var e6 = document.getElementById("eaccPlanChecked");
-                                        var e7 = document.getElementById("NAccPlan");
-                                        var e8 = document.getElementById("EAccPlan");
+                                        var e7 = document.getElementById("NAPlan");
+                                        var e8 = document.getElementById("EAPlan");
                                         if (e1.checked == true && e2.checked == false && 
                                             e5.checked == false && e6.checked == false) {
                                             e3.style.display = "block";

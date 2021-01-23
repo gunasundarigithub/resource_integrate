@@ -28,7 +28,7 @@ class excelConstants():
   THIRD_COLUMN = 3
   FOURTH_COLUMN = 4
   MONTH_30_DAYS = ['Apr', 'Jun', 'Sep', 'Nov']
-  MONTH_31_DAYS = ['Jan', 'Mar', 'May', 'July', 'August', 'Oct', 'Dec']
+  MONTH_31_DAYS = ['Jan', 'Mar', 'May', 'Jul', 'Aug', 'Oct', 'Dec']
   MONTH_28_OR_29_DAYS = ['Feb']
   MONTH_CHOICES = [
     ('JANUARY', 'JANUARY'),
@@ -57,11 +57,11 @@ class excelConstants():
     ('2020', '2020'),
     ('2021', '2021')
   ]
-  SHIFT_CATEGORY_HOURS = ['ACC', 'NACC', 'EACC', 'GEN']
+  SHIFT_CATEGORY_HOURS = ['ACC', 'GEN']
   SHIFT_PLAN = collections.namedtuple('SHIFT_PLAN', 'ACC OFF LEAVE TCS NACC EACC')
   COOKIES = collections.namedtuple('COOKIES', 'EMAIL USERNAME TEAM MONTH EXCELFILE')
   SHIFT_CATEGORY = SHIFT_PLAN(ACC='AccPlan', OFF='OffPlan', LEAVE='LeavePlan', TCS='TCS_Holiday_Plan', \
-      NACC='NAccPlan', EACC='EAccPlan')
+      NACC='NAPlan', EACC='EAPlan')
   SESSION_COOKIES = COOKIES(EMAIL='email', USERNAME='username', TEAM='team', MONTH='month', EXCELFILE='excel_file')
   HFONT = colors.Color(indexed=1)  # Set HEADER FONT TO WHITE.
   VFONT= colors.Color(indexed=0)   # SEt VALUE FONT TO BLACK.
@@ -143,18 +143,19 @@ def get_env_file():
 Automate function to generate number of days for a given month by the user.
 """
 def generate_month_days(month):
-  generate_31_days = lambda: list(1,32) if month.capitalize()[0:3] in const.MONTH_31_DAYS else None
-  generate_30_days = lambda: list(1,31) if month.capitalize()[0:3] in const.MONTH_30_DAYS else None
-  generate_28_days = lambda: list(1,29) if month.capitalize()[0:3] in const.MONTH_28_OR_29_DAYS else None
-  generate_29_days = lambda: list(1,30) if month.capitalize()[0:3] in const.MONTH_28_OR_29_DAYS else None
-  days_list_func = lambda : [ele for ele in [generate_31_days(), generate_30_days(), generate_28_days(), generate_29days()] if ele is not None]
-  return days_list_func
+  generate_31_days = lambda: list(range(1,32)) if month.capitalize()[0:3] in const.MONTH_31_DAYS else None
+  generate_30_days = lambda: list(range(1,31)) if month.capitalize()[0:3] in const.MONTH_30_DAYS else None
+  generate_28_days = lambda: list(range(1,29)) if month.capitalize()[0:3] in const.MONTH_28_OR_29_DAYS else None
+  generate_29_days = lambda: list(range(1,30)) if month.capitalize()[0:3] in const.MONTH_28_OR_29_DAYS else None
+  days_list_func = lambda : [ele for ele in [generate_31_days(), generate_30_days(), generate_28_days(), generate_29_days()] if ele is not None]
+
+  return days_list_func()
 
 """
 Function to generate weekdays for a given month.
 Second Header --> [ Team Member, list of weekdays like Mon Tue Wed Thu Fri Sat Sun....]
 """
-def generate_workdays_for_month (year, month, month_period, from_ui=False):
+def generate_weekdays_for_month(year, month, month_period, from_ui=False):
   cfg=get_conf()
   __second_header = ['Team Member']
   week_date = pd.Series(pd.date_range('-'.join([year, month]), periods=month_period, freq='D'))
@@ -195,11 +196,14 @@ def alter_roaster_cached_dict(_mr):
     for k in _mr['associates_plan'].keys():
       if asso in k:
         _int_k = { int(_k): _v for _k, _v in _mr['associates_plan'][k].items() }
+        print(f'Integer keys-values : {_int_k}')
         _alter_d.update({ asso : _int_k })
         _tmp_d.update(_int_k)
         _alter_d[asso].update(_tmp_d)
+        print('alter dict is: ' + str(_alter_d))
     _tmp_d = {}
     add_general_shifts(_alter_d, asso, _mr['month'])
+    print('alter dict here : ' + str(_alter_d))
     _alter_d[asso].update(fetch_shift_counts([ _v for _v in _alter_d[asso].values()]))
   return _alter_d
 
@@ -227,12 +231,15 @@ def fetch_shift_counts(sh_list=[], dataframe=None, df_exists=True):
       ]
     ),
     'GEN-HOURS': 9*int(_df_list.count('G')),
+    'NACC-HOURS': 8*int(_df_list.count('N')),
+    'EACC-HOURS': 8*int(_df_list.count('E')),
     'TOTAL-HOURS': sum(
       [
-        10*int(_df_list.count('A')), 8*int(_df_list.count('N')), 8*int(_df_list.count('E')), 9*int(_df_list.count('G'))
+        10*int(_df_list.count('A')), 8*int(_df_list.count('N')), 8*int(_df_list.count('E')), 9*int(_df_list.count('G')), 8*int(_df_list.count('N')), 8*int(_df_list.count('E'))
       ]
     )
   }
+  return shift_count
   
 """
 Function to find the given filename in the working project directory and store the actual path of the file.
@@ -253,10 +260,12 @@ Function to check if a specific month exists in the shift plan exists, if exists
 def check_month_exists_excel(month, filename, dir_path):
   _monthExists = False
   _filePath = find_file(filename, dir_path)
+  print('filepath : ' + str(_filePath))
   import pandas as pd
   if os.path.isfile(filename):
     # Concat the difference to one object, hence we can collect all excel sheets at one place. (use pandas concat())
-    df = pd.concat(pd.read_excel(_filePath[0], sheet_name=None), ignore_index=True)
+    df = pd.concat(pd.read_excel(_filePath[0], sheet_name=None, engine='openpyxl'), ignore_index=True)
+    print('df : ' + str(df))
     df_m = df[df["Month"]==month] # OR use loc/iloc to fetch the month values.
     # df_m = df.loc[(df.Month == month)]
     # df_m = df.iloc[(df.Month == month).values]

@@ -124,16 +124,17 @@
 					<div class="center">
 						<form action="" class="form form-horizontal" method="post" role="form">
 							{{form.csrf_token}}
-								{% if  ('year' in form.errors or _validationFailed) %}
-									<div class="alert alert-danger" role="alert">
-										Validation Failed!! Year: Year must be 4 digits (YYYY)!
+								{% if not _validation %}
+									<div class="alert alert-danger alert-dismissible fade show">
+										<button type="button" class="close" data-dismiss="alert">&times;</button>
+										<strong>Error!!</strong> Validation Failed!! Year: Year must be 4 digits (YYYY)!
 									</div>
 								{% endif %}
 							{% if _shift_id %}
 							<ul class="list-group">
 								<li class="list-group-item list-group-item-danger">
 									<p class="text-primary">Unable to Create Shift Roaster
-										<a type="button" class="btn btn-danger btn-md" id="generateMonthPlan">
+										<a type="button" class="btn btn-danger btn-md" id="generateMonthPlanStatus">
 											<span class="fa fa-warning" style="color: yellow;"></span>
 											Reason?
 										</a>
@@ -142,7 +143,7 @@
 							</ul>                          
 							
 							<!-- The Modal -->
-							<div class="modal" id="generateMonthPlanModal">
+							<div class="modal" id="generateMonthPlanStatusModal">
 								<div class="modal-dialog">
 									<div class="modal-content">
 										<!-- Modal Header -->
@@ -169,8 +170,8 @@
 							</div>
 							<script>
 								$(document).ready(function () {
-									$("#generateMonthPlan").click(function () {
-										$("#generateMonthPlanModal").modal({ backdrop: true });
+									$("#generateMonthPlanStatus").click(function () {
+										$("#generateMonthPlanStatusModal").modal({ backdrop: true });
 									});
 								});
 							</script>
@@ -275,6 +276,5 @@
 		<!-- body-row END -->
 	</div>	
 </body>
-
 {% endblock %}
 </html>

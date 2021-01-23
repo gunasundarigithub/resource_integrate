@@ -7,15 +7,26 @@
 		<div class="col-md-12">
 			<div class="error-template">
 				<br><br><br><br>
-				<h1>Oops!</h1>
-				<h2>404 Not Found</h2>
-				<div class="error-details">
-					Sorry, an error has occured, Requested page not found! Please create the roaster for your team: {{session['team']}}
-				</div>
-				<div class="error-actions">
-					<br><a href="{{ url_for('home.homePage') }}" class="btn btn-warning btn-lg"><span class="fa fa-home"></span>
-						Take Me Home </a>
-					<a href="{{ url_for('shiftDashboard.dashboard') }}" class="btn btn-success btn-lg"><span class="fa fa-table"></span> Take Me To Roaster</a>
+				<div class="card">
+					<div class="card-header bg-warning">
+						<h2>Oops!! 404 Page Not Found Error!!</h2>
+					</div>
+					<div class="card-body">
+						<div class="error-details">
+							Sorry, an error has occured, Requested page not found! Please See following Help details,
+						</div>
+						<hr>
+						<h6><mark style="background-color: sandybrown;">_/\_ Help _/\_ </mark></h6>
+						<hr>
+							<p style="color: orangered;">If you haven't created any shift roaster plan for your team: {{session['team']}} -> Please create the roaster by choosing "Take Me To Roaster" Menu.</p> 
+					</div>
+					<div class="error-actions">
+						<a href="{{ url_for('home.homePage') }}" class="btn btn-primary btn-lg"><span class="fa fa-home"></span>
+							Take Me Home </a>
+						<a href="{{ url_for('shiftDashboard.dashboard') }}" class="btn btn-danger btn-lg"><span class="fa fa-table"></span> Take Me To Roaster</a>
+					</div>
+					<br>
+					</div>
 				</div>
 			</div>
 		</div>

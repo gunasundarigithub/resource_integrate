@@ -6,7 +6,7 @@
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon1.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
     <link href="{{ url_for('static', filename='css/datepicker.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1..slim.min.js"></script>
@@ -29,19 +29,23 @@
         <div class="container" style="width: 100%;">
             <ul class="navbar-nav mr-auto" id="right-nav">
                 <li class="nav-item">
-                    <img src="static/img/shift-roaster-logo-header.png" float="left" class="ui small bordered rounded image navbar-brand" 
+                    <img src="../static/img/shift-roaster-logo-header.png" float="left" class="ui small bordered rounded image navbar-brand" 
                         style="height: 80pt; width: 80pt">
+                </li>
+                <li class="nav-item" id="right-nav-li">
+                    <br><br>
+                    <h6 style="color: white; text-shadow: white;">
+                        <mark style="background-color: chartreuse;">CSE Roaster App</mark> 
+                    </h6>
                 </li>
                 {% if (is_register!=True) and (is_login!=True) %}
                     {% if 'email' in logged_in %}
                         {% if logged_in['email'] %}
                             <li class="nav-item" id="right-nav-li">
-                                <br>
                                 <h6 style="color: white; text-shadow: white;">
-                                    <mark style="background-color: chartreuse;">CSE Roaster </mark> 
-                                    <br><br>
+                                    <br>
                                     <i class="fa fa-user" style="color: white;">
-                                        Welcome To Shift Roaster Application, {{logged_in['username']}}!!
+                                        Welcome To Shift Roaster Appication, <br>{{logged_in['username']}}!!
                                     </i>
                                 </h6>
                             </li>
@@ -51,7 +55,7 @@
             </ul>
             <!--<ul class="nav nav-pills justify-content-end" id="right-nav">-->
             <ul class="nav navbar-nav float-md-right" id="right-nav">
-                {% if (is_register!=True) and (is_login!=True) %}
+                {% if (is_register!=True) and (is_login!=True) and not error %}
                     {% if 'email' in logged_in %}
                         {% if logged_in['email'] %}
                             {% if not is_home %}
@@ -74,7 +78,7 @@
                                     </a>
                                 </li>
                             {% endif %}
-                            {% if not _is_roaster %}
+                            {% if not _is_submit %}
                                 <li class="nav-item dropdown" id="right-nav-li">
                                     <a class="nav-link dropdown-toggle btn btn-default" style="background-color: purple" id="nav-dropdown" data-toggle="dropdown" href="#">
                                         <span class="fa fa-user-circle-o"></span> Profile</a>
@@ -101,12 +105,6 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </li>
-                            {% else %}
-                                <li class="nav-item" id="right-nav-li">
-                                    <a class="{{ 'btn btn-danger' }}" href="{{ url_for('auth.user_logout') }}"> 
-                                        <span class="fa fa-sign-out"></span> LogOut
-                                    </a>
                                 </li>
                             {% endif %}
                         {% endif %}

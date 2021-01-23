@@ -49,6 +49,7 @@ class accessShiftPlan(object):
   Generator Function: That yields shift plan categories for each associates. (ACC|NACC|EACC|OFF|LEAVE|TCS HOLIDAY Plan)
   """
   def key_generator(self):
+    print(f'associates plan in generator: {self.associates_plan}')
     for _plan in self.associates_plan:
       yield _plan
       
@@ -119,7 +120,7 @@ class accessShiftPlan(object):
   Function for downloading contents to excel sheet.
   """
   def save_to_excel(self):
-    _shiftPlan_inst= self.__createInstance__()
+    _shiftPlan_inst = self.__createInstance__()
     if _shiftPlan_inst.check_excel_exists():
       from openpyxl import load_workbook
       import collections  # To Use Named Tuple :)
@@ -127,6 +128,7 @@ class accessShiftPlan(object):
       # Check if correct sheets exists else create new sheet.
       _shiftPlan_inst.check_excel_sheet_exists(wb_inst=_wb)
       _shiftPlan_inst.add_headers_to_sheet()
+      print(f'associate plan : {self.associates_plan}')
       for asso_id, asso in enumerate(self.associates):
         _shiftKeys= (
                 asso_acc_key, asso_nacc_key, asso_eacc_key, asso_off_key, 
@@ -140,7 +142,6 @@ class accessShiftPlan(object):
                 )
         for _key in _shiftKeys:
           self.associates_plan[_key]= {int(_k): _v for _k, _v in self.associates_plan[_key].items() }
-        print('Associate plan : -------- ' + self.associate_plan)
         _shiftPlan_inst.append_contents_to_excel(asso_id, 
                         self.associates_plan[asso_acc_key],
                         self.associates_plan[asso_nacc_key],

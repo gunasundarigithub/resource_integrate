@@ -164,14 +164,15 @@ class CacheFile:
         try:
             docs =[]
             # Perform concatenation on cache file with correct team name.
-            team_cache_file = '_'.join([teamName, self.location])
+            team_cache_file = '-'.join([teamName, self.location])
+            print('team name: ' + str(teamName))
             # Find the cache file by concatenating the parent directory with cache file.
             if os.path.isfile(''.join([conf['app']['cache_location'], team_cache_file])):
                 with open(''.join([conf['app']['cache_location'], team_cache_file]), "r") as f_rd:
                     fc = f_rd.read()
                     if fc:
                         docs = json.loads(fc)
-                        log.debug("Fetching details from cache... " + docs)
+                        log.debug("Fetching details from cache... " + str(docs))
                         print('month: ----------------------', shift_month)
                         if docs:
                             for team_plan in docs:
@@ -183,14 +184,21 @@ class CacheFile:
                                             return fetch_shift_roaster_month[0]
                                         else:
                                             return None
-                            # If 'shift_month' is not set, return all the shift roaster records of the team.
-                            else:
-                                fetch_shift_roaster_month = list(filter(lambda doc: doc['team']==teamName, docs))
-                                return fetch_shift_roaster_month
+                                    elif shift_year:
+                                        fetch_shift_roaster_year = list(filter(lambda doc: doc['year']==shift_year, docs))
+                                        if fetch_shift_roaster_year:
+                                            # Fetch shift roaster plan for a particular year if 'shift_year' is set.
+                                            return fetch_shift_roaster_year
+                                        else:
+                                            return None
+                                    # If 'shift_month' is not set, return all the shift roaster records of the team.
+                                    else:
+                                        fetch_shift_roaster_month = list(filter(lambda doc: doc['team']==teamName, docs))
+                                        return fetch_shift_roaster_month
+                                else:
+                                    log.debug('Team ' + teamName + ' roaster plan is not present in cache.')
                         else:
-                            log.debug('Team ' + teamName + ' roaster plan is not present in cache.')
-                    else:
-                        log.debug('No contents are present in cache ' + team_cache_file)
+                            log.debug('No contents are present in cache ' + team_cache_file)
             else:
                 log.error('Error 404, shift roaster cache file: ' + self.location + ' not found')
             return docs
