@@ -181,8 +181,8 @@ def yearTeamDashboard():
   else:
     dash_status = False
   print('alter dict is --------- > ' + str(_alter_dict))
-  return render_template(conf['templates']['roaster_modal'], logged_in=session, _is_dash=True, dash_status=dash_status, \
-                          roaster=_alter_dict, hostname=host, form=__yearFormInstance__(), yearPlanDash=True)
+  return render_template(conf['templates']['roaster_modal'], logged_in=session, _is_dash=True, dash_status=dash_status, 
+                roaster=_alter_dict, hostname=host, form=__yearFormInstance__(), yearPlanDash=True)
 
 """
 Router API to delete a month shift plan.

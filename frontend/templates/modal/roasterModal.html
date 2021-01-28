@@ -51,7 +51,13 @@
   {% if _is_saved %}
     <div class="alert alert-success alert-dismissible fade show">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <strong>Success!</strong> Roaster Plan Has Been Saved To Your System Excel Successfully!!
+      <strong>Success!</strong> Roaster Plan Has Been <strong>Saved</strong> To Your System Excel Successfully!!
+    </div>
+  {% endif %}
+  {% if _is_deleted %}
+    <div class="alert alert-success alert-dismissible fade show">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong>Success!</strong> Roaster Plan For The Month: {{ logged_in['team'] }} Was <strong>Deleted</strong> Successfully!!
     </div>
   {% endif %}
   {% if yearPlanDash %}
@@ -59,7 +65,7 @@
     <div class="card-header" style="background-color: orange;">
       <h4 style="text-align: center;">Roaster Options</h4>
     </div>
-    <div class="card-body">
+    <div class="card-body" id="roasterBGIMG">
       <div id="collapseRoasterOptions" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionRoasterOptions">
         <div class="card-body">
           <!-- Modal -->
@@ -70,20 +76,20 @@
             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseRoasterTable" aria-expanded="false" aria-controls="collapseRoasterTable">
               <span class="fa fa-dashboard"></span> View {{logged_in['team']}} Roaster
             </button>
-            <button type="button" class="btn btn-info btn-md">
-              <a class="text-white" href="{{ url_for('shiftDashboard.dashboard') }}">
+            <button type="button" class="btn btn-md" style="background-color: violet;">
+              <a type="button" href="{{ url_for('shiftDashboard.dashboard') }}" class="btn btn-md" style="background-color: violet;">
                 <span class="fa fa-table"></span> Roaster Creation Page</a>
             </button>
-            <button type="button" class="btn btn-md" id="saveRoasterToExcel" style="background-color: violet;">
-              <a type="button" id="teamPlan" href="http://{{hostname}}:1793/save_to_excel/{{logged_in['team']}}" class="btn btn-warning btn-md"  style="background-color: violet;">
+            <button type="button" class="btn btn-md" id="saveRoasterToExcel" style="background-color: pink;">
+              <a id="saveTeamPlan" href="http://{{hostname}}:1793/save_to_excel/{{logged_in['team']}}" class="btn btn-md" style="background-color: pink;">
                 <span class="fa fa-save"></span>
-                Save {{logged_in['team']}} Roaster
+                  Save {{logged_in['team']}} Roaster
               </a>
             </button>
             <button type="button" class="btn btn-warning btn-md" id="downloadRoasterStatus">
               <a type="button" id="teamPlan" href="http://{{hostname}}:1793/download/{{logged_in['team']}}" class="btn btn-warning btn-md">
                 <span class="fa fa-download"></span>
-                Download {{logged_in['team']}} Roaster To Excel
+                  Download {{logged_in['team']}} Roaster To Excel
               </a>
             </button>
             <button class="btn btn-danger dropdown-toggle" id="profile" type="button" data-toggle="dropdown">
@@ -121,7 +127,7 @@
                   Downloading the roaster plan might take few minutes, Please wait!!
                 </div>
                 <div class="modal-footer bg-success">
-                  <button type="button" class="btn btn-danger" data-dismiss="modal" style="background-color: greenyellow;">Close</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal" style="background-color: orangered;">Close</button>
                 </div>
               </div>
             </div>
@@ -141,6 +147,15 @@
                   }, 0);
                   return true;
                 });
+              $("#saveTeamPlan").on('click', function () {
+                  var e = this;
+                  setTimeout(function () {
+                    e.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Shift Roaster is Saving To Local Excel....';
+                    e.disabled = true;
+                    e.button('reset');
+                  }, 0);
+                  return true;
+              });
             });
           </script>
 

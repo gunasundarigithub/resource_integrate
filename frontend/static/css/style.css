@@ -77,10 +77,24 @@ body, html {
 }
 
 #submitRoasterBG {
-    background-image: url('../img/shift-scheduling.png') no-repeat center center fixed; 
+    background: url('../img/shift-scheduling.png') no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
+    background-color: darkcyan;
+    -o-background-size: cover;
+    /* Full height */
+    height: 100%;
+}
+
+#roasterBGIMG {
+    background: url('../img/shift-scheduling.png') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    background-color: darkcyan;
+    -o-background-size: cover;
+    /* Full height */
     height: 100%;
 }
 

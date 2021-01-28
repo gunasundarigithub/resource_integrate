@@ -81,3 +81,14 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 2. Set OS path for python, pip and conda with their respective paths in package.
 3. Create a separate virtual environment using the below command.
    - python -m venv (virtual-env-name)
+
+## Note: Follow the below procedure only if you are not able to install python packages either Anaconda - pip or conda. 
+## Anaconda Package has almost all modules in it and very reliable to use.
+## Python Application packages. (I Have zipped required python packages for this app, in case you face any issues.)
+For your reference, You find the list of zipped packges under the 'python-packages-requirement' directory.
+How To Install Package Manually?
+1. Unzip/extract the python zipped packages in your local.
+2. Move the unzip package folder to your venv directory in path as follows,
+   -  path: <your-local-directory>\<venv-name>\Lib\site-packages\
+   -  Ex: E:\Sabs Learning\resource_integrate\shift_plan\Lib\site-packages\
+3. Now Restart your editor and try running the modules.
