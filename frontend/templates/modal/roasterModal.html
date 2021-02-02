@@ -156,6 +156,15 @@
                   }, 0);
                   return true;
               });
+              $("#yearPlan").on('click', function () {
+                var e = this;
+                setTimeout(function () {
+                  e.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Fetching Year Plan....';
+                  e.disabled = true;
+                  e.button('reset');
+                }, 0);
+                return true;
+              });
             });
           </script>
 

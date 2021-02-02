@@ -82,7 +82,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 3. Create a separate virtual environment using the below command.
    - python -m venv (virtual-env-name)
 4. Now Activate the virtual environment using the below command,
-   - <venv-path>\Scripts\activate
+   - venv-path\Scripts\activate
 
 ## Note: Follow the below procedure only if you are not able to install python packages either Anaconda - pip or conda. 
 ## Anaconda Package has almost all modules in it and very reliable to use.
