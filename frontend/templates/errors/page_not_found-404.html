@@ -6,7 +6,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="error-template">
-				<br><br><br><br>
+				<br><br><br><br><br><br>
 				<div class="card">
 					<div class="card-header bg-warning">
 						<h2>Oops!! 404 Page Not Found Error!!</h2>
@@ -18,13 +18,31 @@
 						<hr>
 						<h6><mark style="background-color: sandybrown;">_/\_ Help _/\_ </mark></h6>
 						<hr>
-							<p style="color: orangered;">If you haven't created any shift roaster plan for your team: {{session['team']}} -> Please create the roaster by choosing "Take Me To Roaster" Menu.</p> 
+						<h7><mark style="background-color: darkseagreen; text-align: center;">Description</mark></h7>
+							<ul>
+								<li><p style="color: orangered;">If you haven't created any shift roaster plan for your team: {{session['team']}} -> Please create the roaster by choosing "Take Me To Roaster" Menu.</p> </li>
+								<li><p style="color: green;">If you have already created shift roaster plan for your team: {{session['team']}} -> Please save your roaster by choosing "Save {{session['team']}} Roaster" Menu.</p> </li>
+							</ul>	
 					</div>
 					<div class="error-actions">
 						<a href="{{ url_for('home.homePage') }}" class="btn btn-primary btn-lg"><span class="fa fa-home"></span>
 							Take Me Home </a>
 						<a href="{{ url_for('shiftDashboard.dashboard') }}" class="btn btn-danger btn-lg"><span class="fa fa-table"></span> Take Me To Roaster</a>
+						<a href="http://{{hostname}}:1793/save_to_excel/{{logged_in['team']}}" id="saveTeamPlan" class="btn btn-success btn-lg"><span class="fa fa-save"></span> Save {{logged_in['team']}} Roaster</a>
 					</div>
+					<script>
+						$(document).ready(function () {
+							$("#saveTeamPlan").on('click', function () {
+							var e = this;
+							setTimeout(function () {
+								e.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Shift Roaster is Saving To Local Excel....';
+								e.disabled = true;
+								e.button('reset');
+							}, 0);
+							return true;
+							});
+						}); 
+					</script>
 					<br>
 					</div>
 				</div>
