@@ -15,7 +15,7 @@ import pandas as pd
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Border, Side, PatternFill, Font, colors
 import sys
-#sys.path.append('E:\\Saba Learning\\resource_integrate')
+sys.path.append('C:\\ctpt\\ctpt-backup\\resource_integrate')
 from util import util
 
 # Setup Logging.
@@ -83,7 +83,7 @@ class formatExcel():
         _ws = self.__worksheet__(_wb)
         if not self.__existing_dataframe__().empty:
             # Fetch the current cell that you need to fill.
-            print(f'value to e filled in the cell --> {value}')
+            print(f'value to be filled in the cell --> {value}')
             _curr_cell = _ws.cell(column=col, row=row, value=value)
             if col==1 or col==2:
                 self.header = False    # Setting header flag to False, for Month, Shore and Associate name values.
