@@ -9,7 +9,7 @@
 		<div class="content-section">
 			<br>{{ utils.flashed_messages() }}<br>
 			<div class="center">
-				<form action="" method="post" style="font-weight: bold;" novalidate="">
+				<form class="form form-horizontal" method="post" role="form" style="font-weight: bold;">
 					<br>
 					{{ wtf.form_errors(form, hiddens="only") }}
 					{{form.csrf_token}}
@@ -21,7 +21,21 @@
 					<br>
 					{{ wtf.form_field(form.email) }}
 					{{ wtf.form_field(form.password) }}
-					<a class="{{ 'btn btn-info'}}" style="height: fit-content; width: fit-content;">{{wtf.form_field(form.submit) }}</a>
+					<a class="{{ 'btn btn-info'}}" style="height: fit-content; width: fit-content;" id="login">{{wtf.form_field(form.submit) }}</a>
+					<script>
+						$(document).ready(function () {
+							$("#login").on('click', function () {
+								var e = this;
+								setTimeout(function () {
+									e.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Signing In....';
+									e.disabled = true;
+									e.button('reset');
+								}, 0);
+								location.reload(true); 
+								return true;
+							});
+						});
+					</script>
 				</form>
 			</div>
 			<div class="login-signup center">
