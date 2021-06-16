@@ -13,7 +13,7 @@ from flask import Flask, render_template, abort, request
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap 
 import sys
-sys.path.append('E:\\Sabs Learning\\resource_integrate')
+sys.path.append('C:\\ctpt\\ctpt-backup\\resource_integrate')
 # Internal Modules.
 from util import util
 from backend import shift_load_excel
