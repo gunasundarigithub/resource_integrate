@@ -20,8 +20,8 @@ from openpyxl import load_workbook
 import traceback
 import os
 import sys
-#sys.path.append('E:\\Sabs Learning\\resource_integrate\\')
-#sys.path.append('E:\\Sabs Learning\\resource_integrate\\frontend')
+#sys.path.append('C:\\ctpt\\ctpt-backup\\resource_integrate\\')
+#sys.path.append('C:\\ctpt\\ctpt-backup\\resource_integrate\\frontend')
 
 # ------------------------------------------- User-defined Modules --------------------------------------------------------------------
 from . import shift_dashboard
@@ -92,7 +92,8 @@ def dashboard(shift_plan_id=''):
       _is_roaster = True # Set Create Roaster Flag to True Initially.
       _validation = False   # Set form validation params are valid, Set Initially False.
       if __formInstance__().validate_on_submit():
-        _validation = True  # Set validation flag to True as form submission is valid.
+         # Set validation flag to True as form submission is valid.
+        _validation = True 
         team_years_cache.cache_shift_plan_year(__formInstance__().year.data, __formInstance__().teamName.data)
         _team_month_plan = shift_plan_cache.get_shift_plan_cache(__formInstance__().teamName.data, 
                 shift_year=__formInstance__().year.data, shift_month=__formInstance__().month.data)
@@ -104,9 +105,10 @@ def dashboard(shift_plan_id=''):
                         _is_roaster=_is_roaster, _shift_id=_team_month_plan['planID'], _validation=_validation)
         elif session['team']!=__formInstance__().teamName.data:
           flash('You belong to Team ' + session['team'] + ' and not ' + __formInstance__().teamName.data + ', \
-                  please select your team as ' + session['team'] + '!', category='warning')
+                 please select your team as ' + session['team'] + '!', category='warning')
         else:
-          _is_roaster = False   # Set Create Roaster Flag to False, if team Month does not exists.
+          # Set Create Roaster Flag to False, if team Month does not exists.
+          _is_roaster = False
           log.debug("No Caching done for the month : " + __formInstance__().month.data + ", so processing to cache it!" )
           roaster_dict.update({
             'month': __formInstance__().month.data,
@@ -116,11 +118,11 @@ def dashboard(shift_plan_id=''):
             'associates': team_members
           })
           return render_template(conf['templates']['submit_roaster'], form=__formInstance__(), logged_in=session, _is_submit=True, \
-                                  _is_roaster=_is_roaster, month=roaster_dict['month'], team_members=team_members,\
-                                  _validation=True, _team_plan_exists=_roasterExists, hostname=host, _is_download=True)
+                       _is_roaster=_is_roaster, month=roaster_dict['month'], team_members=team_members,\
+                       _validation=True, _team_plan_exists=_roasterExists, hostname=host, _is_download=True)
       else:
         return render_template(conf['templates']['shift_roaster'], form=__formInstance__(), logged_in=session, _is_roaster=_is_roaster, \
-                              _validation=_validation, _team_plan_exists=_roasterExists, hostname=host, _is_download=True)
+                     _validation=_validation, _team_plan_exists=_roasterExists, hostname=host, _is_download=True)
     elif team_members is None:
       flash("No team: " + __formInstance__().teamName.data + " in cache file: " + conf['app']['team_members_cache_file'] + "!", category="error")
     else:
@@ -200,11 +202,13 @@ def deleteMonthPlan(month):
 @shift_dashboard.route('/save_to_excel/<teamName>')
 def save_to_local_excel(teamName):
   try:
-    _roaster_exists = False   # Set roaster exists flag to False, to ensure no month roaster exists in excel
+    _roaster_month_exists = False   # Set roaster exists flag to False, to ensure no month roaster exists in excel
     _saved_to_excel = False   # Set contents saved to excel False, Assume no contents saved/exists in excel.
     # Assign the local excel file to check if it exists.
     filename = '-'.join([session[const.SESSION_COOKIES.TEAM], 'ACC', 'SHIFT', 'PLAN.xlsx'])
     filepath = util.find_file(filename, os.getcwd())
+    # Set roaster exists flag to True if excel roaster exists else set to False.
+    _roaster_exists = True if filepath else False
     _team_plan = shift_plan_cache.get_shift_plan_cache(teamName)
     if _team_plan:
       log.debug(str(teamName) + ' Team plan : ' + str(_team_plan))
@@ -217,14 +221,16 @@ def save_to_local_excel(teamName):
           log.info('Saving the contents from UI to local file..')
           log.info('Returning from request..')
         else:
-          _roaster_exists = True    # Set roaster exists to True, as already month roaster exists in excel.
+          _roaster_month_exists = True    # Set roaster exists to True, as already month roaster exists in excel.
           log.debug(each_team_plan['month'] + ' already exists, processing for other months!')
       log.info('Roaster Plan Contents Are Saved To Your Local Successfully!!')
       _saved_to_excel = True    # Set this falg to True now, as it has saved the contents to excel.
     else:
       log.info(f'Roaster Plan for the team : {teamName} does not exists!!')
-      return render_template(conf['templates']['page_not_found'], title='page_not_found', hostname=host, teamName=teamName, error=True), 404
-    return render_template(conf['templates']['roaster_modal'], logged_in=session, _is_dash=True, _is_saved=_saved_to_excel, hostname=host, form=__yearFormInstance__())
+      return render_template(conf['templates']['page_not_found'], title='page_not_found', logged_in=session, \
+        hostname=host, teamName=teamName, error=True), 404
+    return render_template(conf['templates']['roaster_modal'], logged_in=session, _is_dash=True, \
+      _is_saved=_saved_to_excel, _is_roaster=_roaster_month_exists, hostname=host, form=__yearFormInstance__())
   except Exception as e:
     log.error("Exception occured while saving the shift roaster to local excel")
     log.error(e)
@@ -236,14 +242,17 @@ Router API to download Team shift plan to excel.
 @shift_dashboard.route('/download/<teamName>')
 def download_excel(teamName):
   try:
+    
     filename = '-'.join([session[const.SESSION_COOKIES.TEAM], 'ACC', 'SHIFT', 'PLAN.xlsx'])
+    log.debug('filename : ' + str(filename))
     filepath = util.find_file(filename, os.getcwd())
     log.debug('filepath: ------ ' + str(filepath))
     if filepath is not None:
       log.error(f"404 error, returning from request")      
     else:      
       log.error("No roaster plan created for team: " + session[const.SESSION_COOKIES.TEAM])
-      return render_template(conf['templates']['page_not_found'], title='page_not_found', hostname=host, teamName=teamName, error=True), 404
+      return render_template(conf['templates']['page_not_found'], title='page_not_found', logged_in=session, hostname=host, \
+        teamName=teamName, error=True), 404
     return send_file(filepath[0], as_attachment=filename)
     
   except Exception as exp:
