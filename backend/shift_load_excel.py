@@ -17,8 +17,8 @@ from openpyxl import load_workbook, Workbook
 from openpyxl.styles import Alignment, colors
 import os
 import sys
-sys.path.append('E:\\Sabs Learning\\resource_integrate\\backend')
-sys.path.append('E:\\Sabs Learning\\resource_integrate')
+sys.path.append('C:\\ctpt\\ctpt-backup\\resource_integrate\\backend')
+sys.path.append('C:\\ctpt\\ctpt-backup\\resource_integrate')
 from format_excel import formatExcel
 from util import util
 
@@ -211,15 +211,24 @@ class ACCShiftPlan():
             self.log.critical(f'No {sh_type} plan given for associate id: {str(name)}')
         # Fetch the counts of each shifts (ACC, NACC, EACC, GEN, OFF, LEAVE)
         _shift_count = util.fetch_shift_counts(dataframe=_ex_df, df_exists=_is_df)
+        # SUM INDEX FOR ACC, GEN HOURS
         col_sum_index = const.column_start + len(days_in_month[0]) + ps_index
+        # TOTAL SHIFT HOURS ON ALL SHIFTS
         col_hours_index = col_sum_index + len(cfg['shift_category'])
+        # SUM INDEX FOR NACC & EACC SHIFT HOURS.
+        col_nacc_eacc_index = col_sum_index + 4
+        self.log.debug(f'col sum index : {col_sum_index}')
+        self.log.debug(f'col hours index : {col_hours_index}')
         # Evaluate column index for associate total hours for the month (ACC, NACC, EACC & GEN)
-        col_total_hours_index = const.column_start + len(days_in_month[0]) + len(cfg['shift_category']) + 3
+        col_total_hours_index = const.column_start + len(days_in_month[0]) + len(cfg['shift_category']) + 5
         self.format_excel_inst.fill_cell_values(col=col_sum_index, row=start_row, value=_shift_count[sh_type], shift=sh_type)
         # Fill Shift Category (ACC, NACC, EACC & GEN) hours
         if _shift_hour:
-            self.format_excel_inst.fill_cell_values(col=col_hours_index, row=start_row, value=_shift_count[_shift_hour], 
-                shift=sh_type)
+            # Using Ternary Operator to fill sum hour values for NACC/EACC & ACC/GEN.
+            self.format_excel_inst.fill_cell_values(col=col_nacc_eacc_index, row=start_row, value=_shift_count[_shift_hour],
+                shift=sh_type)  if sh_type==cfg.get('shift_category')[5] or sh_type==cfg.get('shift_category')[6] else \
+                self.format_excel_inst.fill_cell_values(col=col_hours_index, row=start_row, value=_shift_count[_shift_hour], 
+                    shift=sh_type)
             self.format_excel_inst.fill_cell_values(col=col_total_hours_index, row=start_row, value=_shift_count['TOTAL-HOURS'], 
                 shift=sh_type, bgcolor=const.HSHIFT_TOTAL_HOURS)
         self.log.debug(f'Filled Cells with {sh_type} to excel!!')
