@@ -14,7 +14,7 @@ from flask import render_template, abort, session, flash, redirect, url_for
 # Customized Modules
 from . import home
 import sys
-sys.path.append('E:\\Sabs Learning\\resource_integrate')
+sys.path.append('C:\\ctpt\\ctpt-backup\\resource_integrate')
 from util import util
 
 conf = util.get_conf()
