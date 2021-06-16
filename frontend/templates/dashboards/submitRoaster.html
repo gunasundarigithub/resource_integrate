@@ -120,7 +120,8 @@
                                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                                         <div class="btn-group mr-2" role="group" aria-label="First group">
                                             <div class="dropdown">
-                                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> OTHER SHIFT PLANS
+                                                <button class="btn btn-default dropdown-toggle" type="button" style="color: white; background-color: palevioletred;" 
+                                                    id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> OTHER SHIFT PLANS
                                                     <i class="fa fa-calendar"></i>
                                                 </button>
                                                 <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
@@ -139,8 +140,9 @@
                                         </div>
                                         <div class="btn-group mr-2" role="group" aria-label="Second group">
                                             <div class="dropdown">
-                                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> OTHER OFF PLANS
-                                                    <i class="fa fa-calendar"></i>
+                                                <button class="btn btn-default dropdown-toggle" type="button" style="color: white; background-color: palevioletred;" 
+                                                    id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> OTHER OFF PLANS
+                                                        <i class="fa fa-calendar"></i>
                                                 </button>
                                                 <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
                                                     <li>
@@ -166,22 +168,22 @@
                                         <h5 class="card-header"><b>{{asso}}</b></h5>
                                         <div class="card-group">
                                             <div class="card">
-                                                <h5 class="card-header bg-success text-white">ACC Plan</h5>
-                                                <div class="card-body" style="background-color: chartreuse;">
+                                                <h5 class="card-header bg-success text-white">ACC PLAN</h5>
+                                                <div class="card-body" style="background-color: lavender;">
                                                     <h5 class="card-title">{{ month }}</h5>
                                                         <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_AccPlan" placeholder="Pick Multiple Dates" required="" size="20">
                                                 </div>
                                             </div>
                                             <div class="card" id="EAPlan">
-                                                <h5 class="card-header bg-primary text-white">EVENING Plan</h5>
-                                                <div class="card-body" style="background-color: chartreuse;">
+                                                <h5 class="card-header text-white" style="background-color: olivedrab;">EVENING PLAN</h5>
+                                                <div class="card-body" style="background-color: lavender;">
                                                     <h5 class="card-title">{{ month }}</h5>
                                                     <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_EAPlan" placeholder="Pick Multiple Dates" size="20">
                                                 </div>
                                             </div>
                                             <div class="card" id="NAPlan">
-                                                <h5 class="card-header bg-info text-white">NIGHT Plan</h5>
-                                                <div class="card-body" style="background-color: chartreuse;">
+                                                <h5 class="card-header text-white" style="background-color: rosybrown;">NIGHT PLAN</h5>
+                                                <div class="card-body" style="background-color: lavender;">
                                                     <h5 class="card-title">{{ month }}</h5>
                                                     <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_NAPlan" placeholder="Pick Multiple Dates" size="20">
                                                 </div>
@@ -189,22 +191,22 @@
                                         </div>
                                         <div class="card-group">
                                             <div class="card">
-                                                <h5 class="card-header bg-secondary text-white">OFF Plan</h5>
-                                                <div class="card-body" style="background-color: chartreuse;">
+                                                <h5 class="card-header bg-secondary text-white">OFF PLAN</h5>
+                                                <div class="card-body" style="background-color: lavender;">
                                                     <h5 class="card-title">{{ month }}</h5>
                                                     <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_OffPlan" placeholder="Pick Multiple Dates" required="" size="20">
                                                 </div>
                                             </div>
                                             <div class="card" id="leavePlan">
-                                                <h5 class="card-header bg-danger text-white">LEAVE Plan</h5>
-                                                <div class="card-body" style="background-color: chartreuse;">
+                                                <h5 class="card-header bg-danger text-white">LEAVE PLAN</h5>
+                                                <div class="card-body" style="background-color: lavender;">
                                                     <h5 class="card-title">{{ month }}</h5>
                                                     <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_LeavePlan" placeholder="Pick Multiple Dates" size="20">
                                                 </div>
                                             </div>
                                             <div class="card" id="tcsHPlan">
-                                                <h5 class="card-header bg-warning text-white">TCS Holiday</h5>
-                                                <div class="card-body" style="background-color: chartreuse;">
+                                                <h5 class="card-header text-white" style="background-color: green;">TCS Holiday</h5>
+                                                <div class="card-body" style="background-color: lavender;">
                                                     <h5 class="card-title">{{ month }}</h5>
                                                     <span class="fa fa-calendar"></span><br><input type="text" class="form-control date" id="date" name="{{asso}}_TCS_Holiday_Plan" placeholder="Pick Multiple Dates" size="20">
                                                 </div>
