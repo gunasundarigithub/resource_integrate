@@ -52,6 +52,7 @@
     <div class="alert alert-success alert-dismissible fade show">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
       <strong>Success!</strong> Roaster Plan Has Been <strong>Saved</strong> To Your System Excel Successfully!!
+      <br>Use Dashboard download option to download your roaster plan to excel.
     </div>
   {% endif %}
   {% if _is_deleted %}
@@ -71,29 +72,33 @@
           <!-- Modal -->
           <!-- Trigger the modal with a button -->
           <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-success btn-md" id="checkRoasterStatus">
-              <span class="fa fa-vcard"></span> Roaster Status</button>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseRoasterTable" aria-expanded="false" aria-controls="collapseRoasterTable">
-              <span class="fa fa-dashboard"></span> View {{logged_in['team']}} Roaster
+            <button type="button" class="btn btn-md" id="helpDashInfo" style="color: white; background-color: royalblue">
+              <span class="fa fa-info"></span> <br> Info</button>
+            <button type="button" class="btn btn-md" id="checkRoasterStatus" style="color: white; background-color: green;">
+              <span class="fa fa-vcard"></span> <br>Roaster Status</button>
+            <button class="btn btn-md" type="button" data-toggle="collapse" data-target="#collapseRoasterTable" aria-expanded="false" aria-controls="collapseRoasterTable"
+              style="background-color: slateblue; color: white;">
+              <span class="fa fa-dashboard"></span> <br>View {{logged_in['team']}} Roaster
             </button>
-            <button type="button" class="btn btn-md" style="background-color: violet;">
+            <button type="button" class="btn btn-md" style="background-color: violet; color: white;">
               <a type="button" href="{{ url_for('shiftDashboard.dashboard') }}" class="btn btn-md" style="background-color: violet;">
-                <span class="fa fa-table"></span> Roaster Creation Page</a>
+                <span class="fa fa-table"></span> <br>Create Roaster</a>
             </button>
-            <button type="button" class="btn btn-md" id="saveRoasterToExcel" style="background-color: pink;">
-              <a id="saveTeamPlan" href="http://{{hostname}}:1793/save_to_excel/{{logged_in['team']}}" class="btn btn-md" style="background-color: pink;">
+            <button type="button" class="btn btn-md" id="saveRoasterToExcel" style="background-color: steelblue; color: white;">
+              <a type="button" class="btn btn-mg" id="saveTeamPlan" href="http://{{hostname}}:1793/save_to_excel/{{logged_in['team']}}"
+                style="color: white;">
                 <span class="fa fa-save"></span>
-                  Save {{logged_in['team']}} Roaster
+                  <br>Save {{logged_in['team']}} Roaster To Excel
               </a>
             </button>
             <button type="button" class="btn btn-warning btn-md" id="downloadRoasterStatus">
               <a type="button" id="teamPlan" href="http://{{hostname}}:1793/download/{{logged_in['team']}}" class="btn btn-warning btn-md">
                 <span class="fa fa-download"></span>
-                  Download {{logged_in['team']}} Roaster To Excel
+                  <br>Download {{logged_in['team']}} Roaster
               </a>
             </button>
             <button class="btn btn-danger dropdown-toggle" id="profile" type="button" data-toggle="dropdown">
-              <span class="fa fa-user-circle-o"></span> Look On To Profile <span class="caret"></span>
+              <span class="fa fa-user-circle-o"></span> <br>Look On To Profile <span class="caret"></span>
             </button>  
             <ul class="dropdown-menu" role="menu" aria-labelledby="profile">
               <li role="menu" class="bg-success"><span class="fa fa-user-o" id="users"></span><i style="font-weight: bold;"> {{ logged_in['username'].upper() }} </i></li>
@@ -168,6 +173,41 @@
             });
           </script>
 
+          <!-- Dashboard Help Info -->
+          <div class="modal" id="helpDashInfoModal">
+            <div class="modal-dialog">
+              <div class="modal-content" style="width: 135%;">
+                <!-- Modal Content -->
+                <div class="modal-header bg-info">
+                  <h4 class="modal-title text-white">__/\__ Dashboard Help Info __/\__</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <ol>
+                    <li><mark class="bg-info" style="color: white;"><span class="fa fa-vcard"></span> Roaster Status</mark> - 
+                      <i>To view the status team's shift roaster plan if created/not created.</i>
+                    </li><br>
+                    <li><mark style="background-color: saddlebrown; color: white;"><span class="fa fa-dashboard"></span> View {{logged_in['team']}} Roaster</mark> - 
+                      <i>To view team's shift roaster plan in a dashboard.</i>
+                    </li><br>
+                    <li><mark style="background-color: orange;"><span class="fa fa-table"></span> Create Roaster</mark> -
+                      <i>To Create new month roaster plan for the team.</i>
+                    </li><br>
+                    <li><mark style="background-color: steelblue; color: white;"><span class="fa fa-save"></span> Save {{logged_in.get('team')}} Roaster</mark> -
+                      <i>To save team roaster plan to local excel.</i>
+                    </li><br>
+                    <li><mark class="bg-warning"><span class="fa fa-download"></span> Download {{logged_in.get('team')}} Roaster</mark> -
+                      <i>To download team roster plan in UI.</i>
+                    </li><br>
+                  </ol>
+                </div>
+                <div class="modal-footer" style="background-color: royalblue;">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Roaster Options Modal -->
           <div class="modal" id="checkRoasterModal">
             <div class="modal-dialog">
@@ -179,8 +219,8 @@
                 </div>
                 {% if dash_status %}
                   <div class="modal-body text-success">
-                    Year: <mark class="bg-info" style="font-weight: bold;"> {{ form.year.data }}</mark>
-                      <p>{{logged_in['team']}} Roaster was created for following months,</p>
+                    <strong>Year :</strong> <mark style="font-weight: bold; background-color: palegreen;"> {{ form.year.data }}</mark>
+                      <p class="text-danger"><i>{{logged_in['team']}} Roaster was created for following months,</i></p>
                       <table class="table table-info table-striped">
                         <thead>
                           <tr>
@@ -198,7 +238,7 @@
                         {% endfor %}
                       </table>
                   <br>
-                  <p>Please check {{logged_in['team']}} Roaster,
+                  <p><i>Please check {{logged_in['team']}} Roaster,</i>
                     <a class="btn btn-primary" data-toggle="collapse" data-target="#collapseRoasterTable" aria-expanded="false" aria-controls="collapseRoasterTable">
                       View {{logged_in['team']}} Roaster
                     </a>
@@ -226,7 +266,6 @@
               <h4 class="card-header"><mark style="background-color: palegreen;">{{ logged_in['team'] }} Shift
                   Roaster</mark></h4>
               <div class="card-body" style="object-fit: cover;">
-
                 <!-- Customize Search Tab -->
                 <h5>Customize Filter Table</h5>
                 <p>Type something in the input field to search the table for Month Roaster, Shore, Associate etc:</p>
@@ -284,13 +323,13 @@
                                 {% if _v == 'A' %}
                                   <td style="background-color: orange;">{{ _v }}</td>
                                 {% elif _v == 'G' %}
-                                  <td style="background-color: yellow;">{{ _v }}</td>
+                                  <td style="background-color: hotpink;">{{ _v }}</td>
                                 {% elif _v == 'O' %}
                                   <td style="background-color: grey;">{{ _v }}</td>
                                 {% elif _v == 'L' %}
                                   <td style="background-color: red;">{{ _v }}</td>
                                 {% elif _v == 'H' %}
-                                  <td style="background-color: greenyellow;">{{ _v }}</td>
+                                  <td style="background-color: green;">{{ _v }}</td>
                                 {% elif _v == 'N' %}
                                   <td style="background-color: skyblue;">{{ _v }}</td>
                                 {% elif _v == 'E' %}
@@ -298,7 +337,7 @@
                                 {% elif _k == 'ACC' %}
                                   <td style="background-color: orange;">{{ _v }}</td>
                                 {% elif _k == 'GEN' %}
-                                  <td style="background-color: yellow;">{{ _v }}</td>
+                                  <td style="background-color: hotpink;">{{ _v }}</td>
                                 {% elif _k == 'OFF' %}
                                   <td style="background-color: grey;">{{ _v }}</td>
                                 {% elif _k == 'NACC' %}
@@ -308,17 +347,17 @@
                                 {% elif _k == 'LEAVE' %}
                                   <td style="background-color: red;">{{ _v }}</td>
                                 {% elif _k == 'HOLIDAY' %}
-                                  <td style="background-color: greenyellow;">{{ _v }}</td>
+                                  <td style="background-color: green;">{{ _v }}</td>
                                 {% elif _k == 'ACC-HOURS' %}
                                   <td style="background-color: orange;">{{ _v }}</td>
                                 {% elif _k == 'GEN-HOURS' %}
-                                  <td style="background-color: yellow;">{{ _v }}</td>
+                                  <td style="background-color: hotpink;">{{ _v }}</td>
                                 {% elif _k == 'NACC-HOURS' %}
-                                  <td style="background-color: yellow;">{{ _v }}</td>
+                                  <td style="background-color: skyblue;">{{ _v }}</td>
                                 {% elif _k == 'EACC-HOURS' %}
-                                  <td style="background-color: yellow;">{{ _v }}</td>
+                                  <td style="background-color: palevioletred;">{{ _v }}</td>
                                 {% elif _k == 'TOTAL-HOURS' %}
-                                  <td style="background-color: rebeccapurple;">{{ _v }}</td>
+                                  <td style="background-color: rebeccapurple; color: white;">{{ _v }}</td>
                                 {% endif %}
                               {% endfor %}
                               {% if loop.index == 1 %}
@@ -335,16 +374,16 @@
                   <div id="deletePlanModal" class="modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
-                        <div class="modal-header flex-column">
+                        <div class="modal-header flex-column bg-info">
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>		
-                          <h4 class="modal-title w-100">
-                            <mark style="background-color: yellow;">
+                          <h4 class="modal-title w-50">
+                            <mark class="bg-warning">
                               <span class="fa fa-warning"></span>  Warning Alert
                             </mark>
                           </h4>	
                         </div>
                         <div class="modal-body">
-                          <p class="text-danger">Do you really want to delete this {{ month_plan }} month plan? This process cannot be undone.</p>
+                          <p class="text-danger"><i><b>Do you really want to delete this {{ month_plan }} month plan? This process cannot be undone.</b></i></p>
                         </div>
                         <div class="modal-footer justify-content-center">
                           <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">
@@ -408,6 +447,11 @@
         $(document).ready(function () {
           $("#checkRoasterStatus").click(function () {
             $("#checkRoasterModal").modal({ backdrop: true });
+          });
+        });
+        $(document).ready(function () {
+          $("#helpDashInfo").click(function () {
+            $("#helpDashInfoModal").modal({ backdrop: true });
           });
         });
       </script>
