@@ -26,11 +26,11 @@
     {% else %}    
         <div class="navbar navbar-expand-sm bg-primary navbar-dark topnav" role="navigation" id="navbarHome">
     {% endif %}
-        <div class="container" style="width: 100%;">
+        <div class="container" style="width: 100%; height: 75%;">
             <ul class="navbar-nav mr-auto" id="right-nav">
                 <li class="nav-item">
                     <img src="../static/img/shift-roaster-logo-header.png" float="left" class="ui small bordered rounded image navbar-brand" 
-                        style="height: 80pt; width: 80pt">
+                        style="height: 70pt; width: 70pt">
                 </li>
                 <li class="nav-item" id="right-nav-li">
                     <br><br>
@@ -43,9 +43,9 @@
                         {% if logged_in['email'] %}
                             <li class="nav-item" id="right-nav-li">
                                 <h6 style="color: white; text-shadow: white;">
-                                    <br>
+                                    <br><br>
                                     <i class="fa fa-user" style="color: white;">
-                                        Welcome To Shift Roaster Appication, <br>{{logged_in['username']}}!!
+                                        Welcome To Shift Roaster Appication, {{logged_in['username']}}!!
                                     </i>
                                 </h6>
                             </li>
