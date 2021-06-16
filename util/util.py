@@ -57,7 +57,7 @@ class excelConstants():
     ('2020', '2020'),
     ('2021', '2021')
   ]
-  SHIFT_CATEGORY_HOURS = ['ACC', 'GEN']
+  SHIFT_CATEGORY_HOURS = ['ACC', 'GEN', 'NACC', 'EACC']
   SHIFT_PLAN = collections.namedtuple('SHIFT_PLAN', 'ACC OFF LEAVE TCS NACC EACC')
   COOKIES = collections.namedtuple('COOKIES', 'EMAIL USERNAME TEAM MONTH EXCELFILE')
   SHIFT_CATEGORY = SHIFT_PLAN(ACC='AccPlan', OFF='OffPlan', LEAVE='LeavePlan', TCS='TCS_Holiday_Plan', \
@@ -89,7 +89,7 @@ Get YAML configuration file based on ENV.
 """
 def get_conf():
   current_dir = os.path.dirname(os.path.realpath(__file__))
-  conf_location = 'E:\\Sabs Learning\\resource_integrate\\config\\config.yml'
+  conf_location = 'C:\\ctpt\\ctpt-backup\\resource_integrate\\config\\config.yml'
   config ={}
   with open (conf_location) as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
@@ -265,7 +265,6 @@ def check_month_exists_excel(month, filename, dir_path):
   if os.path.isfile(filename):
     # Concat the difference to one object, hence we can collect all excel sheets at one place. (use pandas concat())
     df = pd.concat(pd.read_excel(_filePath[0], sheet_name=None, engine='openpyxl'), ignore_index=True)
-    print('df : ' + str(df))
     df_m = df[df["Month"]==month] # OR use loc/iloc to fetch the month values.
     # df_m = df.loc[(df.Month == month)]
     # df_m = df.iloc[(df.Month == month).values]
