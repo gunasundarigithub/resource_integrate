@@ -84,6 +84,12 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 4. Now Activate the virtual environment using the below command,
    - venv-path\Scripts\activate
 
+## Enable Intellisense VSCode
+1. In vs code open command palette (Ctrl+Shift+p).
+2. There select Python:Select Interpreter.
+3. Close your vs code and then try. 
+4. If it still does not work. Try again by changing to:- Python:Build Workspace symbols and re-open the vs code. That's all i did and got intelligence enabled.
+
 ## Note: Follow the below procedure only if you are not able to install python packages either Anaconda - pip or conda. 
 ## Anaconda Package has almost all modules in it and very reliable to use.
 ## Python Application packages. (I Have zipped required python packages for this app, in case you face any issues.)
