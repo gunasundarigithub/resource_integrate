@@ -5,15 +5,15 @@ local:
   enableCompareLog: True
   app_name: app-shift-mgnt
   shift_category: ['ACC', 'GEN', 'OFF', 'LEAVE', 'HOLIDAY', 'NACC', 'EACC']
-  shift_category_hours: ['ACC-HOURS', 'NACC-HOURS', 'EACC-HOURS', 'GEN-HOURS', 'TOTAL-HOURS']
-  proj_dir: E:\\Sabs Learning\\resource_integrate
+  shift_category_hours: ['ACC-HOURS', 'GEN-HOURS', 'NACC-HOURS', 'EACC-HOURS', 'TOTAL-HOURS']
+  proj_dir: C:\\ctpt\\ctpt-backup\\resource_integrate
   app:
-    cache_location: E:\\Sabs Learning\\resource_integrate\\cache\\
+    cache_location: C:\\ctpt\\ctpt-backup\\resource_integrate\\cache\\
     user_cache_file: user.json
     shiftplan_cache_file: shift_plan.json
     team_members_cache_file: Team-Members.json
     team_years_cache_file: Team-Shift-Plan-Years.json
-    download_excel: E:\\Sabs Learning\\resource_integrate\\frontend\\
+    download_excel: C:\\ctpt\\ctpt-backup\\resource_integrate\\frontend\\
     secret_key: bbe51d1c35fc70d801d63143b7363d7f
   templates:
     forbidden: errors/forbidden-403.html
@@ -27,7 +27,7 @@ local:
     submit_roaster: dashboards/submitRoaster.html
     roaster_modal: modal/roasterModal.html
    
-  log_path: E:\\Sabs Learning\\resource_integrate\\backend\\logs\\app-shift-mgnt.log
+  log_path: C:\\ctpt\\ctpt-backup\\resource_integrate\\backend\\logs\\app-shift-mgnt.log
   logging:
     disable_existing_loggers: False
     version: 1
@@ -42,7 +42,7 @@ local:
         stream: ext://sys.stdout
         
       file:
-        filename: E:\\Sabs Learning\\resource_integrate\\backend\\logs\\app-shift-mgnt.log
+        filename: C:\\ctpt\\ctpt-backup\\resource_integrate\\backend\\logs\\app-shift-mgnt.log
         class: logging.handlers.RotatingFileHandler
         formatter: simple
         maxBytes: 10485760 #1024*2014*10=10 MB
