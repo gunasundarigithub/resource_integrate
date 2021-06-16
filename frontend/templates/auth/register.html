@@ -40,7 +40,22 @@
 					{{ wtf.form_field(form.password) }}
 					{{ wtf.form_field(form.confirmPassword) }}
 					{{ wtf.form_field(form.team) }}
-					<a class="{{ 'btn btn-info'}}" style="height: fit-content; width: fit-content;">{{wtf.form_field(form.submit) }}</a>
+					<a class="{{ 'btn btn-info'}}" style="height: fit-content; width: fit-content;" id="register-button">{{wtf.form_field(form.submit) }}	
+					</a>					
+					<script>
+						$(document).ready(function () {
+							$("#register-button").on('click', function () {
+								var e = this;
+								setTimeout(function () {
+									e.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Registering User....';
+									e.disabled = true;
+									e.button('reset');
+								}, 0);
+								location.reload(true)
+								return true;
+							});
+						});
+					</script>
 				</form>
 			</div>
 			<div class="login-signup center">
