@@ -18,7 +18,7 @@ import sys
 # User-defined modules
 from . import auth 
 from models import user 
-sys.path.append('E:\\Sabs Learning\\resource_integrate\\cache')
+sys.path.append('C:\\ctpt\\ctpt-backup\\resource_integrate\\cache')
 import cache
 from util import util
 
