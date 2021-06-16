@@ -14,8 +14,8 @@ import sys
 from datetime import datetime
 
 # ------------------------------------------- Customized Modules --------------------------------------------------------------------
-sys.path.append('E:\\Sabs Learning\\resource_integrate\\cache')
-sys.path.append('E:\\Sabs Learning\\resource_integrate\\util')
+sys.path.append('C:\\ctpt\\ctpt-backup\\resource_integrate\\cache')
+sys.path.append('C:\\ctpt\\ctpt-backup\\resource_integrate\\util')
 from crypto_parser import ShiftPlanCrypto
 from cache import CacheFile
 import util
@@ -115,7 +115,7 @@ class User(object):
   def logout():
     session.pop(const.SESSION_COOKIES.EMAIL, None)
     session.pop(const.SESSION_COOKIES.USERNAME, None)
-    session.pop(const. SESSION_COOKIES.TEAM, None)
-    session.pop(const. SESSION_COOKIES.MONTH, None)
-    session.pop(const. SESSION_COOKIES.EXCELFILE, None)
+    session.pop(const.SESSION_COOKIES.TEAM, None)
+    session.pop(const.SESSION_COOKIES.MONTH, None)
+    session.pop(const.SESSION_COOKIES.EXCELFILE, None)
     return redirect(url_for('auth.user_login'))
