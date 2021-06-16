@@ -204,26 +204,52 @@
 								  });
 							</script>
 							<br>
-							<div class="card">
-								{% if _is_download %}
-									<div class="card-body">
-										{% if _team_plan_exists==True -%}
-											<p class="text-info">{{logged_in['team']}} Shift Roaster Already Created?
-												<a type="button" href="http://{{hostname}}:1793/download/{{logged_in['team']}}" id="teamPlan" class="btn btn-primary btn-md">
-													<span class="fa fa-download"></span>
-													Download {{logged_in['team']}} Roaster To Excel
-											</a>
-											</p>
-										{% else %}
-											<p class="text-info">{{logged_in['team']}} Shift Roaster Already Created?
-												<a type="button" id="teamPlanExists" class="btn btn-primary btn-md">
-													<span class="fa fa-download"></span> Download {{logged_in['team']}} Roaster To Excel
+							<div class="card-group">
+								<div class="card">
+									{% if _is_download %}
+										<div class="card-body">
+											{% if _team_plan_exists==True -%}
+												<p class="text-info">{{logged_in['team']}} Shift Roaster Already Created, Save?
+													<br>
+													<a id="saveTeamPlan" href="http://{{hostname}}:1793/save_to_excel/{{logged_in['team']}}" class="btn btn-md" style="background-color: orange;">
+														<b><span class="fa fa-save"></span>
+														Save {{logged_in['team']}} Roaster
+													</b>
 												</a>
-											</p>
+												</p>
+											{% else %}
+												<p class="text-info">{{logged_in['team']}} Shift Roaster Already Created, Save?
+													<br>
+													<a id="saveTeamPlan" href="http://{{hostname}}:1793/save_to_excel/{{logged_in['team']}}" class="btn btn-md" style="background-color: orange;">
+														<b>
+															<span class="fa fa-save"></span>Save {{logged_in['team']}} Roaster
+														</b>
+													</a>
+												</p>
+											{% endif %}
+										</div>
 										{% endif %}
-									</div>
-								{% endif %}
-							</div>
+								</div>
+								<div class="card">
+									{% if _is_download %}
+										<div class="card-body">
+											{% if _team_plan_exists==True -%}
+												<p class="text-info">{{logged_in['team']}} Shift Roaster Already Created, Download?
+													<a type="button" href="http://{{hostname}}:1793/download/{{logged_in['team']}}" id="teamPlan" class="btn btn-primary btn-md">
+														<span class="fa fa-download"></span>
+														Download {{logged_in['team']}} Roaster To Excel
+												</a>
+												</p>
+											{% else %}
+												<p class="text-info">{{logged_in['team']}} Shift Roaster Already Created, Download?
+													<a type="button" id="teamPlanExists" class="btn btn-primary btn-md">
+														<span class="fa fa-download"></span> Download {{logged_in['team']}} Roaster To Excel
+													</a>
+												</p>
+											{% endif %}
+										</div>
+									{% endif %}
+							  </div>
 							<br>
 	
 							<!-- The Modal -->
@@ -261,7 +287,16 @@
 										}, 0);
 										location.reload(true); 
 										return true;
-									});                                    
+									});
+									$("#saveTeamPlan").on('click', function () {
+										var e = this;
+										setTimeout(function () {
+											e.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Shift Roaster is Saving To Local Excel....';
+											e.disabled = true;
+											e.button('reset');
+										}, 0);
+										return true;
+									});                               
 									$("#teamPlanExists").click(function () {
 										$("#teamPlanModal").modal({ backdrop: true });
 									});
