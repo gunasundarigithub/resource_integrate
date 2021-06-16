@@ -19,7 +19,7 @@ import sys
 
 # ------------------------------------------- Customized Modules --------------------------------------------------------------------
 from util import util   # Internal Module import
-sys.path.append('E:\\Sabs Learning\\resource_integrate\\util')  # Paste your appropriate path
+sys.path.append('C:\\ctpt\\ctpt-backup\\resource_integrate\\util')  # Paste your appropriate path
 
 config = util.get_conf()
 log = util.get_logger_obj()
