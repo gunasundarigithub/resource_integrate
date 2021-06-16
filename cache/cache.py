@@ -13,7 +13,7 @@ import json
 import logging
 import os
 import sys
-#sys.path.append('E:\\Sabs Learning\\resource_integrate') # Note: Please specify your local/server path when working/deploying respectively.
+#sys.path.append('C:\\ctpt\\ctpt-backup\\resource_integrate') # Note: Please specify your local/server path when working/deploying respectively.
 from util import util
 
 log = util.get_logger_obj()
